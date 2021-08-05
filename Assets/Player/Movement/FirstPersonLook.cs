@@ -29,14 +29,14 @@ public class FirstPersonLook : MonoBehaviour
 
         float mouseX = inputVector.x * horizontalSpeed;
         float mouseY = inputVector.y * verticalSpeed;
-
+    
         yRotation += mouseX;
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90, 90);
 
         transform.rotation = Quaternion.Euler(new Vector3(0.0f, yRotation, 0.0f));
-        float tilt = Mathf.Lerp(cam.transform.eulerAngles.z, targetDutch, Time.deltaTime * 10);
-        cam.transform.eulerAngles = new Vector3(xRotation, yRotation, tilt);
+        //float tilt = Mathf.Lerp(cam.transform.eulerAngles.z, targetDutch, Time.deltaTime * 10);
+        cam.transform.eulerAngles = new Vector3(xRotation, yRotation, cam.transform.eulerAngles.z);
     }
 
     public void SetLookEnabled(bool enabled) {

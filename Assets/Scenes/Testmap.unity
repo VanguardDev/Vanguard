@@ -6723,7 +6723,7 @@ GameObject:
   - component: {fileID: 385140347}
   - component: {fileID: 385140349}
   - component: {fileID: 385140348}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -35123,7 +35123,7 @@ GameObject:
   - component: {fileID: 1826002589}
   - component: {fileID: 1826002591}
   - component: {fileID: 1826002590}
-  m_Layer: 1
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35249,7 +35249,12 @@ MonoBehaviour:
   jumpVelocity: 5.3
   maxJumpCount: 2
   airstrafeMultiplier: 0.1
+  wallrunState: 0
+  wallNormal: {x: 0, y: 0, z: 0}
   movementState: 0
+  environmentMask:
+    serializedVersion: 2
+    m_Bits: 55
 --- !u!54 &1826002592
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -35337,14 +35342,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826002588}
-  m_LocalRotation: {x: 0, y: 0.50791425, z: 0, w: 0.8614077}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.61, y: 1.37, z: 18.88}
   m_LocalScale: {x: 0.3, y: 0.5, z: 0.3}
   m_Children:
   - {fileID: 385140347}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 61.05, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1827183914
 PrefabInstance:
   m_ObjectHideFlags: 0
