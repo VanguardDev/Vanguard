@@ -35331,11 +35331,14 @@ MonoBehaviour:
   wallrunState: 0
   wallrunJumpVelocity: 3
   crouchState: 0
-  sneakSpeed: 2
-  slideVelBoost: 1.3
+  slideVelThresh: 2
+  sneakSpeed: 3
+  slideVelBoost: 3
   baseInitialSlideVel: 4
+  minSlideTime: 0.3
   maxInitialSlideVel: 8
   slideJumpVelMult: 0.7
+  crouchTime: 0
   environmentMask:
     serializedVersion: 2
     m_Bits: 55

@@ -45,11 +45,15 @@ public class FirstPersonMove : MonoBehaviour
 
     [Header("Crouch Settings")]
     public CrouchState crouchState = CrouchState.None;
+    public float slideVelThresh = 2f;
     public float sneakSpeed = 3f;
     public float slideVelBoost = 1.3f;
     public float baseInitialSlideVel = 4f;
+    public float minSlideTime = 0.3f;
     public float maxInitialSlideVel = 8f;
     public float slideJumpVelMult = .7f;
+
+    public float crouchTime = 0f;
 
     [Header("Misc")]
     [SerializeField]
@@ -142,7 +146,7 @@ public class FirstPersonMove : MonoBehaviour
         if (isGrounded) {
             jumpCount = 0;
             if (crouchState != CrouchState.Slide) {
-                targetVelocity = crouchState == CrouchState.Sneak ? walkVector / speed * sneakSpeed : walkVector;
+                targetVelocity = crouchState == CrouchState.Sneak ? (walkVector / speed) * sneakSpeed : walkVector;
                 targetVelocity.y = rb.velocity.y;
             }
         }
@@ -160,9 +164,16 @@ public class FirstPersonMove : MonoBehaviour
         if (crouchState != CrouchState.Slide) {
             rb.velocity = targetVelocity;
         }
+        else if (crouchTime > minSlideTime){
+            Vector3 velocityXZ = Vector3.Scale(rb.velocity, new Vector3(1, 0, 1));
+            if (velocityXZ.magnitude < slideVelThresh)
+                crouchState = CrouchState.Sneak;
+        }
 
-        if (crouchState == CrouchState.Slide || crouchState == CrouchState.Sneak)
+        if (crouchState == CrouchState.Slide || crouchState == CrouchState.Sneak) {
             camManager.targetHeight = 0.5f;
+            crouchTime += Time.fixedDeltaTime;
+        }
 
     }
 
@@ -249,6 +260,20 @@ public class FirstPersonMove : MonoBehaviour
     }
 
     void StartCrouch() {
+        if (crouchState == CrouchState.Queued) {
+            StartSlide();
+        } 
+        else if (crouchState == CrouchState.None) {
+            Vector3 velocityXZ = Vector3.Scale(rb.velocity, new Vector3(1, 0, 1));
+            if (velocityXZ.magnitude > slideVelThresh)
+                StartSlide();
+            else
+                crouchState = CrouchState.Sneak;
+        }
+    }
+
+    void StartSlide() {
+        crouchTime = 0;
         crouchState = CrouchState.Slide;
         //rb.velocity = Vector3.Cross(Quaternion.Euler(0, 90, 0) * transform.forward, groundHit.normal).normalized * Mathf.Clamp(rb.velocity.magnitude * slideVelBoost, baseInitialSlideVel, maxInitialSlideVel);
         rb.velocity = Vector3.Cross(
