@@ -12,6 +12,7 @@ public class FirstPersonLook : MonoBehaviour
 
     public Camera cam;
     public float targetDutch;
+    public float targetHeight = 1;
     
     public void UpdateInput(InputAction.CallbackContext context)
     {
@@ -35,8 +36,17 @@ public class FirstPersonLook : MonoBehaviour
         xRotation = Mathf.Clamp(xRotation, -90, 90);
 
         transform.rotation = Quaternion.Euler(new Vector3(0.0f, yRotation, 0.0f));
-        //float tilt = Mathf.Lerp(cam.transform.eulerAngles.z, targetDutch, Time.deltaTime * 10);
-        cam.transform.eulerAngles = new Vector3(xRotation, yRotation, cam.transform.eulerAngles.z);
+        cam.transform.rotation = Quaternion.Lerp(
+            Quaternion.Euler(new Vector3(xRotation, yRotation, cam.transform.eulerAngles.z)), 
+            Quaternion.Euler(new Vector3(xRotation, yRotation, targetDutch)), 
+            Time.deltaTime * 10
+        );
+
+        cam.transform.localPosition = Vector3.Lerp(
+            cam.transform.localPosition,
+            new Vector3(0.0f, targetHeight, 0.0f),
+            Time.deltaTime * 10
+        );
     }
 
     public void SetLookEnabled(bool enabled) {

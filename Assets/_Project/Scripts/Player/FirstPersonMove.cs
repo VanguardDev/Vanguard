@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum MovementState {
-    Idle,
-    Walking,
-    Falling,
-    Wallrunning
+public enum CrouchState {
+    None,
+    Queued,
+    Sneak,
+    Slide
 }
 
 public enum WallrunState {
@@ -43,9 +43,16 @@ public class FirstPersonMove : MonoBehaviour
     private bool wallRunEnabled = true;
     private RaycastHit wallHit;
 
+    [Header("Crouch Settings")]
+    public CrouchState crouchState = CrouchState.None;
+    public float sneakSpeed = 3f;
+    public float slideVelBoost = 1.3f;
+    public float baseInitialSlideVel = 4f;
+    public float maxInitialSlideVel = 8f;
+    public float slideJumpVelMult = .7f;
+
     [Header("Misc")]
     [SerializeField]
-    public MovementState movementState = MovementState.Idle;
     public LayerMask environmentMask;
     private Rigidbody rb;
     private FirstPersonLook camManager;
@@ -62,7 +69,6 @@ public class FirstPersonMove : MonoBehaviour
 
         if (newValue != inputJump) {
             if (newValue == true && jumpCount < maxJumpCount - 1) {
-                
                 if (wallrunState != WallrunState.None) {
                     jumpCount = -1; // so fucking jank :D
                     Vector3 fwd = transform.forward * wallrunSpeed;
@@ -72,16 +78,40 @@ public class FirstPersonMove : MonoBehaviour
                     ExitWallRun();
                 }
                 else {
-                    if (Vector3.Distance(walkVector, Vector3.zero) < 0.5f)
-                        rb.velocity = new Vector3(rb.velocity.x, jumpVelocity, rb.velocity.z);
-                    else
-                        rb.velocity = new Vector3(immediateWalkVector.x, jumpVelocity, immediateWalkVector.z);
+                    Vector3 jumpDir = rb.velocity;
+                    if (Vector3.Distance(immediateWalkVector, Vector3.zero) > 0.5f && crouchState != CrouchState.Slide)
+                        jumpDir = immediateWalkVector / speed * rb.velocity.magnitude;
+                    jumpDir.y = jumpVelocity;
+                    if (crouchState == CrouchState.Slide)
+                        jumpDir.y *= slideJumpVelMult;
+
+                    rb.velocity = jumpDir;
                 }
 
                 jumpCount++;
             }
         }
         inputJump = newValue;
+    }
+
+    private bool inputCrouch;
+    public void UpdateCrouchInput(InputAction.CallbackContext context) {
+        var newValue = context.ReadValue<float>() == 1;
+
+        if (newValue != inputCrouch) {
+            if (newValue == true) {
+                if (isGrounded) {
+                    StartCrouch();
+                } else {
+                    crouchState = CrouchState.Queued;
+                }
+            }
+            else {
+                crouchState = CrouchState.None;
+                camManager.targetHeight = 1;
+            }
+        }
+        inputCrouch = newValue;
     }
 
     void Start() {
@@ -94,7 +124,14 @@ public class FirstPersonMove : MonoBehaviour
 
     void FixedUpdate() {
         moveInputVector = Vector2.Lerp(moveInputVector, targetMoveInputVector, Time.fixedDeltaTime * 1/acceleration);
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHit, .53f, environmentMask);
+        bool newIsGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHit, .53f, environmentMask);
+        if (newIsGrounded != isGrounded) {
+            if (newIsGrounded)
+                OnGrounded();
+            else
+                OnExitGround();
+        }
+        isGrounded = newIsGrounded;
         WallRunCheck();
         
         Vector3 targetVelocity = rb.velocity;
@@ -104,8 +141,10 @@ public class FirstPersonMove : MonoBehaviour
         
         if (isGrounded) {
             jumpCount = 0;
-            targetVelocity = walkVector;
-            targetVelocity.y = rb.velocity.y;
+            if (crouchState != CrouchState.Slide) {
+                targetVelocity = crouchState == CrouchState.Sneak ? walkVector / speed * sneakSpeed : walkVector;
+                targetVelocity.y = rb.velocity.y;
+            }
         }
         else if (wallrunState == WallrunState.None) {
             targetVelocity = (rb.velocity + (immediateWalkVector.normalized * airstrafeMultiplier)).normalized * rb.velocity.magnitude;
@@ -118,7 +157,13 @@ public class FirstPersonMove : MonoBehaviour
         }
 
         //Debug.DrawLine(transform.position, transform.position + wallDirection, Color.red);
-        rb.velocity = targetVelocity;
+        if (crouchState != CrouchState.Slide) {
+            rb.velocity = targetVelocity;
+        }
+
+        if (crouchState == CrouchState.Slide || crouchState == CrouchState.Sneak)
+            camManager.targetHeight = 0.5f;
+
     }
 
     float wallrunCheckLength = 0.6f;
@@ -159,6 +204,7 @@ public class FirstPersonMove : MonoBehaviour
                     wallHit = rightHit;
                 }
                 wallrunTime += Time.fixedDeltaTime;
+                camManager.targetDutch = -15 * Vector3.Dot(transform.forward, wallDirection);
                 wallDirection *= Vector3.Dot(transform.forward, wallDirection);
             }
             else if (!rightCheck && !leftCheck) {
@@ -175,15 +221,55 @@ public class FirstPersonMove : MonoBehaviour
             wallNormal = Vector3.zero;
             wallDirection = Vector3.zero;
         }
+
+        if (wallrunState == WallrunState.None)
+            camManager.targetDutch = 0;
+    }
+
+    void OnGrounded() {
+        if (crouchState == CrouchState.Queued) {
+            StartCrouch();
+        }
+    }
+
+    void OnExitGround() {
+        if (crouchState != CrouchState.None) {
+            crouchState = CrouchState.Queued;
+            camManager.targetHeight = 1;
+        }
     }
 
     void EnableWallRun() {
         wallRunEnabled = true;
-        camManager.targetDutch = 0;
-
     }
+
     void ExitWallRun() {
         wallRunEnabled = false;
         Invoke("EnableWallRun", 0.5f);
     }
+
+    void StartCrouch() {
+        crouchState = CrouchState.Slide;
+        //rb.velocity = Vector3.Cross(Quaternion.Euler(0, 90, 0) * transform.forward, groundHit.normal).normalized * Mathf.Clamp(rb.velocity.magnitude * slideVelBoost, baseInitialSlideVel, maxInitialSlideVel);
+        rb.velocity = Vector3.Cross(
+            Vector3.Scale(
+                Quaternion.Euler(0, 90, 0) * rb.velocity, 
+                new Vector3(1, 0, 1)
+            ), groundHit.normal
+        ).normalized * Mathf.Clamp(
+            rb.velocity.magnitude * slideVelBoost, 
+            baseInitialSlideVel, 
+            maxInitialSlideVel
+        );
+    }
+
+    void OnGUI()
+    {
+        if (Application.isEditor)
+        {
+            GUI.Label(new Rect(10, 40, 100, 20), transform.position.ToString());
+            GUI.Label(new Rect(10, 60, 100, 20), rb.velocity.ToString());
+        }
+    }
+
 }
