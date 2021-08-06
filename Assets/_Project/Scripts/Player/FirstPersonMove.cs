@@ -72,14 +72,14 @@ public class FirstPersonMove : MonoBehaviour
         var newValue = context.ReadValue<float>() == 1;
 
         if (newValue != inputJump) {
-            if (newValue == true && jumpCount < maxJumpCount - 1) {
+            if (newValue == true && jumpCount < maxJumpCount) {
                 if (wallrunState != WallrunState.None) {
-                    jumpCount = -1; // so fucking jank :D
+                    //jumpCount = -1; // so fucking jank :D
                     Vector3 fwd = transform.forward * wallrunSpeed;
                     fwd.y = jumpVelocity;
                     rb.velocity = fwd + (wallNormal * wallrunJumpVelocity);
 
-                    ExitWallRun();
+                    OnExitWallrun();
                 }
                 else {
                     Vector3 jumpDir = rb.velocity;
@@ -131,7 +131,7 @@ public class FirstPersonMove : MonoBehaviour
         bool newIsGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHit, .53f, environmentMask);
         if (newIsGrounded != isGrounded) {
             if (newIsGrounded)
-                OnGrounded();
+                OnEnterGround();
             else
                 OnExitGround();
         }
@@ -144,7 +144,6 @@ public class FirstPersonMove : MonoBehaviour
         immediateWalkVector = Vector3.Cross(transform.TransformDirection(new Vector3(targetMoveInputVector.y, 0, -targetMoveInputVector.x)), isGrounded ? groundHit.normal : Vector3.up) * speed;
         
         if (isGrounded) {
-            jumpCount = 0;
             if (crouchState != CrouchState.Slide) {
                 targetVelocity = crouchState == CrouchState.Sneak ? (walkVector / speed) * sneakSpeed : walkVector;
                 targetVelocity.y = rb.velocity.y;
@@ -155,7 +154,6 @@ public class FirstPersonMove : MonoBehaviour
             targetVelocity.y = rb.velocity.y;
         }
         else {
-            jumpCount = 0;
             targetVelocity = -(wallNormal * Vector3.Distance(wallHit.point, transform.position)) + (wallDirection * wallrunSpeed * Mathf.Lerp(1.3f, 1, Mathf.Min(wallrunTime, 1)));
             targetVelocity.y = rb.velocity.y / 2;
         }
@@ -205,7 +203,6 @@ public class FirstPersonMove : MonoBehaviour
                     wallNormal = leftHit.normal;
                     wallDirection = Vector3.Cross(wallNormal, Vector3.up);
                     wallHit = leftHit;
-
                 }
                 else if (rightCheck && Mathf.Abs(Vector3.Dot(rightHit.normal, Vector3.up)) < 0.1f) {
                     if (wallrunState == WallrunState.None)
@@ -214,14 +211,17 @@ public class FirstPersonMove : MonoBehaviour
                     wallDirection = Vector3.Cross(wallNormal, Vector3.up);
                     wallHit = rightHit;
                 }
+
                 wallrunTime += Time.fixedDeltaTime;
                 camManager.targetDutch = -15 * Vector3.Dot(transform.forward, wallDirection);
                 wallDirection *= Vector3.Dot(transform.forward, wallDirection);
+
+                OnEnterWallrun();
             }
             else if (!rightCheck && !leftCheck) {
                 if (wallrunState != WallrunState.None) {
                     wallrunState = WallrunState.None;
-                    ExitWallRun();
+                    OnExitWallrun();
                 }
                 wallNormal = Vector3.zero;
                 wallDirection = Vector3.zero;
@@ -237,7 +237,8 @@ public class FirstPersonMove : MonoBehaviour
             camManager.targetDutch = 0;
     }
 
-    void OnGrounded() {
+    void OnEnterGround() {
+        jumpCount = 0;
         if (crouchState == CrouchState.Queued) {
             StartCrouch();
         }
@@ -250,13 +251,17 @@ public class FirstPersonMove : MonoBehaviour
         }
     }
 
-    void EnableWallRun() {
+    void EnableWallrun() {
         wallRunEnabled = true;
     }
 
-    void ExitWallRun() {
+    void OnEnterWallrun() {
+        jumpCount = 0;
+    }
+
+    void OnExitWallrun() {
         wallRunEnabled = false;
-        Invoke("EnableWallRun", 0.5f);
+        Invoke("EnableWallrun", 0.5f);
     }
 
     void StartCrouch() {
