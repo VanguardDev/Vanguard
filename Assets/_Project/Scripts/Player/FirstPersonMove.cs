@@ -70,6 +70,7 @@ public class FirstPersonMove : MonoBehaviour
     public float minSlideTime = 0.3f;
     public float maxInitialSlideVel = 8f;
     public float slideJumpVelMult = .7f;
+    public float crouchColliderHeight = 1.5f;
 
     public float crouchTime = 0f;
 
@@ -238,12 +239,12 @@ public class FirstPersonMove : MonoBehaviour
             
             RaycastHit fwdHit;
             bool fwdCheck = Physics.Raycast(transform.position, transform.forward, out fwdHit, wallrunCheckLength, environmentMask) || 
-                Physics.Raycast(transform.position - (Vector3.up * ((transform.localScale.y * collider.height) - collider.radius)), transform.forward, out fwdHit, wallrunCheckLength, environmentMask);
+                (wallrunState != WallrunState.None && Physics.Raycast(transform.position - (Vector3.up * ((transform.localScale.y * collider.height) - collider.radius)), transform.forward, out fwdHit, wallrunCheckLength-0.1f, environmentMask));
 
             List<WallCheck> checks = new List<WallCheck>() {
-                new WallCheck() { State = WallrunState.Climb, Hit = fwdCheck, HitInfo = fwdHit },
                 new WallCheck() { State = WallrunState.Left, Hit = leftCheck, HitInfo = leftHit },
                 new WallCheck() { State = WallrunState.Right, Hit = rightCheck, HitInfo = rightHit },
+                new WallCheck() { State = WallrunState.Climb, Hit = fwdCheck, HitInfo = fwdHit },
             };
 
             if (checks.Any(check => check.Hit)) {
@@ -274,7 +275,7 @@ public class FirstPersonMove : MonoBehaviour
                 else {
                     if (oldState != WallrunState.None || (climbTransform == null && oldState == WallrunState.None)) {
                         camManager.SetLookEnabled(false);
-                        Debug.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.z), Color.red);
+                        //Debug.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.z), Color.red);
                         climbTransform = wallHit.transform;
                         camManager.xRotation = Mathf.Lerp(camManager.xRotation, 10, Time.fixedDeltaTime * 10);
                         camManager.cam.transform.rotation = Quaternion.Euler(new Vector3(camManager.xRotation, camManager.yRotation, 0));
@@ -359,7 +360,7 @@ public class FirstPersonMove : MonoBehaviour
                 new Vector3(1, 0, 1)
             ), groundHit.normal
         ).normalized * Mathf.Clamp(
-            rb.velocity.magnitude * slideVelBoost, 
+            Vector3.Scale(rb.velocity, new Vector3(1, 0, 1)).magnitude * slideVelBoost, 
             baseInitialSlideVel, 
             maxInitialSlideVel
         );
