@@ -70,7 +70,7 @@ public class FirstPersonMove : NetworkBehaviour
     private Vector3 mantleStartPoint;
     private Vector3 mantleEndPoint;
     private float mantleTime;
-    public bool mantling;
+    private bool mantling;
 
     [Header("Crouch Settings")]
     public CrouchState crouchState = CrouchState.None;
@@ -343,6 +343,8 @@ public class FirstPersonMove : NetworkBehaviour
                                 mantleStartPoint = transform.position;
                                 mantleEndPoint = new Vector3(transform.position.x, lastMantlePoint.y + (transform.localScale.y * collider.height), transform.position.z) + (transform.forward/10);
                                 mantleTime = 0;
+
+                                ExitWallrun();
                             }
                         }
                         else {
