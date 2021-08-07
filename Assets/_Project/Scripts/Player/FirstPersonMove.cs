@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,8 +14,17 @@ public enum CrouchState {
 public enum WallrunState {
     None,
     Left,
-    Right
+    Right,
+    Climb
 }
+
+public struct WallCheck
+{
+    public WallrunState State;
+    public bool Hit;
+    public RaycastHit HitInfo;
+}
+
 public class FirstPersonMove : MonoBehaviour
 {
     [Header("Walk Settings")]
@@ -34,7 +44,11 @@ public class FirstPersonMove : MonoBehaviour
 
     [Header("Wallrun Settings")]
     public WallrunState wallrunState = WallrunState.None;
+    public float baseWallrunSpeed = 4;
     public float wallrunJumpVelocity = 3;
+
+    public float minClimbDistance = 1;
+    public AnimationCurve climbVelCurve;
 
     private Vector3 wallNormal;
     private Vector3 wallDirection;
@@ -42,6 +56,10 @@ public class FirstPersonMove : MonoBehaviour
     private float wallrunTime;
     private bool wallRunEnabled = true;
     private RaycastHit wallHit;
+    private float wallrunCheckLength;
+
+    public Transform climbTransform;
+
 
     [Header("Crouch Settings")]
     public CrouchState crouchState = CrouchState.None;
@@ -58,7 +76,9 @@ public class FirstPersonMove : MonoBehaviour
     [Header("Misc")]
     [SerializeField]
     public LayerMask environmentMask;
+
     private Rigidbody rb;
+    private CapsuleCollider collider;
     private FirstPersonLook camManager;
 
     private Vector2 targetMoveInputVector;
@@ -74,12 +94,14 @@ public class FirstPersonMove : MonoBehaviour
         if (newValue != inputJump) {
             if (newValue == true && jumpCount < maxJumpCount) {
                 if (wallrunState != WallrunState.None) {
-                    //jumpCount = -1; // so fucking jank :D
+                    climbTransform = null;
                     Vector3 fwd = transform.forward * wallrunSpeed;
+                    if (wallrunState == WallrunState.Climb)
+                        fwd *= 0;
+
                     fwd.y = jumpVelocity;
                     rb.velocity = fwd + (wallNormal * wallrunJumpVelocity);
-
-                    OnExitWallrun();
+                    ExitWallrun();
                 }
                 else {
                     Vector3 jumpDir = rb.velocity;
@@ -104,6 +126,13 @@ public class FirstPersonMove : MonoBehaviour
 
         if (newValue != inputCrouch) {
             if (newValue == true) {
+                if (wallrunState != WallrunState.None) {
+                    if (wallrunState == WallrunState.Climb)
+                        rb.velocity = Vector3.zero;
+                    else
+                        rb.velocity = (wallDirection.normalized * rb.velocity.magnitude) + wallNormal;
+                    ExitWallrun();
+                }
                 if (isGrounded) {
                     StartCrouch();
                 } else {
@@ -121,6 +150,8 @@ public class FirstPersonMove : MonoBehaviour
     void Start() {
         rb = GetComponent<Rigidbody>();
         camManager = GetComponent<FirstPersonLook>();
+        collider = GetComponent<CapsuleCollider>();
+        wallrunCheckLength = collider.radius;
     }
 
     void Update() {
@@ -128,7 +159,7 @@ public class FirstPersonMove : MonoBehaviour
 
     void FixedUpdate() {
         moveInputVector = Vector2.Lerp(moveInputVector, targetMoveInputVector, Time.fixedDeltaTime * 1/acceleration);
-        bool newIsGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHit, .53f, environmentMask);
+        bool newIsGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHit, (transform.localScale.y * collider.height) * 0.53f, environmentMask);
         if (newIsGrounded != isGrounded) {
             if (newIsGrounded)
                 OnEnterGround();
@@ -149,13 +180,27 @@ public class FirstPersonMove : MonoBehaviour
                 targetVelocity.y = rb.velocity.y;
             }
         }
-        else if (wallrunState == WallrunState.None) {
-            targetVelocity = (rb.velocity + (immediateWalkVector.normalized * airstrafeMultiplier)).normalized * rb.velocity.magnitude;
-            targetVelocity.y = rb.velocity.y;
-        }
         else {
-            targetVelocity = -(wallNormal * Vector3.Distance(wallHit.point, transform.position)) + (wallDirection * wallrunSpeed * Mathf.Lerp(1.3f, 1, Mathf.Min(wallrunTime, 1)));
-            targetVelocity.y = rb.velocity.y / 2;
+            Debug.Log(wallrunTime);
+            switch (wallrunState) {
+                case WallrunState.None:
+                    targetVelocity = (rb.velocity + (immediateWalkVector.normalized * airstrafeMultiplier)).normalized * rb.velocity.magnitude;
+                    targetVelocity.y = rb.velocity.y;
+                    break;
+                case WallrunState.Left:
+                case WallrunState.Right:
+                    targetVelocity = -(wallNormal * Vector3.Distance(wallHit.point, transform.position)) + (wallDirection * wallrunSpeed * Mathf.Lerp(1.3f, 1, Mathf.Min(wallrunTime, 1)));
+                    targetVelocity.y = rb.velocity.y / 2;
+                    break;
+                case WallrunState.Climb:
+                    if (wallrunTime < climbVelCurve.keys[climbVelCurve.length - 1].time) {
+                        targetVelocity = -wallNormal + (Vector3.up * 3 * climbVelCurve.Evaluate(wallrunTime));
+                    } else {
+                        wallrunState = WallrunState.None;
+                        ExitWallrun();
+                    }
+                    break;
+            }
         }
 
         //Debug.DrawLine(transform.position, transform.position + wallDirection, Color.red);
@@ -175,62 +220,85 @@ public class FirstPersonMove : MonoBehaviour
 
     }
 
-    float wallrunCheckLength = 0.6f;
     void WallRunCheck() {
         Vector3 wallrunForwardOffset = transform.forward / 4;
 
-        if (wallRunEnabled) {
+        if (wallRunEnabled && !isGrounded) {
+            // REALLY WANT TO FIND A WAY TO DO THIS WITHOUT ALL THE RAYCASTS >:(
+            
             RaycastHit rightHit;
             bool rightCheck = (wallrunState == WallrunState.None && Physics.Raycast(transform.position, transform.right - wallrunForwardOffset, out rightHit, wallrunCheckLength, environmentMask)) ||
-                        Physics.Raycast(transform.position, transform.right + wallrunForwardOffset, out rightHit, wallrunCheckLength, environmentMask) ||
-                        Physics.Raycast(transform.position, transform.right, out rightHit, wallrunCheckLength, environmentMask);
+                Physics.Raycast(transform.position, transform.right + wallrunForwardOffset, out rightHit, wallrunCheckLength, environmentMask) ||
+                Physics.Raycast(transform.position, transform.right, out rightHit, wallrunCheckLength, environmentMask);
             
             RaycastHit leftHit;
             bool leftCheck = (wallrunState == WallrunState.None && Physics.Raycast(transform.position, -transform.right - wallrunForwardOffset, out leftHit, wallrunCheckLength, environmentMask)) ||
-                        Physics.Raycast(transform.position, -transform.right + wallrunForwardOffset, out leftHit, wallrunCheckLength, environmentMask) ||
-                        Physics.Raycast(transform.position, -transform.right, out leftHit, wallrunCheckLength, environmentMask);
+                Physics.Raycast(transform.position, -transform.right + wallrunForwardOffset, out leftHit, wallrunCheckLength, environmentMask) ||
+                Physics.Raycast(transform.position, -transform.right, out leftHit, wallrunCheckLength, environmentMask);
+            
+            RaycastHit fwdHit;
+            bool fwdCheck = Physics.Raycast(transform.position, transform.forward, out fwdHit, wallrunCheckLength, environmentMask) || 
+                Physics.Raycast(transform.position - (Vector3.up * ((transform.localScale.y * collider.height) - collider.radius)), transform.forward, out fwdHit, wallrunCheckLength, environmentMask);
 
-            if ((rightCheck || leftCheck) && !isGrounded) {
+            List<WallCheck> checks = new List<WallCheck>() {
+                new WallCheck() { State = WallrunState.Climb, Hit = fwdCheck, HitInfo = fwdHit },
+                new WallCheck() { State = WallrunState.Left, Hit = leftCheck, HitInfo = leftHit },
+                new WallCheck() { State = WallrunState.Right, Hit = rightCheck, HitInfo = rightHit },
+            };
+
+            if (checks.Any(check => check.Hit)) {
                 if (wallrunState == WallrunState.None) {
-                    wallrunSpeed = rb.velocity.magnitude;
+                    wallrunSpeed = Mathf.Max(rb.velocity.magnitude, baseWallrunSpeed);
                     wallrunTime = 0;
                 }
+                
+                WallrunState oldState = wallrunState;
 
                 // TODO: add camera lock to normal
-                if (leftCheck && Mathf.Abs(Vector3.Dot(leftHit.normal, Vector3.up)) < 0.1f) {
-                    if (wallrunState == WallrunState.None)
-                        wallrunState = WallrunState.Left;
-                    wallNormal = leftHit.normal;
-                    wallDirection = Vector3.Cross(wallNormal, Vector3.up);
-                    wallHit = leftHit;
+                foreach (WallCheck check in checks) {
+                    if (check.Hit && Mathf.Abs(Vector3.Dot(check.HitInfo.normal, Vector3.up)) < 0.1f) {
+                        if (wallrunState == WallrunState.None)
+                            wallrunState = check.State;
+                        wallNormal = check.HitInfo.normal;
+                        wallDirection = Vector3.Cross(wallNormal, Vector3.up);
+                        wallHit = check.HitInfo;
+                    }
                 }
-                else if (rightCheck && Mathf.Abs(Vector3.Dot(rightHit.normal, Vector3.up)) < 0.1f) {
-                    if (wallrunState == WallrunState.None)
-                        wallrunState = WallrunState.Right;
-                    wallNormal = rightHit.normal;
+                if (wallrunState != WallrunState.Climb) {
                     wallDirection = Vector3.Cross(wallNormal, Vector3.up);
-                    wallHit = rightHit;
+                    camManager.targetDutch = -15 * Vector3.Dot(transform.forward, wallDirection);
+                    wallDirection *= Vector3.Dot(transform.forward, wallDirection);
+
+                    OnEnterWallrun();
+                }
+                else {
+                    if (oldState != WallrunState.None || (climbTransform == null && oldState == WallrunState.None)) {
+                        camManager.SetLookEnabled(false);
+                        Debug.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.z), Color.red);
+                        climbTransform = wallHit.transform;
+                        camManager.xRotation = Mathf.Lerp(camManager.xRotation, 10, Time.fixedDeltaTime * 10);
+                        camManager.cam.transform.rotation = Quaternion.Euler(new Vector3(camManager.xRotation, camManager.yRotation, 0));
+                    }
+                    else {
+                        wallrunState = WallrunState.None;
+                        ExitWallrun();
+                    }
                 }
 
                 wallrunTime += Time.fixedDeltaTime;
-                camManager.targetDutch = -15 * Vector3.Dot(transform.forward, wallDirection);
-                wallDirection *= Vector3.Dot(transform.forward, wallDirection);
-
-                OnEnterWallrun();
             }
-            else if (!rightCheck && !leftCheck) {
+            else {
                 if (wallrunState != WallrunState.None) {
                     wallrunState = WallrunState.None;
-                    OnExitWallrun();
+                    ExitWallrun();
                 }
-                wallNormal = Vector3.zero;
-                wallDirection = Vector3.zero;
             }
         } 
         else {
-            wallrunState = WallrunState.None;
-            wallNormal = Vector3.zero;
-            wallDirection = Vector3.zero;
+            if (wallrunState != WallrunState.None) {
+                wallrunState = WallrunState.None;
+                ExitWallrun();
+            }
         }
 
         if (wallrunState == WallrunState.None)
@@ -239,6 +307,7 @@ public class FirstPersonMove : MonoBehaviour
 
     void OnEnterGround() {
         jumpCount = 0;
+        climbTransform = null;
         if (crouchState == CrouchState.Queued) {
             StartCrouch();
         }
@@ -257,11 +326,14 @@ public class FirstPersonMove : MonoBehaviour
 
     void OnEnterWallrun() {
         jumpCount = 0;
+        //camManager.SetLookEnabled(false);
     }
 
-    void OnExitWallrun() {
+    void ExitWallrun() {
         wallRunEnabled = false;
+        camManager.SetLookEnabled(true);
         Invoke("EnableWallrun", 0.5f);
+        //camManager.SetLookEnabled(true);
     }
 
     void StartCrouch() {
