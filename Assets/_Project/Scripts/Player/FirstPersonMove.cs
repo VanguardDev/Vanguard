@@ -1,8 +1,11 @@
+using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Vanguard;
 
 public enum CrouchState {
     None,
@@ -25,7 +28,7 @@ public struct WallCheck
     public RaycastHit HitInfo;
 }
 
-public class FirstPersonMove : MonoBehaviour
+public class FirstPersonMove : NetworkBehaviour
 {
     [Header("Walk Settings")]
     public float speed = 5f;
@@ -84,12 +87,10 @@ public class FirstPersonMove : MonoBehaviour
 
     private Vector2 targetMoveInputVector;
     private Vector3 moveInputVector;
-    public void UpdateMoveInput(InputAction.CallbackContext context) {
-        targetMoveInputVector = context.ReadValue<Vector2>();
-    }
-
     private bool inputJump;
-    public void UpdateJumpInput(InputAction.CallbackContext context) {
+
+    public void Jump(InputAction.CallbackContext context) {
+        Debug.Log("Hit Jump()!");
         var newValue = context.ReadValue<float>() == 1;
 
         if (newValue != inputJump) {
@@ -122,7 +123,7 @@ public class FirstPersonMove : MonoBehaviour
     }
 
     private bool inputCrouch;
-    public void UpdateCrouchInput(InputAction.CallbackContext context) {
+    public void Crouch(InputAction.CallbackContext context) {
         var newValue = context.ReadValue<float>() == 1;
 
         if (newValue != inputCrouch) {
@@ -148,17 +149,36 @@ public class FirstPersonMove : MonoBehaviour
         inputCrouch = newValue;
     }
 
-    void Start() {
+    void Start()
+    {
+        if (!isLocalPlayer)
+        {
+            GetComponent<FirstPersonLook>().pilotActionControls.Disable();
+        }
+        else
+        {
+            // TODO: *.performed and *.canceled are mapped to the same function because it's used as a toggle.
+            //    We should probably find a better way to handle this (refactor out JumpStart() and JumpEnd()
+            //    functions ?)
+            GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Jump.performed += Jump;
+            GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Jump.canceled += Jump;
+            GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Crouch.performed += Crouch;
+            GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Crouch.canceled += Crouch;
+        }
+
         rb = GetComponent<Rigidbody>();
         camManager = GetComponent<FirstPersonLook>();
         collider = GetComponent<CapsuleCollider>();
         wallrunCheckLength = collider.radius;
     }
 
-    void Update() {
-    }
-
     void FixedUpdate() {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
+        targetMoveInputVector = GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Walk.ReadValue<Vector2>();
         moveInputVector = Vector2.Lerp(moveInputVector, targetMoveInputVector, Time.fixedDeltaTime * 1/acceleration);
         bool newIsGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHit, (transform.localScale.y * collider.height) * 0.53f, environmentMask);
         if (newIsGrounded != isGrounded) {
@@ -182,7 +202,6 @@ public class FirstPersonMove : MonoBehaviour
             }
         }
         else {
-            Debug.Log(wallrunTime);
             switch (wallrunState) {
                 case WallrunState.None:
                     targetVelocity = (rb.velocity + (immediateWalkVector.normalized * airstrafeMultiplier)).normalized * rb.velocity.magnitude;

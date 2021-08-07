@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using Mirror;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using Vanguard;
 
-public class FirstPersonLook : MonoBehaviour
+public class FirstPersonLook : NetworkBehaviour
 {
     public float horizontalSpeed = 1f;
     public float verticalSpeed = 1f;
@@ -14,36 +16,65 @@ public class FirstPersonLook : MonoBehaviour
     private Vector2 inputVector;
     private bool lookEnabled = true;
 
+    [SerializeField]
     public Camera cam;
     public float targetDutch;
     public float targetHeight = 1;
-    
-    public void UpdateInput(InputAction.CallbackContext context)
+
+    // TODO: This should be put somewhere more logical where it can be accessed by
+    //    both FirstPersonLook.cs and FirstPersonMove.cs
+    public PilotActionControls pilotActionControls;
+
+    private void Awake()
     {
-        inputVector = context.ReadValue<Vector2>();
+        pilotActionControls = new PilotActionControls();
     }
 
     void Start()
     {
-        cam = Camera.main;
+        if (!isLocalPlayer)
+        {
+            cam.enabled = false;
+            pilotActionControls.Disable();
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
+    private void OnEnable()
+    {
+        pilotActionControls?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        pilotActionControls?.Disable();
     }
 
     void Update()
     {
-        Cursor.visible = false;
+        if (!isLocalPlayer)
+        {
+            return;
+        }
 
-        if (lookEnabled) {
+        if (lookEnabled)
+        {
+            inputVector = pilotActionControls.VanguardPilot.Mouse.ReadValue<Vector2>();
+
             float mouseX = inputVector.x * horizontalSpeed;
             float mouseY = inputVector.y * verticalSpeed;
-        
+
             yRotation += mouseX;
             xRotation -= mouseY;
             xRotation = Mathf.Clamp(xRotation, -90, 90);
 
             transform.rotation = Quaternion.Euler(new Vector3(0.0f, yRotation, 0.0f));
             cam.transform.rotation = Quaternion.Lerp(
-                Quaternion.Euler(new Vector3(xRotation, yRotation, cam.transform.eulerAngles.z)), 
-                Quaternion.Euler(new Vector3(xRotation, yRotation, targetDutch)), 
+                Quaternion.Euler(new Vector3(xRotation, yRotation, cam.transform.eulerAngles.z)),
+                Quaternion.Euler(new Vector3(xRotation, yRotation, targetDutch)),
                 Time.deltaTime * 10
             );
         }
