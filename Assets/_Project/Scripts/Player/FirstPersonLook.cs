@@ -60,6 +60,7 @@ public class FirstPersonLook : NetworkBehaviour
             return;
         }
 
+        Cursor.visible = false;
         if (lookEnabled)
         {
             inputVector = pilotActionControls.VanguardPilot.Mouse.ReadValue<Vector2>();
@@ -86,16 +87,6 @@ public class FirstPersonLook : NetworkBehaviour
     }
 
     public void SetLookEnabled(bool enabled) {
-        if (lookEnabled != enabled) {
-            if (enabled) {
-                Cursor.lockState = CursorLockMode.None;
-                //xRotation = cam.transform.eulerAngles.x;
-                //yRotation = cam.transform.eulerAngles.y;
-            }
-            else {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-        }
         lookEnabled = enabled;
     }
 }

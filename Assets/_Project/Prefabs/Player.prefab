@@ -486,7 +486,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  climbTransform: {fileID: 0}
+  mantleDuration: 0.6
   crouchState: 0
   slideVelThresh: 2
   sneakSpeed: 3
