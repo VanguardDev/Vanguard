@@ -98,7 +98,6 @@ public class FirstPersonMove : NetworkBehaviour
     private bool inputJump;
 
     public void Jump(InputAction.CallbackContext context) {
-        //Debug.Log("Hit Jump()!");
         var newValue = context.ReadValue<float>() == 1;
 
         if (newValue != inputJump) {
