@@ -33,6 +33,8 @@ public class Gun : NetworkBehaviour
         NetworkServer.Spawn(gunShotParticle);
         if (Physics.Raycast(r, out rayHit, 100, layermaskforraycast))
         {
+            if (!rayHit.collider.GetComponent<Health>()) return;//probably there is a better pls fix if you can
+            if(rayHit.collider.GetComponent<Health>().team!= GetComponent<Health>().team)
             rayHit.collider.gameObject.SendMessageUpwards("getShot", damagesend);
         }
     }
