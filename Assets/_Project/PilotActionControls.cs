@@ -59,6 +59,22 @@ namespace Vanguard
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""fca71019-275c-435e-9af8-3e5be89b058b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""c53ddce4-ca49-44ce-9249-312f45000d59"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -160,6 +176,28 @@ namespace Vanguard
                     ""action"": ""Mouse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eacd7a5b-c5f3-40d8-8df0-10f0e31b7464"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f5727b17-7f2d-4f11-b2c5-029e9917e975"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -190,6 +228,8 @@ namespace Vanguard
             m_VanguardPilot_Crouch = m_VanguardPilot.FindAction("Crouch", throwIfNotFound: true);
             m_VanguardPilot_Sprint = m_VanguardPilot.FindAction("Sprint", throwIfNotFound: true);
             m_VanguardPilot_Mouse = m_VanguardPilot.FindAction("Mouse", throwIfNotFound: true);
+            m_VanguardPilot_Shoot = m_VanguardPilot.FindAction("Shoot", throwIfNotFound: true);
+            m_VanguardPilot_Reload = m_VanguardPilot.FindAction("Reload", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -244,6 +284,8 @@ namespace Vanguard
         private readonly InputAction m_VanguardPilot_Crouch;
         private readonly InputAction m_VanguardPilot_Sprint;
         private readonly InputAction m_VanguardPilot_Mouse;
+        private readonly InputAction m_VanguardPilot_Shoot;
+        private readonly InputAction m_VanguardPilot_Reload;
         public struct VanguardPilotActions
         {
             private @PilotActionControls m_Wrapper;
@@ -253,6 +295,8 @@ namespace Vanguard
             public InputAction @Crouch => m_Wrapper.m_VanguardPilot_Crouch;
             public InputAction @Sprint => m_Wrapper.m_VanguardPilot_Sprint;
             public InputAction @Mouse => m_Wrapper.m_VanguardPilot_Mouse;
+            public InputAction @Shoot => m_Wrapper.m_VanguardPilot_Shoot;
+            public InputAction @Reload => m_Wrapper.m_VanguardPilot_Reload;
             public InputActionMap Get() { return m_Wrapper.m_VanguardPilot; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -277,6 +321,12 @@ namespace Vanguard
                     @Mouse.started -= m_Wrapper.m_VanguardPilotActionsCallbackInterface.OnMouse;
                     @Mouse.performed -= m_Wrapper.m_VanguardPilotActionsCallbackInterface.OnMouse;
                     @Mouse.canceled -= m_Wrapper.m_VanguardPilotActionsCallbackInterface.OnMouse;
+                    @Shoot.started -= m_Wrapper.m_VanguardPilotActionsCallbackInterface.OnShoot;
+                    @Shoot.performed -= m_Wrapper.m_VanguardPilotActionsCallbackInterface.OnShoot;
+                    @Shoot.canceled -= m_Wrapper.m_VanguardPilotActionsCallbackInterface.OnShoot;
+                    @Reload.started -= m_Wrapper.m_VanguardPilotActionsCallbackInterface.OnReload;
+                    @Reload.performed -= m_Wrapper.m_VanguardPilotActionsCallbackInterface.OnReload;
+                    @Reload.canceled -= m_Wrapper.m_VanguardPilotActionsCallbackInterface.OnReload;
                 }
                 m_Wrapper.m_VanguardPilotActionsCallbackInterface = instance;
                 if (instance != null)
@@ -296,6 +346,12 @@ namespace Vanguard
                     @Mouse.started += instance.OnMouse;
                     @Mouse.performed += instance.OnMouse;
                     @Mouse.canceled += instance.OnMouse;
+                    @Shoot.started += instance.OnShoot;
+                    @Shoot.performed += instance.OnShoot;
+                    @Shoot.canceled += instance.OnShoot;
+                    @Reload.started += instance.OnReload;
+                    @Reload.performed += instance.OnReload;
+                    @Reload.canceled += instance.OnReload;
                 }
             }
         }
@@ -316,6 +372,8 @@ namespace Vanguard
             void OnCrouch(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
             void OnMouse(InputAction.CallbackContext context);
+            void OnShoot(InputAction.CallbackContext context);
+            void OnReload(InputAction.CallbackContext context);
         }
     }
 }
