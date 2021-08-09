@@ -429,7 +429,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 10}
+  m_SizeDelta: {x: 5, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5917721036573192612
 CanvasRenderer:
@@ -653,7 +653,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7413427576161482000}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.024}
+  m_LocalPosition: {x: 0, y: 0, z: 1.73}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1.27}
   m_Children: []
   m_Father: {fileID: 7723995026949668498}
@@ -967,11 +967,11 @@ GameObject:
   - component: {fileID: 7723995027383627382}
   - component: {fileID: 7723995027383627343}
   - component: {fileID: 6004437413580929968}
-  - component: {fileID: -7425476760616251223}
   - component: {fileID: -3709482500648437718}
-  - component: {fileID: 4576414008051424375}
   - component: {fileID: 7737175486408512375}
   - component: {fileID: -7731969057153208970}
+  - component: {fileID: 7038860083430813797}
+  - component: {fileID: 3047540761286485904}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -1202,24 +1202,6 @@ MonoBehaviour:
   lerpVelocityAmount: 0.2
   lerpPositionAmount: 0.2
   clientAuthority: 1
---- !u!114 &-7425476760616251223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7723995027383627381}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4547242c71cea74fa7c0ad5d0554c43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  cubeprefab: {fileID: 376381689989450209, guid: 19a59cc674b89b945b45b5ff18dc773f, type: 3}
-  layermaskforraycast:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!114 &-3709482500648437718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1240,32 +1222,6 @@ MonoBehaviour:
   blueScoreText: {fileID: 645279845799798140}
   winScreenText: {fileID: 9141460041850271203}
   team: -1
---- !u!114 &4576414008051424375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7723995027383627381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5273b8b1d27ff047a5c53fa570f133a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  layermaskforraycast:
-    serializedVersion: 2
-    m_Bits: 64
-  gunShotPoint: {fileID: 6521871606053213687}
-  gunParticleSpawnPoint: {fileID: 2113827669088594418}
-  gunShot: {fileID: 792487623098538321, guid: d2b251c3644c82a4da5a31556dca9578, type: 3}
-  damage: 10
-  shootInterval: 0.1
-  reloadTime: 1
-  isGunAutomatic: 1
-  ammoText: {fileID: 2208745750965896652}
-  maxammo: 30
 --- !u!114 &7737175486408512375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1313,6 +1269,41 @@ MonoBehaviour:
   interpolateScale: 1
   syncScale: 1
   target: {fileID: 7723995026949668498}
+--- !u!114 &7038860083430813797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7723995027383627381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26c74b0eaadb80e41a36da311bd03103, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+--- !u!114 &3047540761286485904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7723995027383627381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aa26fa1ddaa822458253e3b900e0fd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  ammo: 10
+  ammoCapacity: 10
+  reloadTime: 1
+  canShoot: 1
+  ammoCountText: {fileID: 2208745750965896652}
+  projectilePrefab: {fileID: 8203581229785904781, guid: 06852801e0b52164aa90fd853a87c64a, type: 3}
+  ShootingPoint: {fileID: 6521871606053213687}
 --- !u!1 &7973584731485713676
 GameObject:
   m_ObjectHideFlags: 0
