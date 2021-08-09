@@ -72,6 +72,10 @@ public class Gun : NetworkBehaviour
             reloading = true;
         }
     }
+    public void updateReloadInput()
+    {
+            reloading = true;
+    }
     public void reloadingUpdate()
     {
         if (reloadTimer < reloadTime) reloadTimer += Time.deltaTime;

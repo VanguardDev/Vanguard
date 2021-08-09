@@ -7,7 +7,7 @@ using Mirror;
 public class Health : NetworkBehaviour
 {
     [SyncVar (hook ="updateHealth")] public float health;
-    public Text healthText,redScoreText,blueScoreText;
+    public Text healthText,redScoreText,blueScoreText,winScreenText;
     [SyncVar (hook ="setTeamColor")] public int team=-1; // this isnt hidden in inspector for debug purposes
     MatchManager mm;
     public void Start()
@@ -19,6 +19,7 @@ public class Health : NetworkBehaviour
         {
             mm.blueScoreText = blueScoreText;
             mm.redScoreText = redScoreText;
+            mm.winScreenText = winScreenText;
         }
     }
     public void getShot(float damage)

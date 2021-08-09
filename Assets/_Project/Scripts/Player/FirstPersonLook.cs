@@ -52,7 +52,14 @@ public class FirstPersonLook : NetworkBehaviour
     {
         pilotActionControls?.Disable();
     }
-
+    public void EnableControls()
+    {
+        pilotActionControls.Enable();
+    }
+    public void DisableControls()
+    {
+        pilotActionControls.Disable();
+    }
     void Update()
     {
         if (!isLocalPlayer)

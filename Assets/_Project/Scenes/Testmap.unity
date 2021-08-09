@@ -34939,8 +34939,10 @@ MonoBehaviour:
   syncInterval: 0.1
   redSpawn: {fileID: 1146235244}
   blueSpawn: {fileID: 1732832771}
-  blueScore: 0
-  redScore: 0
+  matchMaxScore: 1
+  redScoreText: {fileID: 0}
+  blueScoreText: {fileID: 0}
+  winScreenText: {fileID: 0}
 --- !u!114 &2117926593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34954,7 +34956,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneId: 10268890
-  serverOnly: 1
+  serverOnly: 0
   visible: 0
   m_AssetId: 
   hasSpawned: 0
