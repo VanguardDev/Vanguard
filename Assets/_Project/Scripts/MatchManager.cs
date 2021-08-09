@@ -72,7 +72,6 @@ public class MatchManager : NetworkBehaviour
         NetworkClient.localPlayer.GetComponent<Health>().health = 100;
         if (NetworkClient.localPlayer.GetComponent<Health>().team == 1) NetworkClient.localPlayer.transform.position=blueSpawn.position;
         else NetworkClient.localPlayer.transform.position = redSpawn.position;
-        NetworkClient.localPlayer.GetComponent<Gun>().updateReloadInput();
         winScreenText.enabled = false;
 
     }
