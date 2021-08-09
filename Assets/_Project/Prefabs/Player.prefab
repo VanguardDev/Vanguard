@@ -96,7 +96,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 53
+    m_Bits: 117
   m_RenderingPath: 3
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -302,13 +302,13 @@ GameObject:
   - component: {fileID: 7723995027383627338}
   - component: {fileID: 7723995027383627339}
   - component: {fileID: 7723995027383627337}
-  - component: {fileID: 7723995027383627380}
   - component: {fileID: 7723995027383627382}
+  - component: {fileID: 7723995027383627380}
   - component: {fileID: 7723995027383627343}
   - component: {fileID: 6004437413580929968}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -409,27 +409,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 2
---- !u!114 &7723995027383627380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7723995027383627381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 757e9fb6ae79b334b8caac2fabf8a31e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  horizontalSpeed: 0.1
-  verticalSpeed: 0.1
-  xRotation: 0
-  yRotation: 0
-  cam: {fileID: 7723995026949668500}
-  targetDutch: 0
-  targetHeight: 1
 --- !u!114 &7723995027383627382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,7 +467,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   climbVelMultiplier: 4
   mantleDuration: 0.6
-  mantling: 0
   crouchState: 0
   slideVelThresh: 2
   sneakSpeed: 3
@@ -502,6 +480,28 @@ MonoBehaviour:
   environmentMask:
     serializedVersion: 2
     m_Bits: 55
+--- !u!114 &7723995027383627380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7723995027383627381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 757e9fb6ae79b334b8caac2fabf8a31e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  horizontalSpeed: 0.1
+  verticalSpeed: 0.1
+  xRotation: 0
+  yRotation: 0
+  cam: {fileID: 7723995026949668500}
+  targetDutch: 0
+  targetHeight: 1
+  movement: {fileID: 7723995027383627382}
 --- !u!114 &7723995027383627343
 MonoBehaviour:
   m_ObjectHideFlags: 0

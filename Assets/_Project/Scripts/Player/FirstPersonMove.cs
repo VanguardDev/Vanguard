@@ -1,11 +1,8 @@
 using Mirror;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Vanguard;
 
 public enum CrouchState {
     None,
@@ -21,15 +18,14 @@ public enum WallrunState {
     Climb
 }
 
-public struct WallCheck
-{
+public struct WallCheck{
     public WallrunState State;
     public bool Hit;
     public RaycastHit HitInfo;
 }
 
-public class FirstPersonMove : NetworkBehaviour
-{
+public class FirstPersonMove : NetworkBehaviour{
+    [SerializeField] public Vanguard.PilotActionControls input;
     [Header("Walk Settings")]
     public float speed = 5f;
     public float acceleration = 0.1f;
@@ -95,8 +91,30 @@ public class FirstPersonMove : NetworkBehaviour
 
     private Vector2 targetMoveInputVector;
     private Vector3 moveInputVector;
-    private bool inputJump;
 
+    private void Awake() {
+        input = new Vanguard.PilotActionControls();
+    }
+    private void Start(){
+        if (!isLocalPlayer){
+            input.Disable();
+        }else{
+            input.VanguardPilot.Walk.performed += ctx => targetMoveInputVector = ctx.ReadValue<Vector2>();
+            input.VanguardPilot.Walk.canceled += ctx => targetMoveInputVector = Vector2.zero;
+
+            input.VanguardPilot.Jump.performed += Jump;
+            input.VanguardPilot.Jump.canceled += Jump;
+            input.VanguardPilot.Crouch.performed += Crouch;
+            input.VanguardPilot.Crouch.canceled += Crouch;
+        }
+
+        rb = GetComponent<Rigidbody>();
+        camManager = GetComponent<FirstPersonLook>();
+        collider = GetComponent<CapsuleCollider>();
+        wallrunCheckLength = collider.radius;
+    }
+
+    private bool inputJump;
     public void Jump(InputAction.CallbackContext context) {
         //Debug.Log("Hit Jump()!");
         var newValue = context.ReadValue<float>() == 1;
@@ -109,21 +127,19 @@ public class FirstPersonMove : NetworkBehaviour
                     if (wallrunState == WallrunState.Climb)
                         fwd *= 0;
 
-                    fwd.y = jumpVelocity;
-                    rb.velocity = fwd + (wallNormal * wallrunJumpVelocity);
-                    ExitWallrun();
-                }
-                else {
-                    Vector3 jumpDir = rb.velocity;
-                    if (Vector3.Distance(immediateWalkVector, Vector3.zero) > 0.5f && crouchState != CrouchState.Slide)
-                        jumpDir = immediateWalkVector / speed * rb.velocity.magnitude;
-                    jumpDir.y = jumpVelocity;
-                    if (crouchState == CrouchState.Slide)
-                        jumpDir.y *= slideJumpVelMult;
+                        fwd.y = jumpVelocity;
+                        rb.velocity = fwd + (wallNormal * wallrunJumpVelocity);
+                        ExitWallrun();
+                    }else {
+                        Vector3 jumpDir = rb.velocity;
+                        if (Vector3.Distance(immediateWalkVector, Vector3.zero) > 0.5f && crouchState != CrouchState.Slide)
+                            jumpDir = immediateWalkVector / speed * rb.velocity.magnitude;
+                        jumpDir.y = jumpVelocity;
+                        if (crouchState == CrouchState.Slide)
+                            jumpDir.y *= slideJumpVelMult;
 
-                    rb.velocity = jumpDir;
-                }
-
+                        rb.velocity = jumpDir;
+                    }
                 jumpCount++;
             }
         }
@@ -135,58 +151,35 @@ public class FirstPersonMove : NetworkBehaviour
         var newValue = context.ReadValue<float>() == 1;
 
         if (newValue != inputCrouch) {
-            if (newValue == true) {
+            if(newValue == true) {
                 if (wallrunState != WallrunState.None) {
                     if (wallrunState == WallrunState.Climb)
                         rb.velocity = Vector3.zero;
-                    else
+                    else{
                         rb.velocity = (wallDirection.normalized * rb.velocity.magnitude) + wallNormal;
-                    ExitWallrun();
+                        ExitWallrun();
+                    }
+                    if (isGrounded) {
+                        StartCrouch();
+                    } else {
+                        crouchState = CrouchState.Queued;
+                    }
+                }else {
+                    crouchState = CrouchState.None;
+                    camManager.targetHeight = 1;
                 }
-                if (isGrounded) {
-                    StartCrouch();
-                } else {
-                    crouchState = CrouchState.Queued;
-                }
-            }
-            else {
-                crouchState = CrouchState.None;
-                camManager.targetHeight = 1;
             }
         }
         inputCrouch = newValue;
     }
 
-    void Start()
-    {
-        if (!isLocalPlayer)
-        {
-            GetComponent<FirstPersonLook>().pilotActionControls.Disable();
-        }
-        else
-        {
-            // TODO: *.performed and *.canceled are mapped to the same function because it's used as a toggle.
-            //    We should probably find a better way to handle this (refactor out JumpStart() and JumpEnd()
-            //    functions ?)
-            GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Jump.performed += Jump;
-            GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Jump.canceled += Jump;
-            GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Crouch.performed += Crouch;
-            GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Crouch.canceled += Crouch;
-        }
-
-        rb = GetComponent<Rigidbody>();
-        camManager = GetComponent<FirstPersonLook>();
-        collider = GetComponent<CapsuleCollider>();
-        wallrunCheckLength = collider.radius;
-    }
 
     void FixedUpdate() {
-        if (!isLocalPlayer)
-        {
+        if (!isLocalPlayer){
             return;
         }
 
-        targetMoveInputVector = GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Walk.ReadValue<Vector2>();
+        //targetMoveInputVector = GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Walk.ReadValue<Vector2>();
         moveInputVector = Vector2.Lerp(moveInputVector, targetMoveInputVector, Time.fixedDeltaTime * 1/acceleration);
         bool newIsGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHit, (transform.localScale.y * collider.height) * 0.53f, environmentMask);
         if (newIsGrounded != isGrounded) {
@@ -209,8 +202,7 @@ public class FirstPersonMove : NetworkBehaviour
                 targetVelocity = crouchState == CrouchState.Sneak ? (walkVector / speed) * sneakSpeed : walkVector;
                 targetVelocity.y = rb.velocity.y;
             }
-        }
-        else {
+        }else{
             switch (wallrunState) {
                 case WallrunState.None:
                     if (mantling) {
@@ -223,8 +215,7 @@ public class FirstPersonMove : NetworkBehaviour
                             rb.position = Vector3.Lerp(mantleStartPoint, mantleEndPoint, (mantleTime * 2) / mantleDuration);
                         else
                             rb.position += transform.forward * Time.fixedDeltaTime;
-                    }
-                    else {
+                    }else {
                         // AIRSTRAFE
                         targetVelocity = (rb.velocity + (immediateWalkVector.normalized * airstrafeMultiplier)).normalized * rb.velocity.magnitude;
                         targetVelocity.y = rb.velocity.y;
@@ -436,5 +427,13 @@ public class FirstPersonMove : NetworkBehaviour
             baseInitialSlideVel, 
             maxInitialSlideVel
         );
+    }
+
+    private void OnEnable(){
+        input.Enable();
+    }
+
+    private void OnDisable(){
+        input.Disable();
     }
 }

@@ -1,9 +1,9 @@
-﻿using Mirror;
+using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Vanguard;
 
-public class FirstPersonLook : NetworkBehaviour{
+public class BigRobotLook : NetworkBehaviour{
     public float horizontalSpeed = 1f;
     public float verticalSpeed = 1f;
     
@@ -19,33 +19,32 @@ public class FirstPersonLook : NetworkBehaviour{
     public Camera cam;
     public float targetDutch;
     public float targetHeight = 1;
-    public FirstPersonMove movement;
 
     // TODO: This should be put somewhere more logical where it can be accessed by
-    //    both FirstPersonLook.cs and FirstPersonMove.cs
-    private PilotActionControls pilotActionControls;
+    // both FirstPersonLook.cs and FirstPersonMove.cs
+    private Vanguard.PilotActionControls robotActionControls;
+    public RobotMovement robotMovement;
 
     private void Awake(){
-        pilotActionControls = movement.input;
+        robotActionControls = robotMovement.input;
+        if(robotActionControls == null){
+            robotActionControls = new PilotActionControls();
+        }
     }
 
     void Start(){
-        if (!isLocalPlayer){
-            cam.enabled = false;
-            pilotActionControls.Disable();
-        }else{
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        //cam = GameObject.FindObjectOfType<Camera>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update(){
-        if (!isLocalPlayer){
+        /*if (!isLocalPlayer){
             return;
-        }
+        }*/
 
         Cursor.visible = false;
         if (lookEnabled){
-            inputVector = pilotActionControls.VanguardPilot.Mouse.ReadValue<Vector2>();
+            inputVector = robotActionControls.BigRobots.Mouse.ReadValue<Vector2>();
 
             float mouseX = inputVector.x * horizontalSpeed;
             float mouseY = inputVector.y * verticalSpeed;
@@ -71,6 +70,4 @@ public class FirstPersonLook : NetworkBehaviour{
     public void SetLookEnabled(bool enabled) {
         lookEnabled = enabled;
     }
-
-    
 }
