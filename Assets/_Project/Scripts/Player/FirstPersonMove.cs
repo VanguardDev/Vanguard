@@ -436,4 +436,29 @@ public class FirstPersonMove : NetworkBehaviour
             maxInitialSlideVel
         );
     }
+
+    private GUIStyle speedometerStyle = null;
+    void OnGUI()
+    {
+        if (Application.isEditor)
+        {
+            if (speedometerStyle == null) {
+                speedometerStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = 40,
+                    fontStyle = FontStyle.BoldAndItalic
+                };
+            }
+            
+            speedometerStyle.normal.textColor = Color.black;
+            string text = Mathf.Round(Vector3.Scale(rb.velocity, new Vector3(1, 0, 1)).magnitude * 3.6f).ToString() + " KM/H";
+            GUI.Label(new Rect(12, -2, 300, 50), text, speedometerStyle);
+            GUI.Label(new Rect(12, 2, 300, 50), text, speedometerStyle);
+            GUI.Label(new Rect(8, -2, 300, 50), text, speedometerStyle);
+            GUI.Label(new Rect(8, 2, 300, 50), text, speedometerStyle);
+            
+            speedometerStyle.normal.textColor = Color.white;
+            GUI.Label(new Rect(10, 0, 300, 50), text, speedometerStyle);
+        }
+    }
 }
