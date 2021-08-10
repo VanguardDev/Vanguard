@@ -78,7 +78,7 @@ public class MatchManager : NetworkBehaviour
     [ClientRpc]
     public void RpcEndMatch()
     {
-        ClientScene.localPlayer.GetComponent<FirstPersonLook>().DisableControls();
+        NetworkClient.localPlayer.GetComponent<FirstPersonLook>().DisableControls();
         winScreenText.enabled = true;
         if (redScore >= matchMaxScore)
             winScreenText.text = "Red Won";

@@ -6,6 +6,8 @@ using Mirror;
 public class PlayerGunManager : NetworkBehaviour 
 {
     private Weapon weapon;
+    private GameObject projectilePrefab;
+    private Transform shootingPoint;
     void Start()
     {
         
@@ -15,7 +17,11 @@ public class PlayerGunManager : NetworkBehaviour
             weapon.enabled = false;
             enabled = false;
         }
-        //GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Jump.performed += Jump;
+        if(weapon.GetComponent<ProjectileWeapon>())
+        {
+            projectilePrefab = weapon.GetComponent<ProjectileWeapon>().projectilePrefab;
+            shootingPoint = weapon.GetComponent<ProjectileWeapon>().ShootingPoint;
+        }
     }
 
     void Update() {
@@ -23,5 +29,12 @@ public class PlayerGunManager : NetworkBehaviour
             weapon.ShootInputDown();
         if (Input.GetMouseButtonUp(0))
             weapon.ShootInputUp();
+        if (Input.GetKeyDown(KeyCode.R)) weapon.ReloadInputUpdate();
+    }
+    [Command]
+    public void CmdShootCommand()
+    {
+        GameObject projectileObject = Instantiate(projectilePrefab, shootingPoint.transform.position, shootingPoint.transform.rotation);
+        NetworkServer.Spawn(projectileObject);
     }
 }

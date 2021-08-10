@@ -7,23 +7,20 @@ public class ProjectileWeapon : Weapon
 {
     public GameObject projectilePrefab;
     public Transform ShootingPoint;
-    private Camera camera;
+    private PlayerGunManager gunManager;
     
     void Start()
     {
-        camera = GetComponentInParent<Camera>();
+        gunManager = GetComponentInParent<PlayerGunManager>();
     }
-    [Command]
-    public void CmdShootCommand() {
-        GameObject projectileObject = Instantiate(projectilePrefab, ShootingPoint.transform.position, ShootingPoint.transform.rotation);
-        NetworkServer.Spawn(projectileObject);
-    }
-    
     public override void Shoot()
     {
-        base.Shoot();
-        CmdShootCommand();
-        ConsumeAmmo();
+        if (ammo > 0 && canShoot&& !reloading)
+        {
+            base.Shoot();
+            gunManager.CmdShootCommand();
+            ConsumeAmmo();
+        }
     }
 
     public override void ShootInputDown() {
