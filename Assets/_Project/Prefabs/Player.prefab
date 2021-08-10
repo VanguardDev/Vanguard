@@ -1,5 +1,53 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7383011230526952059
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5142960432751128417}
+  - component: {fileID: 7837428645467325173}
+  m_Layer: 0
+  m_Name: BulletEmitter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5142960432751128417
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7383011230526952059}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.25, y: -0.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7723995026949668498}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7837428645467325173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7383011230526952059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aa26fa1ddaa822458253e3b900e0fd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammo: 10
+  ammoCapacity: 10
+  reloadTime: 0.5
+  canShoot: 1
+  projectilePrefab: {fileID: 8203581229785904781, guid: 8c6f9f3e452c48f4192ec5603aecda8f, type: 3}
 --- !u!1 &7723995026493059058
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,7 +109,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 5142960432751128417}
   m_Father: {fileID: 7723995027383627340}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -306,6 +355,7 @@ GameObject:
   - component: {fileID: 7723995027383627382}
   - component: {fileID: 7723995027383627343}
   - component: {fileID: 6004437413580929968}
+  - component: {fileID: 9028301826539354928}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -536,3 +586,15 @@ MonoBehaviour:
   lerpVelocityAmount: 0.2
   lerpPositionAmount: 0.2
   clientAuthority: 1
+--- !u!114 &9028301826539354928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7723995027383627381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1de70868c568b224287df7299047773c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
