@@ -672,13 +672,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa26fa1ddaa822458253e3b900e0fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammo: 10
-  ammoCapacity: 10
-  shootInterval: 1
+  ammo: 30
+  ammoCapacity: 30
+  shootInterval: 0.2
   reloadTime: 1
   canShoot: 1
+  reloading: 0
   ammoCountText: {fileID: 2208745750965896652}
-  Type: 0
   projectilePrefab: {fileID: 8203581229785904781, guid: 06852801e0b52164aa90fd853a87c64a, type: 3}
   ShootingPoint: {fileID: 6521871606053213687}
 --- !u!1 &7723995026949668499

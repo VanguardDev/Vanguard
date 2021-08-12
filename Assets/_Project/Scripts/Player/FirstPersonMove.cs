@@ -293,7 +293,7 @@ public class FirstPersonMove : NetworkBehaviour
                 }
                 else {
                     if (oldState != WallrunState.None || (climbTransform == null && oldState == WallrunState.None)) {
-                        camManager.SetLookEnabled(false);
+                        //camManager.SetLookEnabled(false);
                         //Debug.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.z), Color.red);
                         climbTransform = wallHit.transform;
                         camManager.xRotation = Mathf.Lerp(camManager.xRotation, 10, Time.fixedDeltaTime * 10);

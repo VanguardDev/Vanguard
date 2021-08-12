@@ -24,7 +24,8 @@ public class Weapon : MonoBehaviour
     public virtual IEnumerator DelayShooting()
     {
         if (canShoot == false)
-            yield break;
+          yield break;
+
         if (reloading) yield return null;
         canShoot = false;
         yield return new WaitForSeconds(shootInterval);
