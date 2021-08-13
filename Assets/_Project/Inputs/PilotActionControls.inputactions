@@ -1,5 +1,5 @@
 {
-    "name": "Actions",
+    "name": "PilotActionControls",
     "maps": [
         {
             "name": "Vanguard (Pilot)",
@@ -42,6 +42,22 @@
                     "type": "PassThrough",
                     "id": "595a4f7b-5009-47b4-9c8c-e8c48f639401",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "fca71019-275c-435e-9af8-3e5be89b058b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Reload",
+                    "type": "Button",
+                    "id": "c53ddce4-ca49-44ce-9249-312f45000d59",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -143,6 +159,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Mouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eacd7a5b-c5f3-40d8-8df0-10f0e31b7464",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f5727b17-7f2d-4f11-b2c5-029e9917e975",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Reload",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

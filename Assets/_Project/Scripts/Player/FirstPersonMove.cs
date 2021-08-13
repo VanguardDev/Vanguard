@@ -52,8 +52,6 @@ public class FirstPersonMove : NetworkBehaviour
 
     public float minClimbDistance = 1;
     public AnimationCurve climbVelCurve;
-    public float climbVelMultiplier = 4f;
-    public float mantleDuration;
 
     private Vector3 wallNormal;
     private Vector3 wallDirection;
@@ -63,14 +61,8 @@ public class FirstPersonMove : NetworkBehaviour
     private RaycastHit wallHit;
     private float wallrunCheckLength;
 
-    private Transform climbTransform;
+    public Transform climbTransform;
 
-    private Vector3 lastMantlePoint;
-    private bool lastMantleCheck;
-    private Vector3 mantleStartPoint;
-    private Vector3 mantleEndPoint;
-    private float mantleTime;
-    private bool mantling;
 
     [Header("Crouch Settings")]
     public CrouchState crouchState = CrouchState.None;
@@ -160,6 +152,7 @@ public class FirstPersonMove : NetworkBehaviour
     {
         if (!isLocalPlayer)
         {
+            GetComponentInChildren<Canvas>().enabled = false;
             GetComponent<FirstPersonLook>().pilotActionControls.Disable();
         }
         else
@@ -204,7 +197,6 @@ public class FirstPersonMove : NetworkBehaviour
         
         if (isGrounded) {
             if (crouchState != CrouchState.Slide) {
-                // WALK + SNEAK
                 targetVelocity = crouchState == CrouchState.Sneak ? (walkVector / speed) * sneakSpeed : walkVector;
                 targetVelocity.y = rb.velocity.y;
             }
@@ -212,33 +204,17 @@ public class FirstPersonMove : NetworkBehaviour
         else {
             switch (wallrunState) {
                 case WallrunState.None:
-                    if (mantling) {
-                        // MANTLE
-                        mantleTime += Time.fixedDeltaTime;
-                        if (mantleTime / mantleDuration >= 1)
-                            mantling = false;
-
-                        if (mantleTime / mantleDuration < 0.5f)
-                            rb.position = Vector3.Lerp(mantleStartPoint, mantleEndPoint, (mantleTime * 2) / mantleDuration);
-                        else
-                            rb.position += transform.forward * Time.fixedDeltaTime;
-                    }
-                    else {
-                        // AIRSTRAFE
-                        targetVelocity = (rb.velocity + (immediateWalkVector.normalized * airstrafeMultiplier)).normalized * rb.velocity.magnitude;
-                        targetVelocity.y = rb.velocity.y;
-                    }
+                    targetVelocity = (rb.velocity + (immediateWalkVector.normalized * airstrafeMultiplier)).normalized * rb.velocity.magnitude;
+                    targetVelocity.y = rb.velocity.y;
                     break;
                 case WallrunState.Left:
                 case WallrunState.Right:
-                    // WALLRUN
                     targetVelocity = -(wallNormal * Vector3.Distance(wallHit.point, transform.position)) + (wallDirection * wallrunSpeed * Mathf.Lerp(1.3f, 1, Mathf.Min(wallrunTime, 1)));
                     targetVelocity.y = rb.velocity.y / 2;
                     break;
                 case WallrunState.Climb:
-                    // CLIMB
                     if (wallrunTime < climbVelCurve.keys[climbVelCurve.length - 1].time) {
-                        targetVelocity = -wallNormal + (Vector3.up * climbVelMultiplier * climbVelCurve.Evaluate(wallrunTime));
+                        targetVelocity = -wallNormal + (Vector3.up * 3 * climbVelCurve.Evaluate(wallrunTime));
                     } else {
                         wallrunState = WallrunState.None;
                         ExitWallrun();
@@ -308,48 +284,20 @@ public class FirstPersonMove : NetworkBehaviour
                         wallHit = check.HitInfo;
                     }
                 }
-                OnEnterWallrun();
                 if (wallrunState != WallrunState.Climb) {
                     wallDirection = Vector3.Cross(wallNormal, Vector3.up);
                     camManager.targetDutch = -15 * Vector3.Dot(transform.forward, wallDirection);
                     wallDirection *= Vector3.Dot(transform.forward, wallDirection);
+
+                    OnEnterWallrun();
                 }
                 else {
-                    if (
-                        (oldState != WallrunState.None || (climbTransform == null && oldState == WallrunState.None)) &&
-                        targetMoveInputVector.y > 0
-                    ) {
-                        camManager.SetLookEnabled(false);
+                    if (oldState != WallrunState.None || (climbTransform == null && oldState == WallrunState.None)) {
+                        //camManager.SetLookEnabled(false);
+                        //Debug.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.z), Color.red);
                         climbTransform = wallHit.transform;
-                        camManager.xRotation = Mathf.Lerp(camManager.xRotation, 10, Time.fixedDeltaTime * -10);
+                        camManager.xRotation = Mathf.Lerp(camManager.xRotation, 10, Time.fixedDeltaTime * 10);
                         camManager.cam.transform.rotation = Quaternion.Euler(new Vector3(camManager.xRotation, camManager.yRotation, 0));
-
-                        RaycastHit mantleHit;
-                        bool mantleCheck = Physics.Raycast(
-                            transform.position + (Vector3.up * (transform.localScale.y * collider.height * 0.4f)), 
-                            transform.forward, 
-                            out mantleHit, 
-                            wallrunCheckLength, 
-                            environmentMask
-                        );
-
-                        if (!mantleCheck) {
-                            if (lastMantleCheck) {
-                                wallrunState = WallrunState.None;
-                                lastMantlePoint = transform.position;
-
-                                mantling = true;
-                                mantleStartPoint = transform.position;
-                                mantleEndPoint = new Vector3(transform.position.x, lastMantlePoint.y + (transform.localScale.y * collider.height), transform.position.z) + (transform.forward/10);
-                                mantleTime = 0;
-
-                                ExitWallrun();
-                            }
-                        }
-                        else {
-                            lastMantlePoint = mantleHit.point;
-                            lastMantleCheck = mantleCheck;
-                        }
                     }
                     else {
                         wallrunState = WallrunState.None;
@@ -436,4 +384,14 @@ public class FirstPersonMove : NetworkBehaviour
             maxInitialSlideVel
         );
     }
+
+    void OnGUI()
+    {
+        if (Application.isEditor)
+        {
+            GUI.Label(new Rect(10, 40, 100, 20), transform.position.ToString());
+            GUI.Label(new Rect(10, 60, 100, 20), rb.velocity.ToString());
+        }
+    }
+
 }
