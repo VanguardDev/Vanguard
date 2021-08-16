@@ -7,25 +7,31 @@ using Mirror;
 public class Health : NetworkBehaviour
 {
     [SyncVar (hook ="updateHealth")] public float health;
-    public Text healthText,redScoreText,blueScoreText,winScreenText;
+    public Text healthText,redScoreText,blueScoreText,winScreenText,nameText,healthTextWorld;
     [SyncVar (hook ="setTeamColor")] public int team=-1; // this isnt hidden in inspector for debug purposes
     MatchManager mm;
+    [SyncVar (hook ="nameChanged")] public  string name;
     public void Start()
     {
         mm = FindObjectOfType<MatchManager>();
         if (isServer)mm.NewPlayerConnected(gameObject);
-        
+
         if (isLocalPlayer)
         {
             mm.blueScoreText = blueScoreText;
             mm.redScoreText = redScoreText;
             mm.winScreenText = winScreenText;
+            name = ParamaterPasss.name;
+            nameText.text = "";
+            healthTextWorld.text = "";
+            CmdSetName(name);
         }
+        else healthText = healthTextWorld;
     }
     public void getShot(float damage)
     {
         health -= damage;
-        if (health < 0) mm.playerDie(this);
+        if (health <= 0) mm.playerDie(this);
     }
     public void updateHealth(float oldhealth,float newhealth)
     {
@@ -41,5 +47,20 @@ public class Health : NetworkBehaviour
     public void RpcchangePlayerspos(Vector3 newPosition)
     {
         transform.position = newPosition;
+    }
+    public void OnDestroy()
+    {
+        if (!isServer) return;
+        mm.Disconnect(team);
+    }
+    [Command]
+    public void CmdSetName(string setName)
+    {
+        name = setName;
+    }
+    void nameChanged(string oldName,string newName)
+    {
+        name = newName;
+        nameText.text = name;
     }
 }

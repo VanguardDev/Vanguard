@@ -33,7 +33,6 @@ public class MatchManager : NetworkBehaviour
             player.GetComponent<Health>().RpcchangePlayerspos(redSpawn.position);
             redPlayerCount++;
         }
-        
     }
     public void playerDie(Health player)
     {
@@ -89,5 +88,10 @@ public class MatchManager : NetworkBehaviour
     {
         redScoreText.text = redScore.ToString();
         blueScoreText.text = blueScore.ToString();
+    }
+    public void Disconnect(int team)
+    {
+        if (team == 0) redPlayerCount--;
+        else bluePlayerCount--;
     }
 }
