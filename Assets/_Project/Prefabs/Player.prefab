@@ -276,7 +276,6 @@ GameObject:
   - component: {fileID: 3480431039315463256}
   - component: {fileID: 1738069955022967064}
   - component: {fileID: 16776568295444704}
-  - component: {fileID: 6906180138841817165}
   m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
@@ -349,19 +348,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6906180138841817165
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1991156614692809283}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2023507517450964505
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,8 +912,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7413427576161482000}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.73}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1.27}
+  m_LocalPosition: {x: 0, y: 0, z: 1.48}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7723995026949668498}
   m_RootOrder: 1
@@ -944,6 +930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa26fa1ddaa822458253e3b900e0fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 30
   ammo: 30
   ammoCapacity: 30
   shootInterval: 0.2
@@ -980,7 +967,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7723995026949668499}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.47, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1154,7 +1141,7 @@ Transform:
   m_GameObject: {fileID: 7723995027383627381}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.61, y: 1.37, z: 18.88}
-  m_LocalScale: {x: 0.3, y: 0.5, z: 0.3}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 7723995026949668498}
   - {fileID: 3363517649198932361}
@@ -1323,7 +1310,7 @@ MonoBehaviour:
   crouchState: 0
   slideVelThresh: 2
   sneakSpeed: 3
-  slideVelBoost: 1.2
+  slideVelBoost: 1.5
   baseInitialSlideVel: 4
   minSlideTime: 0.3
   maxInitialSlideVel: 10
