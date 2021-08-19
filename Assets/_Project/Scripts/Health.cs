@@ -15,7 +15,7 @@ public class Health : NetworkBehaviour
     {
         mm = FindObjectOfType<MatchManager>();
         if (isServer)mm.NewPlayerConnected(gameObject);
-
+        if (isServerOnly) GetComponentInChildren<Bilboard>().enabled = false;
         if (isLocalPlayer)
         {
             mm.blueScoreText = blueScoreText;

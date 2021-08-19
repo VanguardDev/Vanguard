@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1054,11 +1054,11 @@ RectTransform:
   m_Father: {fileID: 1868221924}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -232.11884, y: 186.08322}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -232.11884, y: -61.680054}
   m_SizeDelta: {x: 520.60425, y: 99.80841}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &642479720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1646,6 +1646,7 @@ GameObject:
   - component: {fileID: 1208602617}
   - component: {fileID: 1208602616}
   - component: {fileID: 1208602615}
+  - component: {fileID: 1208602618}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1718,6 +1719,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1208602618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208602614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0390495f1bbb1504eb9cdb6708eef53d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Detail: In Main Menu
+  LargeImage: pv_primary_solo
+  LargeText: ProjectVanguard
 --- !u!1 &1255821065
 GameObject:
   m_ObjectHideFlags: 0
