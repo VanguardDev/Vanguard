@@ -147,23 +147,21 @@ public class FirstPersonMove : NetworkBehaviour
         }
         inputCrouch = newValue;
     }
-
+    private FPInput input;
     void Start()
     {
+        input = GetComponent<FPInput>();
         if (!isLocalPlayer)
         {
             GetComponentInChildren<Canvas>().enabled = false;
-            GetComponent<FirstPersonLook>().pilotActionControls.Disable();
+            input.DisableControls();
         }
         else
         {
-            // TODO: *.performed and *.canceled are mapped to the same function because it's used as a toggle.
-            //    We should probably find a better way to handle this (refactor out JumpStart() and JumpEnd()
-            //    functions ?)
-            GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Jump.performed += Jump;
-            GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Jump.canceled += Jump;
-            GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Crouch.performed += Crouch;
-            GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Crouch.canceled += Crouch;
+            input.Actions.VanguardPilot.Jump.performed += Jump;
+            input.Actions.VanguardPilot.Jump.canceled += Jump;
+            input.Actions.VanguardPilot.Crouch.performed += Crouch;
+            input.Actions.VanguardPilot.Crouch.canceled += Crouch;
         }
 
         rb = GetComponent<Rigidbody>();
@@ -178,7 +176,7 @@ public class FirstPersonMove : NetworkBehaviour
             return;
         }
 
-        targetMoveInputVector = GetComponent<FirstPersonLook>().pilotActionControls.VanguardPilot.Walk.ReadValue<Vector2>();
+        targetMoveInputVector = input.WalkVector;
         moveInputVector = Vector2.Lerp(moveInputVector, targetMoveInputVector, Time.fixedDeltaTime * 1/acceleration);
         bool newIsGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHit, (transform.localScale.y * collider.height) * 0.53f, environmentMask);
         if (newIsGrounded != isGrounded) {

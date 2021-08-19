@@ -68,7 +68,7 @@ public class MatchManager : NetworkBehaviour
     [ClientRpc]
     public void RpcRestartMatch()
     {
-        NetworkClient.localPlayer.GetComponent<FirstPersonLook>().EnableControls();
+        NetworkClient.localPlayer.GetComponent<FPInput>().EnableControls();
         NetworkClient.localPlayer.GetComponent<Health>().health = 100;
         if (NetworkClient.localPlayer.GetComponent<Health>().team == 1) NetworkClient.localPlayer.transform.position=blueSpawn.position;
         else NetworkClient.localPlayer.transform.position = redSpawn.position;
@@ -78,7 +78,7 @@ public class MatchManager : NetworkBehaviour
     [ClientRpc]
     public void RpcEndMatch()
     {
-        NetworkClient.localPlayer.GetComponent<FirstPersonLook>().DisableControls();
+        NetworkClient.localPlayer.GetComponent<FPInput>().DisableControls();
         winScreenText.enabled = true;
         if (redScore >= matchMaxScore)
             winScreenText.text = "Red Won";

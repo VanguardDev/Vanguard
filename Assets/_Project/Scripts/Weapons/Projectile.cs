@@ -30,7 +30,6 @@ namespace Mirror.Examples.Tanks
         // ServerCallback because we don't want a warning if OnTriggerEnter is
         // called on the client
         [ServerCallback]
-
         void OnTriggerEnter(Collider co)
         {
             if (!co.GetComponent<Health>()) return;
