@@ -30,7 +30,7 @@ public class FPMovementContext : MonoBehaviour
     private float groundCheckDistance = 0.005f;
 
     public void Start() {
-        var initialState = new FPIdleState();
+        var initialState = new FPMovementState.FPIdleState();
         initialState.Context = this;
 
         State = initialState;
