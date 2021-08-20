@@ -9,7 +9,7 @@ public class DiscordController : MonoBehaviour
     public string Detail, LargeImage, LargeText;
     void Start()
     {
-
+        if (Application.isBatchMode) enabled = false;
       dc = new Discord.Discord(877848055880253501, (System.UInt64)Discord.CreateFlags.Default);
         Discord.ActivityManager activityManager = dc.GetActivityManager();
         Discord.Activity activity = new Discord.Activity

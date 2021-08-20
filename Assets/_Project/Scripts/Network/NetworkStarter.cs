@@ -10,10 +10,10 @@ public class NetworkStarter : MonoBehaviour
     {
         if (Application.isBatchMode) return;
         nm = GetComponent<NetworkManager>();
-        if (ParamaterPasss.Host)nm.StartHost();
+        if (ConnectionInfo.Host)nm.StartHost();
         else
         {
-            nm.networkAddress = ParamaterPasss.ip;
+            nm.networkAddress = ConnectionInfo.ip;
             nm.StartClient();
         }
     }

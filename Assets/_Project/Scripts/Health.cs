@@ -15,13 +15,12 @@ public class Health : NetworkBehaviour
     {
         mm = FindObjectOfType<MatchManager>();
         if (isServer)mm.NewPlayerConnected(gameObject);
-        if (isServerOnly) GetComponentInChildren<Bilboard>().enabled = false;
         if (isLocalPlayer)
         {
             mm.blueScoreText = blueScoreText;
             mm.redScoreText = redScoreText;
             mm.winScreenText = winScreenText;
-            name = ParamaterPasss.name;
+            name = ConnectionInfo.name;
             nameText.text = "";
             healthTextWorld.text = "";
             CmdSetName(name);

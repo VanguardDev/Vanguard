@@ -6,15 +6,15 @@ public class VariableController : MonoBehaviour
 {
     public void ChangeIp(string newIp)
     {
-        ParamaterPasss.ip = newIp;
+        ConnectionInfo.ip = newIp;
     }
     public void ChangeName(string newName)
     {
-        ParamaterPasss.name = newName;
+        ConnectionInfo.name = newName;
     }
     public void SetHost(string sceneName)
     {
-        ParamaterPasss.Host = true;
+        ConnectionInfo.Host = true;
         GetComponent<SceneController>().LoadScene(sceneName);
     }
 }
