@@ -3,7 +3,7 @@ using Mirror;
     public class Projectile : NetworkBehaviour
     {
         public int damage;
-        public float destroyAfter = 5;
+        public float destroyAfter = 5,raycastRange;
         public Rigidbody rigidBody;
         public float speed = 1000;
         [HideInInspector]public GameObject playerWhoShoot;
@@ -25,17 +25,17 @@ using Mirror;
         {
             NetworkServer.Destroy(gameObject);
         }
-
-        // ServerCallback because we don't want a warning if OnTriggerEnter is
-        // called on the client
-        [ServerCallback]
-
-        void OnTriggerEnter(Collider co)
+    RaycastHit rayHit;
+    public void Update()
+    {
+        if (!isServer) return;
+        Ray ray = new Ray(transform.position, transform.forward);
+        if (Physics.Raycast(ray, out rayHit, raycastRange))
         {
-        Debug.Log(co.name);
-        if (co.gameObject == playerWhoShoot)return;
-        if(co.GetComponent<Health>()) co.GetComponent<Health>().getShot(damage);
-        DestroySelf();
+            if (rayHit.collider.gameObject == playerWhoShoot) return;
+            if (rayHit.collider.GetComponent<Health>()) rayHit.collider.GetComponent<Health>().getShot(damage);
+            DestroySelf();
         }
     }
+}
 

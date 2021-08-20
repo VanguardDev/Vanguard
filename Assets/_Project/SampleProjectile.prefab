@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5806844901646723827}
   - component: {fileID: -5316439781792379451}
   - component: {fileID: 3209555970205912902}
-  - component: {fileID: 2101060201406963452}
   - component: {fileID: 8704456195549633846}
   m_Layer: 0
   m_Name: SampleProjectile
@@ -166,20 +165,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
---- !u!65 &2101060201406963452
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8203581229785904781}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.3, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_CollisionDetection: 0
 --- !u!114 &8704456195549633846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,6 +182,7 @@ MonoBehaviour:
   syncInterval: 0.1
   damage: 0
   destroyAfter: 100
+  raycastRange: 5
   rigidBody: {fileID: 3209555970205912902}
   speed: 65
   playerWhoShoot: {fileID: 0}
