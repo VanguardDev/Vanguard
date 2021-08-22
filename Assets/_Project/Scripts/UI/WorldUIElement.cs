@@ -7,8 +7,8 @@ public class WorldUIElement : MonoBehaviour
     GameObject camera;
     void Start()
     {
-        if (Application.isBatchMode) enabled = false;
-        camera = Camera.main.gameObject;
+        if (Application.isBatchMode || Camera.allCamerasCount==0) enabled = false;
+        else camera = Camera.main.gameObject;
     }
 
     // Update is called once per frame
