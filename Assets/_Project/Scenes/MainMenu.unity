@@ -223,9 +223,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1966462725}
-        m_TargetAssemblyTypeName: VariableController, Assembly-CSharp
-        m_MethodName: ChangeName
+      - m_Target: {fileID: 1966462726}
+        m_TargetAssemblyTypeName: SetConnectionInfo, Assembly-CSharp
+        m_MethodName: setName
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -830,18 +830,18 @@ PrefabInstance:
     - target: {fileID: 7880439021174692514, guid: 3396bd7b970b9b747ac1b2c3ff6a76af, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1966462725}
+      objectReference: {fileID: 1966462726}
     - target: {fileID: 7880439021174692514, guid: 3396bd7b970b9b747ac1b2c3ff6a76af, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7880439021174692514, guid: 3396bd7b970b9b747ac1b2c3ff6a76af, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetHost
+      value: setHost
       objectReference: {fileID: 0}
     - target: {fileID: 7880439021174692514, guid: 3396bd7b970b9b747ac1b2c3ff6a76af, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: VariableController, Assembly-CSharp
+      value: SetConnectionInfo, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7880439021174692514, guid: 3396bd7b970b9b747ac1b2c3ff6a76af, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -1577,9 +1577,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1966462725}
-        m_TargetAssemblyTypeName: VariableController, Assembly-CSharp
-        m_MethodName: ChangeIp
+      - m_Target: {fileID: 1966462726}
+        m_TargetAssemblyTypeName: SetConnectionInfo, Assembly-CSharp
+        m_MethodName: setIp
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2238,7 +2238,7 @@ GameObject:
   - component: {fileID: 1966462723}
   - component: {fileID: 1966462722}
   - component: {fileID: 1966462724}
-  - component: {fileID: 1966462725}
+  - component: {fileID: 1966462726}
   m_Layer: 0
   m_Name: MenuController
   m_TagString: Untagged
@@ -2285,7 +2285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d2035e7f771fa24793a2f8bfb2ab6e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1966462725
+--- !u!114 &1966462726
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2294,6 +2294,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1966462721}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e643d8d7f890068449e5e4eb92a16293, type: 3}
+  m_Script: {fileID: 11500000, guid: 8197d14bca9b11c40ab22e500122462d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
