@@ -223,9 +223,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-
-       -m_Target: {fileID: 1966462725}
-        m_TargetAssemblyTypeName: SetConnectionInfo, Assembly-CSharp
+      - m_Target: {fileID: 1966462726}
+        m_TargetAssemblyTypeName: ConnectionInfo, Assembly-CSharp
         m_MethodName: setName
         m_Mode: 0
         m_Arguments:
@@ -1578,8 +1577,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1966462725}
-        m_TargetAssemblyTypeName: SetConnectionInfo, Assembly-CSharp
+      - m_Target: {fileID: 1966462726}
+        m_TargetAssemblyTypeName: ConnectionInfo, Assembly-CSharp
         m_MethodName: setIp
         m_Mode: 0
         m_Arguments:
@@ -1654,7 +1653,7 @@ PrefabInstance:
     - target: {fileID: 7880439021174692514, guid: 3396bd7b970b9b747ac1b2c3ff6a76af, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1966462725}
+      objectReference: {fileID: 1966462726}
     - target: {fileID: 7880439021174692514, guid: 3396bd7b970b9b747ac1b2c3ff6a76af, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -1665,7 +1664,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7880439021174692514, guid: 3396bd7b970b9b747ac1b2c3ff6a76af, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SetConnectionInfo, Assembly-CSharp
+      value: ConnectionInfo, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7880439021174692514, guid: 3396bd7b970b9b747ac1b2c3ff6a76af, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
