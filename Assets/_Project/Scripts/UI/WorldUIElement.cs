@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 public class WorldUIElement : MonoBehaviour
 {
     // Start is called before the first frame update
     GameObject camera;
-    void Start()
+    void Awake()
     {
-        if (Application.isBatchMode || Camera.allCamerasCount==0) enabled = false;
-        else camera = Camera.main.gameObject;
+        if (NetworkServer.active && !NetworkClient.active)enabled = false;
+        
     }
-
+    public void Start()
+    {
+         camera = Camera.main.gameObject;
+    }
     // Update is called once per frame
     void Update()
     {
