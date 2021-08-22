@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-
-namespace Mirror.Examples.Tanks
-{
+using Mirror;
     public class Projectile : NetworkBehaviour
     {
-        public float destroyAfter = 5;
+        public int damage;
+        public float destroyAfter = 5,raycastRange;
         public Rigidbody rigidBody;
-        public float force = 1000;
-
+        public float speed = 1000;
+        [HideInInspector]public GameObject playerWhoShoot;
         public override void OnStartServer()
         {
             Invoke(nameof(DestroySelf), destroyAfter);
@@ -17,7 +16,7 @@ namespace Mirror.Examples.Tanks
         // position, because both the server and the client simulate it.
         void Start()
         {
-            rigidBody.AddForce(transform.forward * force);
+        rigidBody.velocity = speed * transform.forward;
         }
 
         // destroy for everyone on the server
@@ -26,16 +25,17 @@ namespace Mirror.Examples.Tanks
         {
             NetworkServer.Destroy(gameObject);
         }
-
-        // ServerCallback because we don't want a warning if OnTriggerEnter is
-        // called on the client
-        [ServerCallback]
-
-        void OnTriggerEnter(Collider co)
+    RaycastHit rayHit;
+    public void Update()
+    {
+        if (!isServer) return;
+        Ray ray = new Ray(transform.position, transform.forward);
+        if (Physics.Raycast(ray, out rayHit, raycastRange))
         {
-            if (!co.GetComponent<Health>()) return;
-            Debug.Log(co.GetComponent<Health>().name);
-            co.GetComponent<Health>().getShot(10);
+            if (rayHit.collider.gameObject == playerWhoShoot) return;
+            if (rayHit.collider.GetComponent<Health>()) rayHit.collider.GetComponent<Health>().getShot(damage);
+            DestroySelf();
         }
     }
 }
+

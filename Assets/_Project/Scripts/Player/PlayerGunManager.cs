@@ -32,9 +32,11 @@ public class PlayerGunManager : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.R)) weapon.ReloadInputUpdate();
     }
     [Command]
-    public void CmdShootCommand()
+    public void CmdShootCommand(Vector3 Position,Quaternion Rotation,int Damage)
     {
-        GameObject projectileObject = Instantiate(projectilePrefab, shootingPoint.transform.position, shootingPoint.transform.rotation);
+        GameObject projectileObject = Instantiate(projectilePrefab,Position, Rotation);
+        projectileObject.GetComponent<Projectile>().playerWhoShoot = gameObject;
+        projectileObject.GetComponent<Projectile>().damage = Damage;
         NetworkServer.Spawn(projectileObject);
     }
 }

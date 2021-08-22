@@ -10,6 +10,7 @@ public class MatchManager : NetworkBehaviour
     public Transform redSpawn, blueSpawn;
     [SyncVar(hook ="updateTeamScore")] int blueScore, redScore;//this is public cause debugging nothing else
     public int matchMaxScore;
+    public float respawnTimer;
     [HideInInspector]public Text redScoreText, blueScoreText,winScreenText;
     bool restarting;
 
@@ -33,10 +34,40 @@ public class MatchManager : NetworkBehaviour
             player.GetComponent<Health>().RpcchangePlayerspos(redSpawn.position);
             redPlayerCount++;
         }
-        
     }
     public void playerDie(Health player)
     {
+        RpcDisablePlayer(player);
+        StartCoroutine("DieTimer",player);
+    }
+    [ClientRpc]
+    public void RpcDisablePlayer(Health player)
+    {
+        player.GetComponent<MeshRenderer>().enabled = false;
+        player.GetComponent<CapsuleCollider>().enabled = false;
+        if (player.isLocalPlayer)
+        {
+            player.GetComponent<PlayerGunManager>().enabled = false;
+            player.GetComponent<Rigidbody>().isKinematic = true;
+            player.GetComponent<FirstPersonLook>().DisableControls();
+        }
+    }
+    [ClientRpc]
+    public void RpcEnablePlayer(Health player)
+    {
+        player.GetComponent<MeshRenderer>().enabled = true;
+        player.GetComponent<CapsuleCollider>().enabled = true;
+        player.nameText.text = player.name;
+        if (player.isLocalPlayer)
+        {
+            player.GetComponent<PlayerGunManager>().enabled = true;
+            player.GetComponent<Rigidbody>().isKinematic = false;
+            player.GetComponent<FirstPersonLook>().EnableControls();
+        }
+    }
+    public IEnumerator DieTimer(Health player)
+    {
+        yield return new WaitForSeconds(respawnTimer);
         if (player.team == 1)
         {
             player.health = 100;
@@ -49,13 +80,13 @@ public class MatchManager : NetworkBehaviour
             player.RpcchangePlayerspos(redSpawn.position);
             blueScore++;
         }
-        if((redScore>=matchMaxScore || blueScore>= matchMaxScore)&& !restarting)
+        if ((redScore >= matchMaxScore || blueScore >= matchMaxScore) && !restarting)
         {
             restarting = true;
             RpcEndMatch();
             StartCoroutine("Restart");
         }
-
+        RpcEnablePlayer(player);
     }
     public IEnumerator Restart()
     {
@@ -89,5 +120,10 @@ public class MatchManager : NetworkBehaviour
     {
         redScoreText.text = redScore.ToString();
         blueScoreText.text = blueScore.ToString();
+    }
+    public void Disconnect(int team)
+    {
+        if (team == 0) redPlayerCount--;
+        else bluePlayerCount--;
     }
 }

@@ -18,7 +18,7 @@ public class ProjectileWeapon : Weapon
         if (ammo > 0 && canShoot&& !reloading)
         {
             base.Shoot();
-            gunManager.CmdShootCommand();
+            gunManager.CmdShootCommand(transform.position,transform.rotation,damage);
             ConsumeAmmo();
         }
     }

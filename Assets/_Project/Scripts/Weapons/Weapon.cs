@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 public class Weapon : MonoBehaviour
 {
-    public int ammo;
+    public int damage,ammo;
     public int ammoCapacity;
     public float shootInterval,reloadTime;
     public bool canShoot = true;
