@@ -60,6 +60,7 @@ public class MatchManager : NetworkBehaviour
         player.nameText.text = player.name;
         if (player.isLocalPlayer)
         {
+            player.nameText.text = "";
             player.GetComponent<PlayerGunManager>().enabled = true;
             player.GetComponent<Rigidbody>().isKinematic = false;
             player.GetComponent<FirstPersonLook>().EnableControls();
