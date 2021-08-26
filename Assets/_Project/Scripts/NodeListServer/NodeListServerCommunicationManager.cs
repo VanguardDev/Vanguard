@@ -29,6 +29,7 @@ namespace NodeListServer
 
         private void Awake()
         {
+            if (ConnectionInfo.Mode == 0) enabled = false;
             // If singleton was somehow loaded twice...
             if (Instance != null && Instance != this)
             {

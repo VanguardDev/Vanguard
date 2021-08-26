@@ -936,6 +936,7 @@ MonoBehaviour:
   shootInterval: 0.2
   reloadTime: 1
   canShoot: 1
+  isFullAuto: 1
   reloading: 0
   ammoCountText: {fileID: 2208745750965896652}
   projectilePrefab: {fileID: 8203581229785904781, guid: 06852801e0b52164aa90fd853a87c64a, type: 3}
