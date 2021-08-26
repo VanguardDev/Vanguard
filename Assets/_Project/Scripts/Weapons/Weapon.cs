@@ -9,7 +9,7 @@ public class Weapon : MonoBehaviour
     public int damage,ammo;
     public int ammoCapacity;
     public float shootInterval,reloadTime;
-    public bool canShoot = true;
+    public bool canShoot = true,isFullAuto;
     public bool reloading;
     public Text ammoCountText;
     private void Start()

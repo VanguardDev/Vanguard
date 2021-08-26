@@ -25,8 +25,10 @@ public class PlayerGunManager : NetworkBehaviour
     }
 
     void Update() {
-        if (Input.GetMouseButtonDown(0))
+        if(weapon.isFullAuto && Input.GetMouseButton(0))
             weapon.ShootInputDown();
+        else if (Input.GetMouseButtonDown(0) && ! weapon.isFullAuto)
+                weapon.ShootInputDown();
         if (Input.GetMouseButtonUp(0))
             weapon.ShootInputUp();
         if (Input.GetKeyDown(KeyCode.R)) weapon.ReloadInputUpdate();

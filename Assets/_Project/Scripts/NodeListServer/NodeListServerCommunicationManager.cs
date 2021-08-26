@@ -43,6 +43,16 @@ namespace NodeListServer
 
             print("NodeLS Communication Manager Initialized.");
         }
+        float updateTimer = 0;
+        public void Update()
+        {
+            updateTimer += Time.deltaTime;
+            if(updateTimer>10)
+            {
+                StartCoroutine(nameof(AddUpdateInternal));
+                updateTimer = 0;
+            }
+        }
         public void AddUpdateServerEntry()
         {
             StartCoroutine(nameof(AddUpdateInternal));
@@ -52,7 +62,12 @@ namespace NodeListServer
         {
             StartCoroutine(nameof(RemoveServerInternal));
         }
-
+        public static bool IsGuid(string value)
+        {
+            Guid x;
+            return Guid.TryParse(value, out x);
+        }
+        
         // Internal things
         private IEnumerator AddUpdateInternal()
         {
@@ -67,13 +82,11 @@ namespace NodeListServer
             serverData.AddField("serverPlayers", CurrentServerInfo.PlayerCount);
             serverData.AddField("serverCapacity", CurrentServerInfo.PlayerCapacity);
             serverData.AddField("serverExtras", CurrentServerInfo.ExtraInformation);
-            Debug.Log(InstanceServerId);
             using (UnityEngine.Networking.UnityWebRequest www = UnityEngine.Networking.UnityWebRequest.Post(Server + "/add", serverData))
             {
 
                 yield return www.SendWebRequest();
-                Debug.Log(Encoding.ASCII.GetString(www.downloadHandler.data));
-                if (!serverListed) InstanceServerId = Encoding.ASCII.GetString(www.downloadHandler.data);
+                if (IsGuid(Encoding.ASCII.GetString(www.downloadHandler.data)))InstanceServerId = Encoding.ASCII.GetString(www.downloadHandler.data);
                 if (www.responseCode == 200)
                 {
                     print("Successfully registered server with the NodeListServer instance!");
