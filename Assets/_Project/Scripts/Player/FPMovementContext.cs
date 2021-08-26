@@ -22,6 +22,8 @@ public class FPMovementContext : MonoBehaviour
     public float wallrunAwayBoost = 1.2f;
     public float wallrunAwayBoostThreshold = 15f;
     public float maxWallrunBoostVelocity = 11.1f;
+    
+    public float slideBoostThreshold = 17f;
     // [HideInInspector]
     // public float wallrunMinVelocity = 3.53333f;
 
@@ -54,6 +56,11 @@ public class FPMovementContext : MonoBehaviour
     [HideInInspector]
     public RaycastHit wallHit;
 
+    // [HideInInspector]
+    public bool IsCrouching { get; private set; }
+    // [HideInInspector]
+    public bool IsJumping { get; private set; }
+
     public void Start() {
         var initialState = new FPMovementState.FPIdleState();
         initialState.Context = this;
@@ -66,6 +73,10 @@ public class FPMovementContext : MonoBehaviour
         Look = GetComponent<FirstPersonLook>();
 
         Inputs.Actions.VanguardPilot.Jump.performed += Jump;
+        Inputs.Actions.VanguardPilot.Jump.canceled += CancelJump;
+        
+        Inputs.Actions.VanguardPilot.Crouch.performed += Crouch;
+        Inputs.Actions.VanguardPilot.Crouch.canceled += CancelCrouch;
     }
 
     public void Update() {
@@ -83,7 +94,22 @@ public class FPMovementContext : MonoBehaviour
             state.Jump();
             state.StateChangeCheck(); 
             jumpCount++;
+            IsJumping = true;
         }
+    }
+
+    public void CancelJump(InputAction.CallbackContext context) {
+        IsJumping = false;
+    }
+
+    public void Crouch(InputAction.CallbackContext context) {
+        state.Crouch();
+        state.StateChangeCheck(); 
+        IsCrouching = true;
+    }
+
+    public void CancelCrouch(InputAction.CallbackContext context) {
+        IsCrouching = false;
     }
 
     public bool GroundCheck() {

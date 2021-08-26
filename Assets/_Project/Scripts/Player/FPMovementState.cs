@@ -24,6 +24,8 @@ public abstract class FPMovementState
         );
     }
 
+    public virtual void Crouch() {}
+
     public virtual void StateChangeCheck() {
         if (context.State != this)
             Exit();
@@ -107,10 +109,14 @@ public abstract class FPMovementState
 
         public override void StateChangeCheck() {
             if (context.GroundCheck()) {
-                if (context.Inputs.WalkVector.magnitude < 0.02f)
-                    context.State = new FPIdleState(this);
-                else
-                    context.State = new FPWalkState(this);
+                if (context.IsCrouching)
+                    context.State = new FPSlideState(this);
+                else {
+                    if (context.Inputs.WalkVector.magnitude < 0.02f)
+                        context.State = new FPIdleState(this);
+                    else
+                        context.State = new FPWalkState(this);
+                }
             } else {
                 if (context.WallCheck()) {
                     context.State = new FPWallrunState(this);
@@ -123,7 +129,6 @@ public abstract class FPMovementState
     public class FPWallrunState : FPMovementState {
         Vector3 wallDir;
         Vector3 initialVelocity;
-        bool jumping;
         float initialLateralSpeed;
 
         public FPWallrunState(FPMovementState prevState = null) {
@@ -140,8 +145,8 @@ public abstract class FPMovementState
         }
 
         public override void PhysicsUpdate() {
-            if (!jumping) {
-                context.Rigidbody.AddForce(-Vector3.up * context.Rigidbody.mass * (context.Rigidbody.velocity.y > 0 ? 7 : 4));
+            if (!context.IsJumping && !context.IsCrouching) {
+                context.Rigidbody.AddForce(-Vector3.up * context.Rigidbody.mass * 4);
 
                 Vector3 lateralVelocity = Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1));
                 wallDir = Vector3.Cross(context.wallHit.normal, Vector3.up);
@@ -155,9 +160,12 @@ public abstract class FPMovementState
         }
 
         public override void Jump() {
-            jumping = true;
             context.Rigidbody.velocity = (context.transform.forward + context.wallHit.normal).normalized * initialLateralSpeed * (Vector3.Scale(initialVelocity, new Vector3(1, 0, 1)).magnitude > context.wallrunAwayBoostThreshold ? 1 : context.wallrunAwayBoost);// * Vector3.Scale(initialVelocity, new Vector3(1, 0, 1)).magnitude;
             base.Jump();
+        }
+
+        public override void Crouch() {
+            context.Rigidbody.velocity = (context.transform.forward + context.wallHit.normal).normalized;
         }
 
         public override void Exit() {
@@ -179,29 +187,59 @@ public abstract class FPMovementState
     }
 
     public class FPWalkState : FPMovementState {
-        Vector2 prevWalkInputVector;
+        Vector3 prevVelocity;
         public FPWalkState(FPMovementState prevState = null) {
             if (prevState != null) {
                 context = prevState.Context;
                 context.jumpCount = 0;
             }
-            prevWalkInputVector = context.Inputs.WalkVector;
+            prevVelocity = context.Rigidbody.velocity;
         }
         
         public override void PhysicsUpdate() {
-            Vector2 walkInputVector = Vector2.Lerp(prevWalkInputVector, context.Inputs.WalkVector, Time.deltaTime * 10f);
             Vector3 walkVector = context.transform.TransformDirection(
-                Vector3.Cross(new Vector3(walkInputVector.y, 0, -walkInputVector.x), context.groundHit.normal)
+                Vector3.Cross(new Vector3(context.Inputs.WalkVector.y, 0, -context.Inputs.WalkVector.x), context.groundHit.normal)
             ) * context.walkSpeed;
+            prevVelocity = walkVector;
             walkVector.y = context.Rigidbody.velocity.y;
-            context.Rigidbody.velocity = walkVector;
-            prevWalkInputVector = context.Inputs.WalkVector;
+            context.Rigidbody.velocity = Vector3.Lerp(context.Rigidbody.velocity, walkVector, Time.deltaTime * 10f);
         }
 
         public override void StateChangeCheck() {
             if (context.GroundCheck()) {
-                if (context.Inputs.WalkVector.magnitude < 0.02f)
+                if (prevVelocity.magnitude < 0.02f)
                     context.State = new FPIdleState(this);
+                else if (context.IsCrouching)
+                    context.State = new FPSlideState(this);
+            }
+            else {
+                context.State = new FPFallState(this);
+            }
+
+            base.StateChangeCheck();
+        }
+    }
+
+    public class FPSlideState : FPMovementState {
+        public FPSlideState(FPMovementState prevState = null) {
+            if (prevState != null) {
+                context = prevState.Context;
+                context.jumpCount = 0;
+            }
+            Debug.Log("Slide");
+            context.Rigidbody.velocity = Vector3.Cross(new Vector3(context.Rigidbody.velocity.z, 0, -context.Rigidbody.velocity.x).normalized, context.groundHit.normal) * Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude;
+        }
+        
+        public override void PhysicsUpdate() {
+            // walkVector.y = context.Rigidbody.velocity.y;
+            // context.Rigidbody.velocity = walkVector;
+            // prevWalkInputVector = context.Inputs.WalkVector;
+        }
+
+        public override void StateChangeCheck() {
+            if (context.GroundCheck()) {
+                if (!context.IsCrouching)
+                    context.State = new FPWalkState(this);
             }
             else {
                 context.State = new FPFallState(this);

@@ -948,7 +948,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 300
   m_Drag: 0
-  m_AngularDrag: 1
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -1109,10 +1109,12 @@ MonoBehaviour:
   maxJumpCount: 2
   jumpVelocity: 8
   jumpCount: 0
-  wallrunBoost: 1.5
-  wallrunAwayBoost: 1.2
-  wallrunAwayBoostThreshold: 14
+  wallrunBoost: 1.4
+  wallrunAwayBoost: 1.1
+  wallrunAwayBoostThreshold: 13
   maxWallrunBoostVelocity: 12
+  slideVelBoost: 2
+  slideBoostThreshold: 17
 --- !u!114 &2564185975412809975
 MonoBehaviour:
   m_ObjectHideFlags: 0
