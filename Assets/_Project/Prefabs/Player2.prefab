@@ -279,7 +279,7 @@ BoxCollider:
   m_GameObject: {fileID: 1991156614692809283}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -867,7 +867,7 @@ Transform:
   m_GameObject: {fileID: 7723995027383627381}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.61, y: 1.37, z: 18.88}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7723995026949668498}
   - {fileID: 3363517649198932361}
@@ -946,7 +946,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7723995027383627381}
   serializedVersion: 2
-  m_Mass: 30
+  m_Mass: 300
   m_Drag: 0
   m_AngularDrag: 1
   m_UseGravity: 1
@@ -1103,10 +1103,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b475684d7839a3940afafef856ae0b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0
+  walkSpeed: 8
   groundCheckDistance: 0.1
   maxJumpCount: 2
-  jumpVelocity: 5
+  jumpVelocity: 8
   jumpCount: 0
+  wallrunBoost: 1.5
+  wallrunAwayBoost: 1.2
+  wallrunAwayBoostThreshold: 14
+  maxWallrunBoostVelocity: 12
 --- !u!114 &2564185975412809975
 MonoBehaviour:
   m_ObjectHideFlags: 0
