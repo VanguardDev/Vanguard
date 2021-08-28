@@ -238,8 +238,7 @@ public abstract class FPMovementState
             Debug.Log("Slide");
 
             context.Rigidbody.velocity = Vector3.Cross(new Vector3(context.Rigidbody.velocity.z, 0, -context.Rigidbody.velocity.x).normalized, context.groundHit.normal) * 
-                Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude * 
-                boost;
+                Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude;
             if (context.Rigidbody.velocity.magnitude < context.slideBoostThreshold)
                 context.Rigidbody.velocity *= context.slideBoost;
         }
