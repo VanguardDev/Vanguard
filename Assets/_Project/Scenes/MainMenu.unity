@@ -617,7 +617,7 @@ MonoBehaviour:
   popup: {fileID: 1926990970}
   mainStatusText: {fileID: 712827152}
   popupStatusText: {fileID: 1081204139}
-  ListElementPrefab: {fileID: 1259177336467004, guid: c6ca829569179c749a037f1b7d8631a0, type: 3}
+  ListElementPrefab: {fileID: 1259177336467004, guid: 58e05db246158d94991cf1914ac783bd, type: 3}
   ListElementContainer: {fileID: 583153858}
   refreshButton: {fileID: 1004751479}
   supportButton: {fileID: 993261495}
@@ -4110,7 +4110,7 @@ GameObject:
   - component: {fileID: 1753138716}
   - component: {fileID: 1753138715}
   m_Layer: 5
-  m_Name: OldCanvas
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
