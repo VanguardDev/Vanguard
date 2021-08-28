@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 561657154}
-  m_IndirectSpecularColor: {r: 0.20493776, g: 0.3951484, b: 0.44179392, a: 1}
+  m_IndirectSpecularColor: {r: 0.6608456, g: 0.8371221, b: 0.98279727, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8476,7 +8476,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Port: 7777
-  DualMode: 1
   NoDelay: 1
   Interval: 10
   Timeout: 10000
@@ -8484,7 +8483,6 @@ MonoBehaviour:
   CongestionWindow: 0
   SendWindowSize: 4096
   ReceiveWindowSize: 4096
-  NonAlloc: 1
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0
@@ -30840,7 +30838,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Port: 7777
-  DualMode: 1
   NoDelay: 1
   Interval: 10
   Timeout: 10000
@@ -30848,7 +30845,6 @@ MonoBehaviour:
   CongestionWindow: 0
   SendWindowSize: 4096
   ReceiveWindowSize: 4096
-  NonAlloc: 1
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0
