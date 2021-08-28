@@ -167,7 +167,7 @@ public class FirstPersonMove : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
         camManager = GetComponent<FirstPersonLook>();
         collider = GetComponent<CapsuleCollider>();
-        wallrunCheckLength = collider.radius;
+        wallrunCheckLength = collider.radius*gameObject.transform.localScale.x*3.3f;
     }
 
     void FixedUpdate() {
@@ -178,7 +178,7 @@ public class FirstPersonMove : NetworkBehaviour
 
         targetMoveInputVector = input.WalkVector;
         moveInputVector = Vector2.Lerp(moveInputVector, targetMoveInputVector, Time.fixedDeltaTime * 1/acceleration);
-        bool newIsGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHit, (transform.localScale.y * collider.height) * 0.53f, environmentMask);
+        bool newIsGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHit, (transform.localScale.y * collider.height) * 0.75f, environmentMask);
         if (newIsGrounded != isGrounded) {
             if (newIsGrounded)
                 OnEnterGround();
@@ -383,13 +383,13 @@ public class FirstPersonMove : NetworkBehaviour
         );
     }
 
-    void OnGUI()
+    /*void OnGUI()
     {
         if (Application.isEditor)
         {
             GUI.Label(new Rect(10, 40, 100, 20), transform.position.ToString());
             GUI.Label(new Rect(10, 60, 100, 20), rb.velocity.ToString());
         }
-    }
+    }*/
 
 }
