@@ -4,26 +4,28 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class FPMovementContext : MonoBehaviour
-{
-    public float speed;
-    public float walkSpeed = 20f;
-
-    [SerializeField]
+{   
+    [Header("Walk Settings")]
+    public float walkSpeed = 8f;
     private float groundCheckDistance = 0.005f;
-
+    
+    [Header("Jump Settings")]
     public int maxJumpCount = 2;
-    public float jumpVelocity = 5;
+    public float jumpVelocity = 8;
 
     [HideInInspector]
     public int jumpCount = 0;
 
-    [SerializeField]
-    public float wallrunBoost = 1.3f;
-    public float wallrunAwayBoost = 1.2f;
-    public float wallrunAwayBoostThreshold = 15f;
-    public float maxWallrunBoostVelocity = 11.1f;
-    
-    public float slideBoostThreshold = 17f;
+    [Header("Wallrun Settings")]
+    public float wallrunBoost = 1.4f;
+    public float wallrunBoostThreshold = 12f;
+    public float wallrunAwayBoost = 1.1f;
+    public float wallrunAwayBoostThreshold = 13f;
+    public bool wallrunEnabled = true;
+
+    [Header("Slide Settings")]
+    public float slideBoost = 1.2f;
+    public float slideBoostThreshold = 17;
     // [HideInInspector]
     // public float wallrunMinVelocity = 3.53333f;
 
@@ -56,10 +58,10 @@ public class FPMovementContext : MonoBehaviour
     [HideInInspector]
     public RaycastHit wallHit;
 
-    // [HideInInspector]
+    [HideInInspector]
     public bool IsCrouching { get; private set; }
-    // [HideInInspector]
-    public bool IsJumping { get; private set; }
+    [HideInInspector]
+    public bool IsJumping;
 
     public void Start() {
         var initialState = new FPMovementState.FPIdleState();
@@ -81,7 +83,6 @@ public class FPMovementContext : MonoBehaviour
 
     public void Update() {
         state.Update();
-        speed = Vector3.Scale(Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude;
     }
 
     public void FixedUpdate() {
@@ -117,10 +118,22 @@ public class FPMovementContext : MonoBehaviour
         return retval;
     }
 
+    public void BreakFromWall(float delay=0.2f) {
+        wallrunEnabled = false;
+        Invoke("EnableWallrun", delay);
+    }
+
+    public void EnableWallrun() {
+        wallrunEnabled = true;
+    }
+
+
     public bool WallCheck() {
-        bool retval = Physics.Raycast(transform.position, transform.right, out wallHit, Collider.radius + 0.6f) ||
-                      Physics.Raycast(transform.position, -transform.right, out wallHit, Collider.radius + 0.6f);
-        return retval;// && Mathf.Abs(Vector3.Dot(Vector3.Cross(wallHit.normal, Vector3.up), transform.forward)) > 0.3f;
+        bool retval = Physics.Raycast(transform.position, transform.right, out wallHit, Collider.radius + 0.9f) ||
+                      Physics.Raycast(transform.position, -transform.right, out wallHit, Collider.radius + 0.9f);
+        if (retval)
+            Debug.Log(wallHit.normal.y);
+        return retval && wallrunEnabled && Mathf.Abs(wallHit.normal.y) < 0.1f;// && Mathf.Abs(Vector3.Dot(Vector3.Cross(wallHit.normal, Vector3.up), transform.forward)) > 0.3f;
     }
 
     void OnGUI()

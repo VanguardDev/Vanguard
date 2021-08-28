@@ -66,7 +66,7 @@ public class FirstPersonLook : NetworkBehaviour
         cam.transform.localPosition = Vector3.Lerp(
             cam.transform.localPosition,
             new Vector3(0.0f, targetHeight, 0.0f),
-            Time.deltaTime * 10
+            Time.deltaTime * 30
         );
     }
 
