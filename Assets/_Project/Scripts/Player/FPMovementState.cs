@@ -96,6 +96,7 @@ public abstract class FPMovementState
         }
 
         public override void PhysicsUpdate() {
+            context.Rigidbody.AddForce(-Vector3.up * context.Rigidbody.mass * 20);
             Vector3 inputVector = context.transform.TransformDirection(new Vector3(context.Inputs.WalkVector.x, 0, context.Inputs.WalkVector.y)).normalized;
             Vector3 vc = inputVector * 0.6f;
 
@@ -144,7 +145,7 @@ public abstract class FPMovementState
 
         public override void PhysicsUpdate() {
             if (!jumping) {
-                context.Rigidbody.useGravity = false;
+                // context.Rigidbody.useGravity = false;
                 context.Rigidbody.AddForce(-Vector3.up * context.Rigidbody.mass * 4);
 
                 Vector3 lateralVelocity = Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1));
@@ -172,7 +173,7 @@ public abstract class FPMovementState
         }
 
         public override void Exit() {
-            context.Rigidbody.useGravity = true;
+            // context.Rigidbody.useGravity = true;
             context.Look.targetDutch = 0;
         }
 
@@ -228,19 +229,24 @@ public abstract class FPMovementState
     /// Adds force if under threshold, otherwise do nothing. Transitions: WALK, FALL
     /// </summary>
     public class FPSlideState : FPMovementState {
+        float slideTime = 0;
         public FPSlideState(FPMovementState prevState = null) {
             if (prevState != null) {
                 context = prevState.Context;
                 context.jumpCount = 0;
             }
             Debug.Log("Slide");
+
             context.Rigidbody.velocity = Vector3.Cross(new Vector3(context.Rigidbody.velocity.z, 0, -context.Rigidbody.velocity.x).normalized, context.groundHit.normal) * 
                 Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude * 
-                (context.Rigidbody.velocity.magnitude < context.slideBoostThreshold ? context.slideBoost : 1);
+                boost;
+            if (context.Rigidbody.velocity.magnitude < context.slideBoostThreshold)
+                context.Rigidbody.velocity *= context.slideBoost;
         }
         
         public override void PhysicsUpdate() {
             context.Look.targetHeight = 0.4f;
+            slideTime += Time.fixedDeltaTime;
         }
 
         public override void Exit() {

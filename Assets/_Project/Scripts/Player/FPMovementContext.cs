@@ -7,7 +7,7 @@ public class FPMovementContext : MonoBehaviour
 {   
     [Header("Walk Settings")]
     public float walkSpeed = 8f;
-    private float groundCheckDistance = 0.005f;
+    private float groundCheckDistance = 0.1f;
     
     [Header("Jump Settings")]
     public int maxJumpCount = 2;

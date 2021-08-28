@@ -947,10 +947,10 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7723995027383627381}
   serializedVersion: 2
-  m_Mass: 300
+  m_Mass: 700
   m_Drag: 0
   m_AngularDrag: 0
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -1116,8 +1116,8 @@ MonoBehaviour:
   wallrunAwayBoost: 1.1
   wallrunAwayBoostThreshold: 13
   wallrunEnabled: 1
-  slideBoost: 1.2
-  slideBoostThreshold: 17
+  slideBoost: 1.3
+  slideBoostThreshold: 15
   IsJumping: 0
 --- !u!114 &2564185975412809975
 MonoBehaviour:
