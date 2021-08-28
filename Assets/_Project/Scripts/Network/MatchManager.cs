@@ -49,7 +49,7 @@ public class MatchManager : NetworkBehaviour
         {
             player.GetComponent<PlayerGunManager>().enabled = false;
             player.GetComponent<Rigidbody>().isKinematic = true;
-            player.GetComponent<FirstPersonLook>().DisableControls();
+            player.GetComponent<FPInput>().DisableControls();
         }
     }
     [ClientRpc]
@@ -63,7 +63,7 @@ public class MatchManager : NetworkBehaviour
             player.nameText.text = "";
             player.GetComponent<PlayerGunManager>().enabled = true;
             player.GetComponent<Rigidbody>().isKinematic = false;
-            player.GetComponent<FirstPersonLook>().EnableControls();
+            player.GetComponent<FPInput>().EnableControls();
         }
     }
     public IEnumerator DieTimer(Health player)

@@ -672,6 +672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa26fa1ddaa822458253e3b900e0fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 0
   ammo: 30
   ammoCapacity: 30
   shootInterval: 0.2
@@ -1029,7 +1030,10 @@ MonoBehaviour:
   redScoreText: {fileID: 2548025403486042674}
   blueScoreText: {fileID: 645279845799798140}
   winScreenText: {fileID: 9141460041850271203}
+  nameText: {fileID: 0}
+  healthTextWorld: {fileID: 0}
   team: -1
+  name: 
 --- !u!114 &7737175486408512375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1103,18 +1107,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b475684d7839a3940afafef856ae0b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
   walkSpeed: 8
-  groundCheckDistance: 0.1
   maxJumpCount: 2
   jumpVelocity: 8
   jumpCount: 0
   wallrunBoost: 1.4
+  wallrunBoostThreshold: 12
   wallrunAwayBoost: 1.1
   wallrunAwayBoostThreshold: 13
-  maxWallrunBoostVelocity: 12
-  slideVelBoost: 2
+  wallrunEnabled: 1
+  slideBoost: 1.2
   slideBoostThreshold: 17
+  IsJumping: 0
 --- !u!114 &2564185975412809975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1436,7 +1440,7 @@ PrefabInstance:
     - target: {fileID: -6093592463355912122, guid: bafda384179e12d4789c8716135efa37, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 934451bd8589cfc4da44ebe6a8977f6a, type: 2}
+      objectReference: {fileID: 2100000, guid: 8ba220cf8c549d5459a5279829fe478c, type: 2}
     - target: {fileID: -5568371526223589888, guid: bafda384179e12d4789c8716135efa37, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -1484,11 +1488,11 @@ PrefabInstance:
     - target: {fileID: 7071182760956848314, guid: bafda384179e12d4789c8716135efa37, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 934451bd8589cfc4da44ebe6a8977f6a, type: 2}
+      objectReference: {fileID: 2100000, guid: 8ba220cf8c549d5459a5279829fe478c, type: 2}
     - target: {fileID: 7202271454713460447, guid: bafda384179e12d4789c8716135efa37, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 934451bd8589cfc4da44ebe6a8977f6a, type: 2}
+      objectReference: {fileID: 2100000, guid: 8ba220cf8c549d5459a5279829fe478c, type: 2}
     - target: {fileID: 8416272007918961125, guid: bafda384179e12d4789c8716135efa37, type: 3}
       propertyPath: m_Layer
       value: 3
