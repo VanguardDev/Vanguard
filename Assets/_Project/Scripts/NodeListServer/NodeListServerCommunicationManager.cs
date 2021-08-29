@@ -28,6 +28,7 @@ namespace NodeListServer
 
         private void Awake()
         {
+            if (Application.isBatchMode) ConnectionInfo.name = Console.ReadLine();
             if (ConnectionInfo.Mode == 0) enabled = false;
             // If singleton was somehow loaded twice...
             if (Instance != null && Instance != this)
@@ -86,7 +87,7 @@ namespace NodeListServer
             {
 
                 yield return www.SendWebRequest();
-                if (IsGuid(Encoding.ASCII.GetString(www.downloadHandler.data)))InstanceServerId = Encoding.ASCII.GetString(www.downloadHandler.data);
+                if(www.downloadHandler.data!= null)if (IsGuid(Encoding.ASCII.GetString(www.downloadHandler.data)))InstanceServerId = Encoding.ASCII.GetString(www.downloadHandler.data);
                 if (www.responseCode == 200)
                 {
                     print("Successfully registered server with the NodeListServer instance!");
