@@ -18,7 +18,6 @@ namespace NodeListServer
             PlayerCapacity = 0,
             ExtraInformation = string.Empty
         };
-        bool serverListed;
         private const string AuthKey = "NodeListServerDefaultKey";
 
         // Change this to your NodeLS Server instance URL.
@@ -43,15 +42,15 @@ namespace NodeListServer
             // Generate a new identification string
 
             print("NodeLS Communication Manager Initialized.");
+            if(Application.isBatchMode || ConnectionInfo.Mode==2)StartCoroutine(nameof(updatePeriodically));
         }
+
         float updateTimer = 0;
-        public void Update()
+        public IEnumerator updatePeriodically()
         {
-            updateTimer += Time.deltaTime;
-            if(updateTimer>10)
-            {
+            while (true) {
                 StartCoroutine(nameof(AddUpdateInternal));
-                updateTimer = 0;
+                yield return new WaitForSeconds(5);
             }
         }
         public void AddUpdateServerEntry()
@@ -77,7 +76,7 @@ namespace NodeListServer
 
             serverData.AddField("serverKey", AuthKey);
             CurrentServerInfo.Name = ConnectionInfo.name;
-            if (serverListed) serverData.AddField("serverUuid", InstanceServerId);
+            serverData.AddField("serverUuid", InstanceServerId);
             serverData.AddField("serverName", CurrentServerInfo.Name);
             serverData.AddField("serverPort", CurrentServerInfo.Port);
             serverData.AddField("serverPlayers", CurrentServerInfo.PlayerCount);
@@ -91,7 +90,6 @@ namespace NodeListServer
                 if (www.responseCode == 200)
                 {
                     print("Successfully registered server with the NodeListServer instance!");
-                    serverListed = true;
                 }
                 else
                 {
