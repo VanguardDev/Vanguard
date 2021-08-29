@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 561657154}
-  m_IndirectSpecularColor: {r: 0.6616124, g: 0.8371172, b: 0.97937924, a: 1}
+  m_IndirectSpecularColor: {r: 0.2430689, g: 0.35367632, b: 0.5186313, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 40844d5229b7b4849aebfb6557bcfff0, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: 31af24e459f602f4a949b18a3f5d1962, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 24917785ddd7ec8439eef8e208212303, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -9566,9 +9566,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 632761438}
-  - component: {fileID: 632761437}
   - component: {fileID: 632761436}
   - component: {fileID: 632761435}
+  - component: {fileID: 632761437}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -9585,12 +9585,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 632761434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e2c6a4423d143540b761274592ab81e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showGUI: 1
-  offsetX: 0
-  offsetY: 0
+  dontDestroyOnLoad: 1
+  PersistNetworkManagerToOfflineScene: 0
+  runInBackground: 1
+  autoStartServerBuild: 1
+  serverTickRate: 30
+  offlineScene: 
+  onlineScene: 
+  transport: {fileID: 632761436}
+  networkAddress: localhost
+  maxConnections: 100
+  disconnectInactiveConnections: 0
+  disconnectInactiveTimeout: 60
+  authenticator: {fileID: 0}
+  playerPrefab: {fileID: 7723995027383627381, guid: 8f79257c56677dd4bb39a8a7c90e53b9, type: 3}
+  autoCreatePlayer: 1
+  playerSpawnMethod: 0
+  spawnPrefabs:
+  - {fileID: 8203581229785904781, guid: 06852801e0b52164aa90fd853a87c64a, type: 3}
+  ServerName: My Server
+  ServerPublicPort: 7777
+  UpdateServerPeriodically: 1
+  UpdateServerPeriod: 5
 --- !u!114 &632761436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9604,6 +9623,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Port: 7777
+  DualMode: 1
   NoDelay: 1
   Interval: 10
   Timeout: 10000
@@ -9611,6 +9631,7 @@ MonoBehaviour:
   CongestionWindow: 0
   SendWindowSize: 4096
   ReceiveWindowSize: 4096
+  NonAlloc: 1
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0
@@ -9623,29 +9644,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 632761434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aab4c8111b7c411b9b92cf3dbc5bd4e, type: 3}
+  m_Script: {fileID: 11500000, guid: ea82b0cf86403924aafc568cba4e675e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 1
-  PersistNetworkManagerToOfflineScene: 0
-  runInBackground: 1
-  autoStartServerBuild: 1
-  serverTickRate: 30
-  offlineScene: 
-  onlineScene: 
-  transport: {fileID: 632761436}
-  networkAddress: localhost
-  maxConnections: 32
-  disconnectInactiveConnections: 0
-  disconnectInactiveTimeout: 60
-  authenticator: {fileID: 0}
-  playerPrefab: {fileID: 7723995027383627381, guid: 41d43f5942061a848a298fa424c50287, type: 3}
-  autoCreatePlayer: 1
-  playerSpawnMethod: 0
-  spawnPrefabs:
-  - {fileID: 376381689989450209, guid: 19a59cc674b89b945b45b5ff18dc773f, type: 3}
-  - {fileID: 792487623098538321, guid: d2b251c3644c82a4da5a31556dca9578, type: 3}
-  - {fileID: 8203581229785904781, guid: 06852801e0b52164aa90fd853a87c64a, type: 3}
 --- !u!4 &632761438
 Transform:
   m_ObjectHideFlags: 0
@@ -34202,6 +34203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Port: 7777
+  DualMode: 1
   NoDelay: 1
   Interval: 10
   Timeout: 10000
@@ -34209,6 +34211,7 @@ MonoBehaviour:
   CongestionWindow: 0
   SendWindowSize: 4096
   ReceiveWindowSize: 4096
+  NonAlloc: 1
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0

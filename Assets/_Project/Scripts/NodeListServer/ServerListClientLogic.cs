@@ -201,7 +201,7 @@ namespace NodeListServer
                     // Debug: Prints CLICKY to see if the button actually was clicked or 
                     ConnectionInfo.ip = modifiedAddress;
                     ConnectionInfo.Mode = 0;
-                    SceneManager.LoadScene("Testmap");
+                    SceneManager.LoadScene("TestmapScaled");
                    
                    
                 });
