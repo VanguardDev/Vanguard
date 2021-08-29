@@ -50,7 +50,7 @@ public class MatchManager : NetworkBehaviour
         {
             player.GetComponent<PlayerGunManager>().enabled = false;
             player.GetComponent<Rigidbody>().isKinematic = true;
-            player.GetComponent<FirstPersonLook>().DisableControls();
+            player.GetComponent<FPInput>().DisableControls();
         }
     }
     [ClientRpc]
@@ -64,7 +64,7 @@ public class MatchManager : NetworkBehaviour
             player.nameText.text = "";
             player.GetComponent<PlayerGunManager>().enabled = true;
             player.GetComponent<Rigidbody>().isKinematic = false;
-            player.GetComponent<FirstPersonLook>().EnableControls();
+            player.GetComponent<FPInput>().EnableControls();
         }
     }
     public IEnumerator DieTimer(Health player)
@@ -102,7 +102,7 @@ public class MatchManager : NetworkBehaviour
     [ClientRpc]
     public void RpcRestartMatch()
     {
-        NetworkClient.localPlayer.GetComponent<FirstPersonLook>().EnableControls();
+        NetworkClient.localPlayer.GetComponent<FPInput>().EnableControls();
         NetworkClient.localPlayer.GetComponent<Health>().health = 100;
         if (NetworkClient.localPlayer.GetComponent<Health>().team == 1) NetworkClient.localPlayer.transform.position=blueSpawn.position;
         else NetworkClient.localPlayer.transform.position = redSpawn.position;
@@ -112,7 +112,7 @@ public class MatchManager : NetworkBehaviour
     [ClientRpc]
     public void RpcEndMatch()
     {
-        NetworkClient.localPlayer.GetComponent<FirstPersonLook>().DisableControls();
+        NetworkClient.localPlayer.GetComponent<FPInput>().DisableControls();
         winScreenText.enabled = true;
         if (redScore >= matchMaxScore)
             winScreenText.text = "Red Won";

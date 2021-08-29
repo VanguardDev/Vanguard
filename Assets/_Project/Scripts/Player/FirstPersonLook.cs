@@ -21,13 +21,10 @@ public class FirstPersonLook : NetworkBehaviour
     public float targetDutch;
     public float targetHeight = 1;
 
-    // TODO: This should be put somewhere more logical where it can be accessed by
-    //    both FirstPersonLook.cs and FirstPersonMove.cs
-    public PilotActionControls pilotActionControls;
-
+    private FPInput input;
     private void Awake()
     {
-        pilotActionControls = new PilotActionControls();
+        input = GetComponent<FPInput>();
     }
 
     void Start()
@@ -35,33 +32,14 @@ public class FirstPersonLook : NetworkBehaviour
         if (!isLocalPlayer)
         {
             cam.enabled = false;
-            pilotActionControls.Disable();
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
+            input.DisableControls();
         }
     }
 
-    private void OnEnable()
-    {
-        pilotActionControls?.Enable();
-    }
-
-    private void OnDisable()
-    {
-        pilotActionControls?.Disable();
-    }
-    public void EnableControls()
-    {
-        pilotActionControls.Enable();
-    }
-    public void DisableControls()
-    {
-        pilotActionControls.Disable();
-    }
     void Update()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+
         if (!isLocalPlayer)
         {
             return;
@@ -69,7 +47,7 @@ public class FirstPersonLook : NetworkBehaviour
 
         if (lookEnabled)
         {
-            inputVector = pilotActionControls.VanguardPilot.Mouse.ReadValue<Vector2>();
+            inputVector = input.LookVector;
 
             float mouseX = inputVector.x * horizontalSpeed;
             float mouseY = inputVector.y * verticalSpeed;
@@ -88,21 +66,11 @@ public class FirstPersonLook : NetworkBehaviour
         cam.transform.localPosition = Vector3.Lerp(
             cam.transform.localPosition,
             new Vector3(0.0f, targetHeight, 0.0f),
-            Time.deltaTime * 10
+            Time.deltaTime * 30
         );
     }
 
     public void SetLookEnabled(bool enabled) {
-        if (lookEnabled != enabled) {
-            if (enabled) {
-                Cursor.lockState = CursorLockMode.None;
-                //xRotation = cam.transform.eulerAngles.x;
-                //yRotation = cam.transform.eulerAngles.y;
-            }
-            else {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-        }
         lookEnabled = enabled;
     }
 }
