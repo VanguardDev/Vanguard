@@ -50,8 +50,8 @@ namespace NodeListServer
         public IEnumerator updatePeriodically()
         {
             while (true) {
-                StartCoroutine(nameof(AddUpdateInternal));
                 yield return new WaitForSeconds(5);
+                StartCoroutine(nameof(AddUpdateInternal));
             }
         }
         public void AddUpdateServerEntry()
