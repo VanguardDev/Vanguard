@@ -139,8 +139,17 @@ public class FPMovementContext : MonoBehaviour
     void OnGUI()
     {
         if (Application.isEditor)
-        {
-            GUI.Label(new Rect(10, 200, 100, 20), Vector3.Scale(Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude.ToString());
+        {   
+            
+            GUIStyle bold = new GUIStyle();
+            bold.fontStyle = FontStyle.Bold;
+            GUI.color = Color.black;
+            // // GUI.Label(new Rect(12, 202, 100, 20), Vector3.Scale(Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude.ToString(), bold);
+            // // GUI.Label(new Rect(8, 202, 100, 20), Vector3.Scale(Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude.ToString(), bold);
+            // GUI.Label(new Rect(12, 198, 100, 20), Vector3.Scale(Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude.ToString(), bold);
+            // GUI.Label(new Rect(8, 198, 100, 20), Vector3.Scale(Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude.ToString(), bold);
+            // GUI.color = Color.white;
+            GUI.Label(new Rect(10, 200, 100, 20), Vector3.Scale(Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude.ToString(), bold);
         }
     }
 }

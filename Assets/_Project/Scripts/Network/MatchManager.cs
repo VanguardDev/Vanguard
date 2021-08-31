@@ -57,10 +57,10 @@ public class MatchManager : NetworkBehaviour
     {
         player.GetComponent<MeshRenderer>().enabled = true;
         player.GetComponent<CapsuleCollider>().enabled = true;
-        player.nameText.text = player.name;
+        //player.nameText.text = player.name;
         if (player.isLocalPlayer)
         {
-            player.nameText.text = "";
+            //player.nameText.text = "";
             player.GetComponent<PlayerGunManager>().enabled = true;
             player.GetComponent<Rigidbody>().isKinematic = false;
             player.GetComponent<FPInput>().EnableControls();

@@ -160,7 +160,11 @@ public abstract class FPMovementState
         }
 
         public override void Jump() {
-            context.Rigidbody.velocity = (context.transform.forward + context.wallHit.normal).normalized * initialLateralSpeed * (Vector3.Scale(initialVelocity, new Vector3(1, 0, 1)).magnitude > context.wallrunAwayBoostThreshold ? 1 : context.wallrunAwayBoost);// * Vector3.Scale(initialVelocity, new Vector3(1, 0, 1)).magnitude;
+            context.Rigidbody.velocity = (context.transform.forward + context.wallHit.normal).normalized * 
+                Mathf.Min(
+                    initialLateralSpeed * (Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude > context.wallrunAwayBoostThreshold ? 1 : context.wallrunAwayBoost),
+                    13
+            );// * Vector3.Scale(initialVelocity, new Vector3(1, 0, 1)).magnitude;
             jumping = true;
             base.Jump();
             context.BreakFromWall(0.2f);
@@ -230,6 +234,7 @@ public abstract class FPMovementState
     /// </summary>
     public class FPSlideState : FPMovementState {
         float slideTime = 0;
+        float slideSpeed;
         public FPSlideState(FPMovementState prevState = null) {
             if (prevState != null) {
                 context = prevState.Context;
@@ -237,15 +242,28 @@ public abstract class FPMovementState
             }
             Debug.Log("Slide");
 
-            context.Rigidbody.velocity = Vector3.Cross(new Vector3(context.Rigidbody.velocity.z, 0, -context.Rigidbody.velocity.x).normalized, context.groundHit.normal) * 
-                Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude;
-            if (context.Rigidbody.velocity.magnitude < context.slideBoostThreshold)
-                context.Rigidbody.velocity *= context.slideBoost;
+            // context.Rigidbody.velocity = Vector3.Cross(new Vector3(context.Rigidbody.velocity.z, 0, -context.Rigidbody.velocity.x).normalized, context.groundHit.normal) * 
+            //     Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude;
+            // if (context.Rigidbody.velocity.magnitude < context.slideBoostThreshold)
+            //     context.Rigidbody.velocity *= context.slideBoost;
+            context.Rigidbody.velocity = Vector3.Cross(
+                Vector3.Scale(
+                    Quaternion.Euler(0, 90, 0) * context.Rigidbody.velocity, 
+                    new Vector3(1, 0, 1)
+                ), context.groundHit.normal
+            ).normalized * Mathf.Clamp(
+                Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude * context.slideBoost, 
+                4,
+                15
+            );
+
+            slideSpeed = context.Rigidbody.velocity.magnitude;
         }
         
         public override void PhysicsUpdate() {
             context.Look.targetHeight = 0.4f;
             slideTime += Time.fixedDeltaTime;
+            context.Rigidbody.velocity = Vector3.Lerp(context.Rigidbody.velocity, Vector3.zero, Time.fixedDeltaTime / (slideSpeed / 7));
         }
 
         public override void Exit() {
