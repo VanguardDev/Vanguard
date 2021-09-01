@@ -5,11 +5,11 @@ using Mirror;
 
 public class NetworkStarter : MonoBehaviour
 {
-    NetworkManager nm;
+    NodeListServer.NodeListServerNetManager nm;
     public void Start()
     {
         if (Application.isBatchMode) return;
-        nm = GetComponent<NetworkManager>();
+        nm = GetComponent<NodeListServer.NodeListServerNetManager>();
         if (ConnectionInfo.Mode == 1) nm.StartHost();
         else if (ConnectionInfo.Mode == 2) nm.StartServer();
         else

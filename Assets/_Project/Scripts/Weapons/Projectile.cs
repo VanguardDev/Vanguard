@@ -32,6 +32,7 @@ using Mirror;
         Ray ray = new Ray(transform.position, transform.forward);
         if (Physics.Raycast(ray, out rayHit, raycastRange))
         {
+            Debug.Log(rayHit.collider.gameObject.name);
             if (rayHit.collider.gameObject == playerWhoShoot) return;
             if (rayHit.collider.GetComponent<Health>()) rayHit.collider.GetComponent<Health>().getShot(damage);
             DestroySelf();

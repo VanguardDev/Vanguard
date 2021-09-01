@@ -35,8 +35,8 @@ public class FPMovementContext : MonoBehaviour
         get { return state; } 
         set { 
             state = value;
-            if (state != null)
-                Debug.Log(state.GetType().Name);
+           // if (state != null)
+                //Debug.Log(state.GetType().Name);
         }
     }
 

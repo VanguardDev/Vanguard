@@ -37,6 +37,7 @@ public class MatchManager : NetworkBehaviour
     }
     public void playerDie(Health player)
     {
+        player.GetComponent<CapsuleCollider>().enabled = false;
         RpcDisablePlayer(player);
         StartCoroutine("DieTimer",player);
     }
@@ -87,6 +88,7 @@ public class MatchManager : NetworkBehaviour
             RpcEndMatch();
             StartCoroutine("Restart");
         }
+        player.GetComponent<CapsuleCollider>().enabled = enabled;
         RpcEnablePlayer(player);
     }
     public IEnumerator Restart()
