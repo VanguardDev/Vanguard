@@ -38,7 +38,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Mouse",
+                    "name": "Look",
                     "type": "PassThrough",
                     "id": "595a4f7b-5009-47b4-9c8c-e8c48f639401",
                     "expectedControlType": "Vector2",
@@ -158,7 +158,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Mouse",
+                    "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

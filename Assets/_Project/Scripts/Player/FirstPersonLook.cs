@@ -13,7 +13,7 @@ public class FirstPersonLook : NetworkBehaviour
 
     [HideInInspector]
     public float yRotation = 0.0f;
-    private Vector2 inputVector;
+    private Vector2 lookVector;
     private bool lookEnabled = true;
 
     [SerializeField]
@@ -21,18 +21,11 @@ public class FirstPersonLook : NetworkBehaviour
     public float targetDutch;
     public float targetHeight = 1;
 
-    private FPInput input;
-    private void Awake()
-    {
-        input = GetComponent<FPInput>();
-    }
-
     void Start()
     {
         if (!isLocalPlayer)
         {
             cam.enabled = false;
-            input.DisableControls();
         }
     }
 
@@ -47,10 +40,10 @@ public class FirstPersonLook : NetworkBehaviour
 
         if (lookEnabled)
         {
-            inputVector = input.LookVector;
+            lookVector = InputManager.LookVector;
 
-            float mouseX = inputVector.x * horizontalSpeed;
-            float mouseY = inputVector.y * verticalSpeed;
+            float mouseX = lookVector.x * horizontalSpeed;
+            float mouseY = lookVector.y * verticalSpeed;
 
             yRotation += mouseX;
             xRotation -= mouseY;

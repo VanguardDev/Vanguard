@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using Mirror;
+
+namespace Vanguard
+{
     public class Projectile : NetworkBehaviour
     {
         public int damage;
-        public float destroyAfter = 5,raycastRange;
+        public float destroyAfter = 5, raycastRange;
         public Rigidbody rigidBody;
         public float speed = 1000;
-        [HideInInspector]public GameObject playerWhoShoot;
+        [HideInInspector] public GameObject playerWhoShoot;
         public override void OnStartServer()
         {
             Invoke(nameof(DestroySelf), destroyAfter);
@@ -16,7 +19,7 @@ using Mirror;
         // position, because both the server and the client simulate it.
         void Start()
         {
-        rigidBody.velocity = speed * transform.forward;
+            rigidBody.velocity = speed * transform.forward;
         }
 
         // destroy for everyone on the server
@@ -25,18 +28,18 @@ using Mirror;
         {
             NetworkServer.Destroy(gameObject);
         }
-    RaycastHit rayHit;
-    public void Update()
-    {
-        if (!isServer) return;
-        Ray ray = new Ray(transform.position, transform.forward);
-        if (Physics.Raycast(ray, out rayHit, raycastRange))
+        RaycastHit rayHit;
+        public void Update()
         {
-            Debug.Log(rayHit.collider.gameObject.name);
-            if (rayHit.collider.gameObject == playerWhoShoot) return;
-            if (rayHit.collider.GetComponent<Health>()) rayHit.collider.GetComponent<Health>().getShot(damage);
-            DestroySelf();
+            if (!isServer) return;
+            Ray ray = new Ray(transform.position, transform.forward);
+            if (Physics.Raycast(ray, out rayHit, raycastRange))
+            {
+                Debug.Log(rayHit.collider.gameObject.name);
+                if (rayHit.collider.gameObject == playerWhoShoot) return;
+                if (rayHit.collider.GetComponent<Health>()) rayHit.collider.GetComponent<Health>().getShot(damage);
+                DestroySelf();
+            }
         }
     }
 }
-

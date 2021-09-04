@@ -2,22 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-public class WorldUIElement : MonoBehaviour
+
+namespace Vanguard.UI
 {
-    // Start is called before the first frame update
-    GameObject camera;
-    void Awake()
+    public class WorldUIElement : MonoBehaviour
     {
-        if (NetworkServer.active && !NetworkClient.active)enabled = false;
-        
-    }
-    public void Start()
-    {
-         camera = Camera.main.gameObject;
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        transform.LookAt(camera.transform);
+        GameObject camera;
+
+        void Awake()
+        {
+            if (VanguardUtilities.IsDedicatedServer)
+            {
+                enabled = false;
+            }
+
+        }
+        public void Start()
+        {
+            camera = Camera.main.gameObject;
+        }
+        // Update is called once per frame
+        void Update()
+        {
+            transform.LookAt(camera.transform);
+        }
     }
 }
