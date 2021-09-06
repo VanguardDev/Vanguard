@@ -1097,6 +1097,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7723995027383627340}
+  - component: {fileID: 2318377551045846802}
   - component: {fileID: 7723995027383627341}
   - component: {fileID: 7723995027383627338}
   - component: {fileID: 7723995027383627339}
@@ -1104,12 +1105,11 @@ GameObject:
   - component: {fileID: 7723995027383627343}
   - component: {fileID: 6004437413580929968}
   - component: {fileID: -3709482500648437718}
-  - component: {fileID: 7737175486408512375}
   - component: {fileID: -7731969057153208970}
   - component: {fileID: 7038860083430813797}
   - component: {fileID: 7723995027383627380}
-  - component: {fileID: 3144348690454340874}
   - component: {fileID: -1467414766640802754}
+  - component: {fileID: 7460632567302527554}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -1134,6 +1134,136 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2318377551045846802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7723995027383627381}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 5a977da16c056d24eaa7c764a20da2d9, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7460632567302527554}
+        m_TargetAssemblyTypeName: Vanguard.InputManager, Assembly-CSharp
+        m_MethodName: OnWalkInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9b9b2411-d052-417b-b190-e50df3321223
+    m_ActionName: Vanguard (Pilot)/Walk[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7460632567302527554}
+        m_TargetAssemblyTypeName: Vanguard.InputManager, Assembly-CSharp
+        m_MethodName: OnJumpInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: de302b41-e168-42e2-8ebb-f383e9a48398
+    m_ActionName: Vanguard (Pilot)/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7460632567302527554}
+        m_TargetAssemblyTypeName: Vanguard.InputManager, Assembly-CSharp
+        m_MethodName: OnCrouchInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8b036aba-7f1a-4616-80c6-6cac074655a6
+    m_ActionName: Vanguard (Pilot)/Crouch[/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 87f45ecc-c58d-438b-bd99-a9d9acbb56dd
+    m_ActionName: Vanguard (Pilot)/Sprint[/Keyboard/ctrl]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7460632567302527554}
+        m_TargetAssemblyTypeName: Vanguard.InputManager, Assembly-CSharp
+        m_MethodName: OnLookInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 595a4f7b-5009-47b4-9c8c-e8c48f639401
+    m_ActionName: Vanguard (Pilot)/Mouse[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7460632567302527554}
+        m_TargetAssemblyTypeName: Vanguard.InputManager, Assembly-CSharp
+        m_MethodName: OnShootInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: fca71019-275c-435e-9af8-3e5be89b058b
+    m_ActionName: Vanguard (Pilot)/Shoot[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7460632567302527554}
+        m_TargetAssemblyTypeName: Vanguard.InputManager, Assembly-CSharp
+        m_MethodName: OnReloadInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c53ddce4-ca49-44ce-9249-312f45000d59
+    m_ActionName: Vanguard (Pilot)/Reload[/Keyboard/r]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: KeyboardMouse
+  m_DefaultActionMap: Vanguard (Pilot)
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!33 &7723995027383627341
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1272,35 +1402,6 @@ MonoBehaviour:
   healthTextWorld: {fileID: 2540826950051010944}
   team: -1
   name: 
---- !u!114 &7737175486408512375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7723995027383627381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 1
-  sendInterval: 0.05
-  syncPosition: 1
-  syncRotation: 1
-  syncScale: 1
-  interpolatePosition: 1
-  interpolateRotation: 1
-  interpolateScale: 1
-  bufferTimeMultiplier: 3
-  bufferSizeLimit: 64
-  catchupThreshold: 6
-  catchupMultiplier: 0.1
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
 --- !u!114 &-7731969057153208970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1316,20 +1417,14 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 1
-  sendInterval: 0.05
-  syncPosition: 1
-  syncRotation: 1
-  syncScale: 1
+  localPositionSensitivity: 0.01
+  localRotationSensitivity: 0.01
+  localScaleSensitivity: 0.01
+  compressRotation: 0
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 1
-  bufferTimeMultiplier: 3
-  bufferSizeLimit: 64
-  catchupThreshold: 6
-  catchupMultiplier: 0.1
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  syncScale: 1
   target: {fileID: 7723995026949668498}
 --- !u!114 &7038860083430813797
 MonoBehaviour:
@@ -1366,18 +1461,6 @@ MonoBehaviour:
   cam: {fileID: 7723995026949668500}
   targetDutch: 0
   targetHeight: 1
---- !u!114 &3144348690454340874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7723995027383627381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f4befcf4f454fb4c8d830c19f839ebb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-1467414766640802754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1402,6 +1485,20 @@ MonoBehaviour:
   slideBoost: 1.3
   slideBoostThreshold: 15
   IsJumping: 0
+--- !u!114 &7460632567302527554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7723995027383627381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a603f027cbdc0b428c4d88534a40990, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
 --- !u!1 &7973584731485713676
 GameObject:
   m_ObjectHideFlags: 0

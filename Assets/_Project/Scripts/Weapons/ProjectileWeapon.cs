@@ -3,27 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class ProjectileWeapon : Weapon 
+namespace Vanguard
 {
-    public GameObject projectilePrefab;
-    public Transform ShootingPoint;
-    private PlayerGunManager gunManager;
-    
-    void Start()
+    public class ProjectileWeapon : Weapon
     {
-        gunManager = GetComponentInParent<PlayerGunManager>();
-    }
-    public override void Shoot()
-    {
-        if (ammo > 0 && canShoot&& !reloading)
-        {
-            base.Shoot();
-            gunManager.CmdShootCommand(transform.position,transform.rotation,damage);
-            ConsumeAmmo();
-        }
-    }
+        public GameObject projectilePrefab;
+        public Transform ShootingPoint;
+        private PlayerGunManager gunManager;
 
-    public override void ShootInputDown() {
-        Shoot();
+        void Start()
+        {
+            gunManager = GetComponentInParent<PlayerGunManager>();
+        }
+        public override void Shoot()
+        {
+            if (ammo > 0 && canShoot && !reloading)
+            {
+                base.Shoot();
+                gunManager.CmdShootCommand(transform.position, transform.rotation, damage);
+                ConsumeAmmo();
+            }
+        }
+
+        public override void ShootInputDown()
+        {
+            Shoot();
+        }
     }
 }

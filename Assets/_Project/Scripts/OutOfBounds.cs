@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-public class OutOfBounds : NetworkBehaviour
+
+namespace Vanguard
 {
-    public void OnTriggerEnter(Collider other)
+    public class OutOfBounds : NetworkBehaviour
     {
-        if (isServer) other.GetComponent<Health>().getShot(100);
+        public void OnTriggerEnter(Collider other)
+        {
+            if (isServer) other.GetComponent<Health>().getShot(100);
+        }
     }
 }
