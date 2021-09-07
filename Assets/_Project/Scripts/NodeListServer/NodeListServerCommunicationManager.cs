@@ -43,15 +43,16 @@ namespace NodeListServer
             // Generate a new identification string
 
             print("NodeLS Communication Manager Initialized.");
-            if(Application.isBatchMode || ConnectionInfo.Mode==2)StartCoroutine(nameof(updatePeriodically));
         }
 
         float updateTimer = 0;
-        public IEnumerator updatePeriodically()
+        public void FixedUpdate()
         {
-            while (true) {
-                yield return new WaitForSeconds(5);
+            updateTimer += Time.fixedDeltaTime;
+            if (updateTimer > 10)
+            {
                 StartCoroutine(nameof(AddUpdateInternal));
+                updateTimer = 0;
             }
         }
         public void AddUpdateServerEntry()
@@ -68,7 +69,7 @@ namespace NodeListServer
             Guid x;
             return Guid.TryParse(value, out x);
         }
-        
+
         // Internal things
         private IEnumerator AddUpdateInternal()
         {
@@ -87,7 +88,7 @@ namespace NodeListServer
             {
 
                 yield return www.SendWebRequest();
-                if(www.downloadHandler.data!= null)if (IsGuid(Encoding.ASCII.GetString(www.downloadHandler.data)))InstanceServerId = Encoding.ASCII.GetString(www.downloadHandler.data);
+                if (www.downloadHandler.data != null) if (IsGuid(Encoding.ASCII.GetString(www.downloadHandler.data))) InstanceServerId = Encoding.ASCII.GetString(www.downloadHandler.data);
                 if (www.responseCode == 200)
                 {
                     print("Successfully registered server with the NodeListServer instance!");

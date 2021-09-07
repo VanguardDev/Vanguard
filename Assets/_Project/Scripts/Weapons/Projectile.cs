@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Mirror;
-
 namespace Vanguard
 {
     public class Projectile : NetworkBehaviour
@@ -9,37 +8,45 @@ namespace Vanguard
         public float destroyAfter = 5, raycastRange;
         public Rigidbody rigidBody;
         public float speed = 1000;
+        public bool isserver;//isServer Returned false even in host so had to make a new one
         [HideInInspector] public GameObject playerWhoShoot;
-        public override void OnStartServer()
-        {
-            Invoke(nameof(DestroySelf), destroyAfter);
-        }
-
+        Vector3 lastPos;
+        ObjectPooling objectPooling;
         // set velocity for server and client. this way we don't have to sync the
         // position, because both the server and the client simulate it.
         void Start()
         {
-            rigidBody.velocity = speed * transform.forward;
+            objectPooling = FindObjectOfType<ObjectPooling>();
         }
-
+        public void StartBullet()
+        {
+            Invoke(nameof(DestroySelf), destroyAfter);
+            rigidBody.velocity = speed * transform.forward;
+            lastPos = transform.position;
+        }
         // destroy for everyone on the server
-        [Server]
         void DestroySelf()
         {
-            NetworkServer.Destroy(gameObject);
+            objectPooling.PutBackInPool(gameObject);
         }
         RaycastHit rayHit;
-        public void Update()
+        public void FixedUpdate()
         {
-            if (!isServer) return;
-            Ray ray = new Ray(transform.position, transform.forward);
+            Ray ray = new Ray(lastPos, (transform.position - lastPos).normalized);
+            lastPos = transform.position;
+
             if (Physics.Raycast(ray, out rayHit, raycastRange))
             {
-                Debug.Log(rayHit.collider.gameObject.name);
                 if (rayHit.collider.gameObject == playerWhoShoot) return;
-                if (rayHit.collider.GetComponent<Health>()) rayHit.collider.GetComponent<Health>().getShot(damage);
+                Debug.Log(isserver);
+                if (rayHit.collider.GetComponent<Health>() && isserver)
+                {
+                    Debug.Log("hit " + rayHit.collider.gameObject.name);
+                    rayHit.collider.GetComponent<Health>().getShot(damage);
+                }
                 DestroySelf();
             }
+
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
-
 namespace Vanguard
 {
     public class Health : NetworkBehaviour
@@ -27,8 +26,13 @@ namespace Vanguard
                 healthTextWorld.text = "";
                 CmdSetName(name);
             }
-            else healthText = healthTextWorld;
+            else
+            {
+                healthText.GetComponentInParent<Canvas>().gameObject.SetActive(false);
+                healthText = healthTextWorld;
+            }
         }
+        [Server]
         public void getShot(float damage)
         {
             health -= damage;
