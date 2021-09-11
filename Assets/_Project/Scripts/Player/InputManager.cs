@@ -11,7 +11,7 @@ namespace Vanguard
     /// </summary>
     public class InputManager : NetworkBehaviour
     {
-        private static InputManager _instance;
+        public static InputManager _instance;
         public static Action OnJumpStarted;
         public static Action OnJumpStopped;
         public static Action OnCrouchStarted;

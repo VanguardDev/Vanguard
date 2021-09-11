@@ -11,4 +11,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/TestmapScaled.unity
     guid: 7a175e562013b9a43809a557bfb6be6e
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 14556e17f9d49414e99f3e24e8895ba5, type: 2}

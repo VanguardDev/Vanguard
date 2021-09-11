@@ -641,9 +641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4a85f5543d87c4fb3842f1bf7ea2fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panels:
-  - {fileID: 1868221921}
-  - {fileID: 725510962}
+  panels: []
 --- !u!4 &1966462723
 Transform:
   m_ObjectHideFlags: 0
@@ -788,6 +786,10 @@ PrefabInstance:
     - target: {fileID: 7018962723983455235, guid: fb9332634958a5046884278af5465435, type: 3}
       propertyPath: m_Name
       value: SettingsMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7018962723983455235, guid: fb9332634958a5046884278af5465435, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb9332634958a5046884278af5465435, type: 3}
