@@ -8,48 +8,78 @@ public class Weapon : MonoBehaviour
 {
     public int damage,ammo;
     public int ammoCapacity;
-    public float shootInterval,reloadTime;
-    public bool canShoot = true,isFullAuto;
+    public bool canShoot = true, isFullAuto;
     public bool reloading;
     public Text ammoCountText;
-    private void Start()
+    public float roundsPerMinute,reloadTime;
+    private bool isTriggerDown;
+    private float fireRate;
+    private float timeSinceLastShot = float.MaxValue;
+
+    private bool WantsToShoot { get => isTriggerDown; }
+    private bool IsReadyToShoot
+    {
+        get
+        {
+            timeSinceLastShot += Time.deltaTime;
+            return !reloading && timeSinceLastShot > fireRate;
+        }
+    }
+    private bool HasAmmo { get => ammo > 0; }
+
+    #region Unity Overrides
+    protected virtual void Start()
     {
         ammoCountText.text = ammoCapacity.ToString();
-    }
-    public virtual void Shoot() {
-        if (canShoot)
-            StartCoroutine(DelayShooting());
+        fireRate = 60f / roundsPerMinute;
     }
 
-    public virtual IEnumerator DelayShooting()
+    protected virtual void Update()
     {
-        if (canShoot == false)
-          yield break;
-
-        if (reloading) yield return null;
-        canShoot = false;
-        yield return new WaitForSeconds(shootInterval);
-        canShoot = true;
+        if (IsReadyToShoot &&
+            WantsToShoot &&
+            HasAmmo)
+        {
+            Shoot();
+        }
     }
+    #endregion
+
+    public virtual void TriggerDown()
+    {
+        isTriggerDown = true;
+    }
+    public virtual void TriggerUp()
+    {
+        isTriggerDown = false;
+    }
+
     public void ReloadInputUpdate()
     {
-       StartCoroutine("Reload");
+        StartCoroutine("Reload");
     }
-    public virtual IEnumerator Reload()
+
+    protected virtual void Shoot()
+    {
+        timeSinceLastShot = 0f;
+        ConsumeAmmo();
+        // Play visual FX, sounds, etc.
+    }
+
+    private IEnumerator Reload()
     {
         if (reloading) yield break;
         reloading = true;
         yield return new WaitForSeconds(reloadTime);
         ammo = ammoCapacity;
+
+        // TODO: decouple this with an event
         ammoCountText.text = ammo.ToString();
+
         reloading = false;
     }
 
-    public virtual void ShootInputDown() {  }
-    public virtual void ShootInputUp() {  }
-
-
-    public virtual void ConsumeAmmo() {
+    private void ConsumeAmmo() {
         ammo -= 1;
         ammoCountText.text = ammo.ToString();
         if (ammo <= 0)

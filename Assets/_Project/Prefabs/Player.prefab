@@ -933,8 +933,8 @@ MonoBehaviour:
   damage: 30
   ammo: 30
   ammoCapacity: 30
-  shootInterval: 0.2
-  reloadTime: 1
+  roundsPerMinute: 40
+  reloadTime: 4
   canShoot: 1
   isFullAuto: 1
   reloading: 0

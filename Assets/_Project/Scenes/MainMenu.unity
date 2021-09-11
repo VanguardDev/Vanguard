@@ -566,7 +566,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1280, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -641,7 +641,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4a85f5543d87c4fb3842f1bf7ea2fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPanel: {fileID: 1868221921}
+  panels:
+  - {fileID: 1868221921}
+  - {fileID: 725510962}
 --- !u!4 &1966462723
 Transform:
   m_ObjectHideFlags: 0
@@ -691,6 +693,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1966462722}
+    - target: {fileID: 879517910291132865, guid: fb9332634958a5046884278af5465435, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangePanel
+      objectReference: {fileID: 0}
     - target: {fileID: 879517910291132865, guid: fb9332634958a5046884278af5465435, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 

@@ -11,23 +11,16 @@ namespace Vanguard
         public Transform ShootingPoint;
         private PlayerGunManager gunManager;
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             gunManager = GetComponentInParent<PlayerGunManager>();
         }
-        public override void Shoot()
-        {
-            if (ammo > 0 && canShoot && !reloading)
-            {
-                base.Shoot();
-                gunManager.CmdShootCommand(transform.position, transform.rotation, damage);
-                ConsumeAmmo();
-            }
-        }
 
-        public override void ShootInputDown()
+        protected override void Shoot()
         {
-            Shoot();
+            base.Shoot();
+            gunManager.CmdShootCommand(transform.position, transform.rotation, damage);
         }
     }
 }
