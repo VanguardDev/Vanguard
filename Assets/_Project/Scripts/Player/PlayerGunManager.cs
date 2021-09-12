@@ -49,7 +49,6 @@ namespace Vanguard
         [Command]
         public void CmdShootCommand(Vector3 Position, Quaternion Rotation, int Damage)
         {
-            // GameObject projectileObject = Instantiate(projectilePrefab, Position, Rotation);
             GameObject projectileObject = objectPooling.GetFromPool(Position, Rotation);
             projectileObject.GetComponent<Projectile>().playerWhoShoot = gameObject;
             projectileObject.GetComponent<Projectile>().damage = Damage;

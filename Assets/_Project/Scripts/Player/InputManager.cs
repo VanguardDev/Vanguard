@@ -43,6 +43,11 @@ namespace Vanguard
             _instance = this;
         }
 
+        public static void SwitchActionMap(string ActionMap)
+        {
+            _instance.playerInput.SwitchCurrentActionMap(ActionMap);
+        }
+
         public static void EnableControls()
         {
             _instance.playerInput.ActivateInput();

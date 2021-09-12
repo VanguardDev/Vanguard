@@ -27,12 +27,15 @@ public class FirstPersonLook : NetworkBehaviour
         {
             cam.enabled = false;
         }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     void Update()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-
+        
         if (!isLocalPlayer)
         {
             return;
