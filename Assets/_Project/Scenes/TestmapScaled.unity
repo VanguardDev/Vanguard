@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 561657154}
-  m_IndirectSpecularColor: {r: 0.2430689, g: 0.35367632, b: 0.5186313, a: 1}
+  m_IndirectSpecularColor: {r: 0.24306756, g: 0.3536744, b: 0.51862735, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -177,6 +177,8 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 8203581229785904781, guid: 06852801e0b52164aa90fd853a87c64a, type: 3}
+  - {fileID: 2905929833826866977, guid: fbfe151e2a44fef42a90adf5e1724380, type: 3}
+  - {fileID: 5021451513264823200, guid: a5d41a8640c0cd640a0122b09045bf1d, type: 3}
   ServerName: My Server
   ServerPublicPort: 7777
   UpdateServerPeriodically: 1
@@ -194,6 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Port: 7777
+  DualMode: 1
   NoDelay: 1
   Interval: 10
   Timeout: 10000
@@ -201,6 +204,7 @@ MonoBehaviour:
   CongestionWindow: 0
   SendWindowSize: 4096
   ReceiveWindowSize: 4096
+  NonAlloc: 1
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0
@@ -528,6 +532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Port: 7777
+  DualMode: 1
   NoDelay: 1
   Interval: 10
   Timeout: 10000
@@ -535,6 +540,7 @@ MonoBehaviour:
   CongestionWindow: 0
   SendWindowSize: 4096
   ReceiveWindowSize: 4096
+  NonAlloc: 1
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0
