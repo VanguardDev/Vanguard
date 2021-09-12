@@ -37,7 +37,7 @@ namespace Vanguard
                 weapon.ShootInputUp();
             if (Input.GetKeyDown(KeyCode.R)) weapon.ReloadInputUpdate();
         }
-        [Server]
+        [Command]
         public void CmdShootCommand(Vector3 Position, Quaternion Rotation, int Damage)
         {
             GameObject projectileObject = Instantiate(projectilePrefab, Position, Rotation);
