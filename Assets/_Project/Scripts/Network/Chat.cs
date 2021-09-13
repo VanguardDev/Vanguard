@@ -18,8 +18,6 @@ namespace Vanguard
             if (!isLocalPlayer)
             {
                 chatText.gameObject.SetActive(false);
-                enabled = false;
-
             }
             mask = chatText.GetComponentInParent<RectMask2D>();
             Name = GetComponent<Health>().name;
@@ -52,7 +50,6 @@ namespace Vanguard
         [ClientRpc]
         public void RpcReceiveMessage(string incomingMessage)
         {
-            if (isLocalPlayer) 
                 chatText.text += incomingMessage;
            
         }
