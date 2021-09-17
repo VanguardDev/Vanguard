@@ -1736,20 +1736,14 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 1
-  sendInterval: 0.05
-  syncPosition: 1
-  syncRotation: 1
-  syncScale: 1
+  localPositionSensitivity: 0.01
+  localRotationSensitivity: 0.01
+  localScaleSensitivity: 0.01
+  compressRotation: 0
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 1
-  bufferTimeMultiplier: 3
-  bufferSizeLimit: 64
-  catchupThreshold: 6
-  catchupMultiplier: 0.1
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  syncScale: 1
   target: {fileID: 7723995026949668498}
 --- !u!114 &7038860083430813797
 MonoBehaviour:
@@ -1999,8 +1993,8 @@ MonoBehaviour:
     m_ActionName: Vanguard (Pilot)/Reload[/Keyboard/r]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2367876348169414525}
-        m_TargetAssemblyTypeName: Vanguard.Chat, Assembly-CSharp
+      - m_Target: {fileID: 7460632567302527554}
+        m_TargetAssemblyTypeName: Vanguard.InputManager, Assembly-CSharp
         m_MethodName: OnChatInput
         m_Mode: 0
         m_Arguments:
@@ -2015,8 +2009,8 @@ MonoBehaviour:
     m_ActionName: Vanguard (Pilot)/Open Chat[/Keyboard/y]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2367876348169414525}
-        m_TargetAssemblyTypeName: Vanguard.Chat, Assembly-CSharp
+      - m_Target: {fileID: 7460632567302527554}
+        m_TargetAssemblyTypeName: Vanguard.InputManager, Assembly-CSharp
         m_MethodName: OnChatInput
         m_Mode: 0
         m_Arguments:
@@ -2049,6 +2043,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   chatText: {fileID: 9030506518810532462}
+  mask: {fileID: 109121195331875524}
 --- !u!1 &7973584731485713676
 GameObject:
   m_ObjectHideFlags: 0

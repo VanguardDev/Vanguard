@@ -32,9 +32,11 @@ namespace Vanguard
         RaycastHit rayHit;
         public void FixedUpdate()
         {
-            Ray ray = new Ray(lastPos, (transform.position - lastPos).normalized);
+            Vector3 travelledVector = (transform.position - lastPos);
+            Ray ray = new Ray(lastPos, travelledVector.normalized);
             lastPos = transform.position;
-
+            raycastRange = travelledVector.magnitude;
+            
             if (Physics.Raycast(ray, out rayHit, raycastRange))
             {
                 if (rayHit.collider.gameObject == playerWhoShoot) return;

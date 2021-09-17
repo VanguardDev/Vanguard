@@ -8,8 +8,10 @@ namespace Vanguard
         private GameObject projectilePrefab;
         private Transform shootingPoint;
         private ObjectPooling objectPooling;
+
         void Start()
         {
+            // Todo set this is editor, `FindObjectOfType` can be very expensive
             objectPooling = FindObjectOfType<ObjectPooling>();
             weapon = GetComponentInChildren<Weapon>();
             if (!isLocalPlayer)

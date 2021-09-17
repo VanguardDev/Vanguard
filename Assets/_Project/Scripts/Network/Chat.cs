@@ -11,7 +11,7 @@ namespace Vanguard
         string Message,Name;
         public Text chatText;
         bool onChat = false;
-        RectMask2D mask;
+        [SerializeField] RectMask2D mask;
 
         public void Start()
         {
@@ -19,40 +19,44 @@ namespace Vanguard
             {
                 chatText.gameObject.SetActive(false);
             }
-            mask = chatText.GetComponentInParent<RectMask2D>();
-            Name = GetComponent<Health>().name;
+            else
+            {
+                InputManager.OnChat += OnChatInput;
+                Name = GetComponent<Health>().name;
+            }
+
+            // Set the remote player's chatText to the local chatText, that way incoming chats
+            // will be added to the local player's feed
             chatText = NetworkClient.localPlayer.GetComponent<Chat>().chatText;
         }
-        public void OnChatInput(InputAction.CallbackContext context)
+
+        public void OnChatInput()
         {
-            if (context.performed)
+            print("in input"+ onChat);
+            if (!onChat)
             {
-                print("in input"+ onChat);
-                if (!onChat)
-                {
-                    Cursor.lockState = CursorLockMode.None;
-                    mask.enabled = false;
-                    onChat = true;
-                    InputManager.SwitchActionMap("Chat");
-                }
-                else
-                {
-                    Cursor.lockState = CursorLockMode.Locked;
-                    mask.enabled = true;
-                    onChat = false;
-                    InputManager.SwitchActionMap("Vanguard (Pilot)");
-                    Debug.Log(Message);
-                    if (Message != "") CmdSendMessage(Name + Message+ "\n");
-                }
+                Cursor.lockState = CursorLockMode.None;
+                mask.enabled = false;
+                onChat = true;
+                InputManager.SwitchActionMap("Chat");
             }
-            
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                mask.enabled = true;
+                onChat = false;
+                InputManager.SwitchActionMap("Vanguard (Pilot)");
+                Debug.Log(Message);
+                if (Message != "") CmdSendMessage($"{Name}: {Message}\n");
+            }
         }
+
         [ClientRpc]
         public void RpcReceiveMessage(string incomingMessage)
         {
                 chatText.text += incomingMessage;
-           
         }
+
         [Command]
         public void CmdSendMessage(string outgoingMessage)
         {

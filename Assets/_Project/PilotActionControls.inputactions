@@ -225,7 +225,7 @@
                     "path": "<Keyboard>/enter",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "KeyboardMouse",
                     "action": "Chat",
                     "isComposite": false,
                     "isPartOfComposite": false
