@@ -212,8 +212,9 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   damage: 0
-  destroyAfter: 100
+  destroyAfter: 5
   raycastRange: 5
   rigidBody: {fileID: 3209555970205912902}
   speed: 65
+  isserver: 0
   playerWhoShoot: {fileID: 0}

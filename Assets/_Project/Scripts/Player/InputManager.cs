@@ -12,6 +12,7 @@ namespace Vanguard
     public class InputManager : NetworkBehaviour
     {
         private static InputManager _instance;
+
         public static Action OnJumpStarted;
         public static Action OnJumpStopped;
         public static Action OnCrouchStarted;
@@ -20,6 +21,8 @@ namespace Vanguard
         public static Action OnShootStarted;
         public static Action OnShootStopped;
         public static Action OnReloadStarted;
+
+        public static Action OnChat;
 
         public static Vector2 LookVector { get; private set; }
         public static Vector2 WalkVector { get; private set; }
@@ -41,6 +44,11 @@ namespace Vanguard
             }
 
             _instance = this;
+        }
+
+        public static void SwitchActionMap(string ActionMap)
+        {
+            _instance.playerInput.SwitchCurrentActionMap(ActionMap);
         }
 
         public static void EnableControls()
@@ -98,6 +106,14 @@ namespace Vanguard
             if (isLocalPlayer)
             {
                 OnReloadStarted?.Invoke();
+            }
+        }
+
+        public void OnChatInput(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                OnChat?.Invoke();
             }
         }
 

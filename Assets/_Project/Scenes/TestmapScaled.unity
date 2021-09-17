@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 561657154}
-  m_IndirectSpecularColor: {r: 0.2430689, g: 0.35367632, b: 0.5186313, a: 1}
+  m_IndirectSpecularColor: {r: 0.24307013, g: 0.35367772, b: 0.51863265, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -194,6 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Port: 7777
+  DualMode: 1
   NoDelay: 1
   Interval: 10
   Timeout: 10000
@@ -201,6 +202,7 @@ MonoBehaviour:
   CongestionWindow: 0
   SendWindowSize: 4096
   ReceiveWindowSize: 4096
+  NonAlloc: 1
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0
@@ -456,6 +458,7 @@ GameObject:
   - component: {fileID: 2117926593}
   - component: {fileID: 2117926592}
   - component: {fileID: 2117926595}
+  - component: {fileID: 2117926596}
   m_Layer: 0
   m_Name: MatchManager
   m_TagString: Untagged
@@ -479,8 +482,8 @@ MonoBehaviour:
   syncInterval: 0.1
   redSpawn: {fileID: 1146235244}
   blueSpawn: {fileID: 1732832771}
-  matchMaxScore: 1
-  respawnTimer: 0
+  matchMaxScore: 10
+  respawnTimer: 2
   redScoreText: {fileID: 0}
   blueScoreText: {fileID: 0}
   winScreenText: {fileID: 0}
@@ -528,6 +531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Port: 7777
+  DualMode: 1
   NoDelay: 1
   Interval: 10
   Timeout: 10000
@@ -535,9 +539,28 @@ MonoBehaviour:
   CongestionWindow: 0
   SendWindowSize: 4096
   ReceiveWindowSize: 4096
+  NonAlloc: 1
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0
+--- !u!114 &2117926596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2117926591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36bcd5ddfc7d392439ec57276d19001f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  startSize: 5
+  maxSize: 1000
+  prefab: {fileID: 8203581229785904781, guid: 06852801e0b52164aa90fd853a87c64a, type: 3}
+  currentCount: 0
 --- !u!1001 &5256730503854538222
 PrefabInstance:
   m_ObjectHideFlags: 0

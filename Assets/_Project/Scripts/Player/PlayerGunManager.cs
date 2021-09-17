@@ -1,6 +1,5 @@
 using UnityEngine;
 using Mirror;
-
 namespace Vanguard
 {
     public class PlayerGunManager : NetworkBehaviour
@@ -8,9 +7,12 @@ namespace Vanguard
         private Weapon weapon;
         private GameObject projectilePrefab;
         private Transform shootingPoint;
+        private ObjectPooling objectPooling;
 
         void Start()
         {
+            // Todo set this is editor, `FindObjectOfType` can be very expensive
+            objectPooling = FindObjectOfType<ObjectPooling>();
             weapon = GetComponentInChildren<Weapon>();
             if (!isLocalPlayer)
             {
@@ -49,10 +51,9 @@ namespace Vanguard
         [Command]
         public void CmdShootCommand(Vector3 Position, Quaternion Rotation, int Damage)
         {
-            GameObject projectileObject = Instantiate(projectilePrefab, Position, Rotation);
+            GameObject projectileObject = objectPooling.GetFromPool(Position, Rotation);
             projectileObject.GetComponent<Projectile>().playerWhoShoot = gameObject;
             projectileObject.GetComponent<Projectile>().damage = Damage;
-            NetworkServer.Spawn(projectileObject);
         }
     }
 }
