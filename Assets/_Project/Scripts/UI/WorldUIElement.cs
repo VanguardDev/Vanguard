@@ -17,14 +17,14 @@ namespace Vanguard.UI
             }
 
         }
-        public void Start()
+        public void setCamera(GameObject cam)
         {
-            camera = Camera.main.gameObject;
+            camera = cam;
         }
         // Update is called once per frame
         void Update()
         {
-            transform.LookAt(camera.transform);
+           if(camera) transform.LookAt(camera.transform);
         }
     }
 }

@@ -38,12 +38,9 @@ namespace Vanguard
             if (Physics.Raycast(ray, out rayHit, raycastRange))
             {
                 if (rayHit.collider.gameObject == playerWhoShoot) return;
-                Debug.Log(isserver);
-                if (rayHit.collider.GetComponent<Health>() && isserver)
-                {
-                    Debug.Log("hit " + rayHit.collider.gameObject.name);
-                    rayHit.collider.GetComponent<Health>().getShot(damage);
-                }
+                if (rayHit.collider.GetComponent<Health>() && isserver)rayHit.collider.GetComponent<Health>().getShot(damage);
+                
+                else if (rayHit.collider.GetComponent<TargetHealth>() && isserver)rayHit.collider.GetComponent<TargetHealth>().getShot(damage);
                 DestroySelf();
             }
 

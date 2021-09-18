@@ -31,6 +31,9 @@ namespace Vanguard
                 healthText.GetComponentInParent<Canvas>().gameObject.SetActive(false);
                 healthText = healthTextWorld;
             }
+            foreach  (Vanguard.UI.WorldUIElement  UiElement in FindObjectsOfType<Vanguard.UI.WorldUIElement>()){
+                UiElement.setCamera(GetComponentInChildren<Camera>().gameObject);
+            }
         }
         [Server]
         public void getShot(float damage)

@@ -27,6 +27,12 @@ public class Target : NetworkBehaviour
             else TargetPos = startPos;
         }
     }
-
+    [Server]
+    public void ResetTarget()
+    {
+        transform.position = startPos;
+        startPos = transform.position;
+        TargetPos = startPos + Range;
+    }
 
 }
