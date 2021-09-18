@@ -1,11 +1,10 @@
 {
   "dependencies": {
     "com.discord.game-sdk": {
-      "version": "https://github.com/HouraiTeahouse/Discord-Game-SDK.git",
+      "version": "file:C:/Users/HumN/Desktop/Discord-Game-SDK-master",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "02bb804c67b98dfb26fda79eb2bc197bdbb59403"
+      "source": "local",
+      "dependencies": {}
     },
     "com.unity.collab-proxy": {
       "version": "1.7.1",

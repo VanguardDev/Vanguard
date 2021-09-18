@@ -5,7 +5,7 @@ using UnityEngine;
 public class ConnectionInfo : MonoBehaviour
 {
     public static string ip = "projectvanguard.uk.to", name = "Name Not Set.";
-    public static int Mode=0;
+    public static int Mode=1;
     public void setIp(string ipNew)
     {
         ip = ipNew;
