@@ -9,12 +9,15 @@ namespace Vanguard
 {
     public class GrenadeManager : NetworkBehaviour
     {
-        public GameObject grenade;
+        public GameObject grenadePrefab;
         public Rigidbody playerRigdbody;
         // Start is called before the first frame update
         void Start()
         {
-
+            if (!isLocalPlayer)
+            {
+                enabled = false;
+            }
         }
 
         // Update is called once per frame
@@ -22,16 +25,16 @@ namespace Vanguard
         {
             if (Input.GetKeyUp(KeyCode.G))
             {
-                CmdThrowCommand(gameObject.transform.position + gameObject.transform.forward * 2, gameObject.transform.rotation);
+                CmdThrowCommand(gameObject.transform.position + gameObject.transform.forward * 2, gameObject.transform.rotation, playerRigdbody.velocity, Vector3.forward* grenadePrefab.GetComponent<Grenade>().nadeVelocity);
             }
         }
 
         [Command]
-        public void CmdThrowCommand(Vector3 Position, Quaternion Rotation)
+        public void CmdThrowCommand(Vector3 Position, Quaternion Rotation, Vector3 playerVelocity, Vector3 grenadeForce)
         {
-            GameObject grenadeObject = Instantiate(grenade, Position, Rotation);
-            grenadeObject.GetComponent<Rigidbody>().velocity = playerRigdbody.velocity;
-            grenadeObject.GetComponent<Rigidbody>().AddRelativeForce(0, 0, grenadeObject.GetComponent<Grenade>().nadeVelocity, ForceMode.VelocityChange);
+            GameObject grenadeObject = Instantiate(grenadePrefab, Position, Rotation);
+            grenadeObject.GetComponent<Rigidbody>().velocity = playerVelocity;
+            grenadeObject.GetComponent<Rigidbody>().AddRelativeForce(grenadeForce, ForceMode.VelocityChange);
             NetworkServer.Spawn(grenadeObject);
         }
     }

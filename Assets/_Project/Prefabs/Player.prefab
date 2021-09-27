@@ -1520,7 +1520,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  grenade: {fileID: 2905929833826866977, guid: fbfe151e2a44fef42a90adf5e1724380, type: 3}
+  grenadePrefab: {fileID: 2905929833826866977, guid: fbfe151e2a44fef42a90adf5e1724380, type: 3}
   playerRigdbody: {fileID: 7723995027383627337}
 --- !u!1 &7973584731485713676
 GameObject:
