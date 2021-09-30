@@ -25,16 +25,15 @@ namespace Vanguard
         {
             if (Input.GetKeyUp(KeyCode.G))
             {
-                CmdThrowCommand(gameObject.transform.position + gameObject.transform.forward * 2, gameObject.transform.rotation, playerRigdbody.velocity, Vector3.forward* grenadePrefab.GetComponent<Grenade>().nadeVelocity);
+                CmdThrowCommand(gameObject.transform.position + gameObject.transform.forward * 2, gameObject.transform.rotation, playerRigdbody.velocity);
             }
         }
 
         [Command]
-        public void CmdThrowCommand(Vector3 Position, Quaternion Rotation, Vector3 playerVelocity, Vector3 grenadeForce)
+        public void CmdThrowCommand(Vector3 Position, Quaternion Rotation, Vector3 playerVelocity)
         {
             GameObject grenadeObject = Instantiate(grenadePrefab, Position, Rotation);
-            grenadeObject.GetComponent<Rigidbody>().velocity = playerVelocity;
-            grenadeObject.GetComponent<Rigidbody>().AddRelativeForce(grenadeForce, ForceMode.VelocityChange);
+            grenadeObject.GetComponent<Rigidbody>().AddForce(playerVelocity, ForceMode.VelocityChange);
             NetworkServer.Spawn(grenadeObject);
         }
     }

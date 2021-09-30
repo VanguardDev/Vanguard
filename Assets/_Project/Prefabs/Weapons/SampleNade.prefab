@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5559996849371897209}
   - component: {fileID: 3638636568613421156}
   - component: {fileID: 470031946160205701}
-  - component: {fileID: 3028553613435061997}
+  - component: {fileID: 5520978400039083918}
   m_Layer: 0
   m_Name: SampleNade
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 2905929833826866977}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.3475776, y: 3.11, z: -9.29}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -112,10 +112,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e34cc9f4ad1f79498fb6440aa4b2115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   nadeLife: 5
   particleSystem: {fileID: 5021451513264823200, guid: a5d41a8640c0cd640a0122b09045bf1d, type: 3}
   rb: {fileID: 3638636568613421156}
-  nadeVelocity: 20
+  nadeVelocity: 10
 --- !u!54 &3638636568613421156
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -149,7 +151,7 @@ MonoBehaviour:
   visible: 0
   m_AssetId: fbfe151e2a44fef42a90adf5e1724380
   hasSpawned: 0
---- !u!114 &3028553613435061997
+--- !u!114 &5520978400039083918
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,23 +160,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2905929833826866977}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f032128052c95a46afb0ddd97d994cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  target: {fileID: 3638636568613421156}
+  lerpVelocityAmount: 0.5
+  lerpPositionAmount: 0.5
   clientAuthority: 0
-  sendInterval: 0.05
-  syncPosition: 1
-  syncRotation: 1
-  syncScale: 0
-  interpolatePosition: 1
-  interpolateRotation: 1
-  interpolateScale: 1
-  bufferTimeMultiplier: 3
-  bufferSizeLimit: 64
-  catchupThreshold: 6
-  catchupMultiplier: 0.1
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
