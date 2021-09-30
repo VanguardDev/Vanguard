@@ -1,3 +1,5 @@
+<img src="logo.png" width="400">
+
 # Vanguard
 
 Vanguard is an ambitious, Titanfall-inspired, arena multiplayer game built in [Unity](https://unity.com/) using the [Mirror Multiplayer Framework](https://github.com/vis2k/Mirror).  Vanguard is still very nacent, but we are moving quickly to make it fun and playable as soon as possible.
