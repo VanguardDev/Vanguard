@@ -53,7 +53,11 @@ namespace Vanguard
             public override void Enter()
             {
                 if (context != null)
+                {
                     context.jumpCount = 0;
+                    context.CmdChangeState("idle");
+                }
+                
             }
 
             public override void PhysicsUpdate()
@@ -96,6 +100,7 @@ namespace Vanguard
                 {
                     context = prevState.Context;
                     initialLateralVelocity = Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1));
+                    context.CmdChangeState("falling");
                 }
             }
 
@@ -239,6 +244,7 @@ namespace Vanguard
                 {
                     context = prevState.Context;
                     context.jumpCount = 0;
+                    context.CmdChangeState("walking");
                 }
             }
 
@@ -280,6 +286,7 @@ namespace Vanguard
                 if (prevState != null)
                 {
                     context = prevState.Context;
+                    context.CmdChangeState("sliding");
                     context.jumpCount = 0;
                 }
                 Debug.Log("Slide");

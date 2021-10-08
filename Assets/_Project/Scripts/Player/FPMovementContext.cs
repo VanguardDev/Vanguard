@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
 namespace Vanguard
 {
     using Vanguard.Extensions;
 
-    public class FPMovementContext : MonoBehaviour
+    public class FPMovementContext : NetworkBehaviour
     {
         [Header("Walk Settings")]
         public float walkSpeed = 8f;
@@ -34,6 +35,8 @@ namespace Vanguard
         // public float wallrunMinVelocity = 3.53333f;
 
         private FPMovementState state;
+        private Animator animator;
+        [SyncVar(hook = "OnStateChange")] string sState;//idk what to call it
         [HideInInspector]
         public FPMovementState State {
             get { return state; }
@@ -65,6 +68,7 @@ namespace Vanguard
         public bool IsJumping;
 
         public void Start() {
+            animator = GetComponentInChildren<Animator>();
             var initialState = new FPMovementState.FPIdleState();
             initialState.Context = this;
             initialState.Enter();
@@ -147,7 +151,33 @@ namespace Vanguard
                 Debug.Log(wallHit.normal.y);
             return retval && wallrunEnabled && Mathf.Abs(wallHit.normal.y) < 0.1f;// && Mathf.Abs(Vector3.Dot(Vector3.Cross(wallHit.normal, Vector3.up), transform.forward)) > 0.3f;
         }
-
+        public void OnStateChange(string oldState,string newState)//idk how to do this properly so this is a placeholder
+        {
+            Debug.Log("new state is " + sState);
+            if (sState == "idle")
+            {
+                animator.SetFloat("Speed", 0);
+                animator.SetBool("Crouching", false);
+                animator.SetBool("Sliding", false);
+            }
+            else if (sState == "walking")
+            {
+                animator.SetFloat("Speed", 1);
+                animator.SetBool("Crouching", false);
+                animator.SetBool("Sliding", false);
+            }
+            else if (sState == "sliding")
+            {
+                animator.SetFloat("Speed", 1);
+                animator.SetBool("Crouching", true);
+                animator.SetBool("Sliding", true);
+            }
+        }
+        [Command]
+        public void CmdChangeState(string newState)
+        {
+            sState = newState;
+        }
         void OnGUI()
         {
             if (Application.isEditor)
