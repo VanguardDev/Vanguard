@@ -173,6 +173,7 @@ namespace Vanguard
                     if (initialLateralSpeed < context.wallrunBoostThreshold)
                         initialLateralSpeed *= context.wallrunBoost;
                     context.jumpCount = 0;
+                    context.CmdChangeState("wallrunning");
                 }
             }
 

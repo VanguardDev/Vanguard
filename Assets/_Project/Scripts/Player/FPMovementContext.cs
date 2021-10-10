@@ -159,18 +159,28 @@ namespace Vanguard
                 animator.SetFloat("Speed", 0);
                 animator.SetBool("Crouching", false);
                 animator.SetBool("Sliding", false);
+                animator.SetBool("Wallrunning", false);
             }
             else if (sState == "walking")
             {
                 animator.SetFloat("Speed", 1);
                 animator.SetBool("Crouching", false);
                 animator.SetBool("Sliding", false);
+                animator.SetBool("Wallrunning", false);
             }
             else if (sState == "sliding")
             {
                 animator.SetFloat("Speed", 1);
                 animator.SetBool("Crouching", true);
                 animator.SetBool("Sliding", true);
+                animator.SetBool("Wallrunning", false);
+            }
+            else if (sState == "wallrunning")
+            {
+                animator.SetFloat("Speed", 0);
+                animator.SetBool("Crouching", false);
+                animator.SetBool("Sliding", false);
+                animator.SetBool("Wallrunning", true);
             }
         }
         [Command]
