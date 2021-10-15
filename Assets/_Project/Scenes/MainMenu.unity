@@ -945,9 +945,53 @@ PrefabInstance:
     m_TransformParent: {fileID: 1753138714}
     m_Modifications:
     - target: {fileID: 2202815201690067466, guid: 147ced0a9e723ea44a724ea04ada715e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2202815201690067466, guid: 147ced0a9e723ea44a724ea04ada715e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2202815201690067466, guid: 147ced0a9e723ea44a724ea04ada715e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2202815201690067466, guid: 147ced0a9e723ea44a724ea04ada715e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 1966462726}
+    - target: {fileID: 2202815201690067466, guid: 147ced0a9e723ea44a724ea04ada715e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
       objectReference: {fileID: 1966462724}
+    - target: {fileID: 2202815201690067466, guid: 147ced0a9e723ea44a724ea04ada715e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2202815201690067466, guid: 147ced0a9e723ea44a724ea04ada715e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: setClient
+      objectReference: {fileID: 0}
+    - target: {fileID: 2202815201690067466, guid: 147ced0a9e723ea44a724ea04ada715e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 2202815201690067466, guid: 147ced0a9e723ea44a724ea04ada715e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ConnectionInfo, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2202815201690067466, guid: 147ced0a9e723ea44a724ea04ada715e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SceneController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2202815201690067466, guid: 147ced0a9e723ea44a724ea04ada715e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: TestmapScaled
+      objectReference: {fileID: 0}
+    - target: {fileID: 2202815201690067466, guid: 147ced0a9e723ea44a724ea04ada715e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2202815201989452170, guid: 147ced0a9e723ea44a724ea04ada715e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
