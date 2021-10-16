@@ -145,8 +145,19 @@ namespace Vanguard
 
 
         public bool WallCheck() {
-            bool retval = Physics.Raycast(transform.position, transform.right, out wallHit, Collider.radius + 0.9f) ||
-                          Physics.Raycast(transform.position, -transform.right, out wallHit, Collider.radius + 0.9f);
+            bool retval=false ;
+            if (Physics.Raycast(transform.position, transform.right, out wallHit, Collider.radius + 0.9f))
+            {
+                retval = true;
+                animator.SetBool("WallrunningRight", true);
+            }
+            else if(Physics.Raycast(transform.position, -transform.right, out wallHit, Collider.radius + 0.9f))
+            {
+                retval = true;
+                animator.SetBool("WallrunningRight", false);
+            }
+                
+                          
             if (retval)
                 Debug.Log(wallHit.normal.y);
             return retval && wallrunEnabled && Mathf.Abs(wallHit.normal.y) < 0.1f;// && Mathf.Abs(Vector3.Dot(Vector3.Cross(wallHit.normal, Vector3.up), transform.forward)) > 0.3f;
