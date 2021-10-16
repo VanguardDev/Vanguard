@@ -36,7 +36,6 @@ namespace Vanguard
 
         private FPMovementState state;
         private Animator animator;
-        [SyncVar(hook = "OnStateChange")] string sState;//idk what to call it
         [HideInInspector]
         public FPMovementState State {
             get { return state; }
@@ -162,42 +161,37 @@ namespace Vanguard
                 Debug.Log(wallHit.normal.y);
             return retval && wallrunEnabled && Mathf.Abs(wallHit.normal.y) < 0.1f;// && Mathf.Abs(Vector3.Dot(Vector3.Cross(wallHit.normal, Vector3.up), transform.forward)) > 0.3f;
         }
-        public void OnStateChange(string oldState,string newState)//idk how to do this properly so this is a placeholder
+        public void CmdChangeState(string newState)
         {
-            Debug.Log("new state is " + sState);
-            if (sState == "idle")
+            Debug.Log("new state is " + newState);
+            if (newState == "idle")
             {
                 animator.SetFloat("Speed", 0);
                 animator.SetBool("Crouching", false);
                 animator.SetBool("Sliding", false);
                 animator.SetBool("Wallrunning", false);
             }
-            else if (sState == "walking")
+            else if (newState == "walking")
             {
                 animator.SetFloat("Speed", 1);
                 animator.SetBool("Crouching", false);
                 animator.SetBool("Sliding", false);
                 animator.SetBool("Wallrunning", false);
             }
-            else if (sState == "sliding")
+            else if (newState == "sliding")
             {
                 animator.SetFloat("Speed", 1);
                 animator.SetBool("Crouching", true);
                 animator.SetBool("Sliding", true);
                 animator.SetBool("Wallrunning", false);
             }
-            else if (sState == "wallrunning")
+            else if (newState == "wallrunning")
             {
                 animator.SetFloat("Speed", 0);
                 animator.SetBool("Crouching", false);
                 animator.SetBool("Sliding", false);
                 animator.SetBool("Wallrunning", true);
             }
-        }
-        [Command]
-        public void CmdChangeState(string newState)
-        {
-            sState = newState;
         }
         void OnGUI()
         {

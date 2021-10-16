@@ -395,7 +395,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 1
     m_Controller: {fileID: 0}
-  - m_Name: WallrunnningRight
+  - m_Name: WallrunningRight
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -588,7 +588,7 @@ AnimatorState:
   m_Motion: {fileID: -203655887218126122, guid: e446675d1fb77e044aa35e3494469e86, type: 3}
   m_Tag: 
   m_SpeedParameter: 
-  m_MirrorParameter: WallrunnningRight
+  m_MirrorParameter: WallrunningRight
   m_CycleOffsetParameter: Speed
   m_TimeParameter: 
 --- !u!1101 &3698345079367639341
