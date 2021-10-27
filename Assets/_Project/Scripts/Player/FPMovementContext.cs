@@ -170,6 +170,7 @@ namespace Vanguard
                 animator.SetBool("Crouching", false);
                 animator.SetBool("Sliding", false);
                 animator.SetBool("Wallrunning", false);
+                animator.SetBool("Falling", false);
             }
             else if (newState == "walking")
             {
@@ -177,6 +178,7 @@ namespace Vanguard
                 animator.SetBool("Crouching", false);
                 animator.SetBool("Sliding", false);
                 animator.SetBool("Wallrunning", false);
+                animator.SetBool("Falling", false);
             }
             else if (newState == "sliding")
             {
@@ -184,6 +186,7 @@ namespace Vanguard
                 animator.SetBool("Crouching", true);
                 animator.SetBool("Sliding", true);
                 animator.SetBool("Wallrunning", false);
+                animator.SetBool("Falling", false);
             }
             else if (newState == "wallrunning")
             {
@@ -191,6 +194,15 @@ namespace Vanguard
                 animator.SetBool("Crouching", false);
                 animator.SetBool("Sliding", false);
                 animator.SetBool("Wallrunning", true);
+                animator.SetBool("Falling", false);
+            }
+            else if (newState == "falling")
+            {
+                animator.SetFloat("Speed", 0);
+                animator.SetBool("Crouching", false);
+                animator.SetBool("Sliding", false);
+                animator.SetBool("Wallrunning", false);
+                animator.SetBool("Falling", true);
             }
         }
         void OnGUI()

@@ -46,7 +46,7 @@ namespace Vanguard
         [ClientRpc]
         public void RpcDisablePlayer(Health player)
         {
-            player.GetComponent<MeshRenderer>().enabled = false;
+            player.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
             player.GetComponent<CapsuleCollider>().enabled = false;
             if (player.isLocalPlayer)
             {
@@ -58,7 +58,7 @@ namespace Vanguard
         [ClientRpc]
         public void RpcEnablePlayer(Health player)
         {
-            player.GetComponent<MeshRenderer>().enabled = true;
+            player.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
             player.GetComponent<CapsuleCollider>().enabled = true;
             player.nameText.text = player.name;
             if (player.isLocalPlayer)

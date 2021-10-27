@@ -44,8 +44,8 @@ namespace Vanguard
         }
         public void setTeamColor(int oldteam, int newteam)
         {
-            if (newteam == 1) GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
-            else GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+            if (newteam == 1) GetComponentInChildren<SkinnedMeshRenderer>().material.color = Color.blue;
+            else GetComponentInChildren<SkinnedMeshRenderer>().material.color = Color.red;
         }
         //need to make networktransform not client authorized so this line function doesnt need to exsist
         [ClientRpc]
