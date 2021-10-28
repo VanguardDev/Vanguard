@@ -4999,8 +4999,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5961502210726498548}
   - component: {fileID: 5961502210735603282}
-  - component: {fileID: 954969513787514114}
-  - component: {fileID: 5695233158282187135}
   m_Layer: 0
   m_Name: unitychan
   m_TagString: Untagged
@@ -5043,39 +5041,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &954969513787514114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5961502210726071508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  serverOnly: 0
-  visible: 0
-  m_AssetId: 8f79257c56677dd4bb39a8a7c90e53b9
-  hasSpawned: 0
---- !u!114 &5695233158282187135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5961502210726071508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 0
-  animator: {fileID: 5961502210735603282}
 --- !u!1 &5961502210726071510
 GameObject:
   m_ObjectHideFlags: 0
@@ -8967,7 +8932,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 1
-  animator: {fileID: 0}
+  animator: {fileID: 5961502210735603282}
 --- !u!1 &7973584731485713676
 GameObject:
   m_ObjectHideFlags: 0
