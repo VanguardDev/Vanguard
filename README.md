@@ -14,7 +14,7 @@ We don't have any official builds released yet, so if you want to test the game 
 
 1. Download or clone the repo
 2. Open the root of the repo in the [Unity Hub](https://unity3d.com/get-unity/download?_gl=1*1tvp0xz*_ga*OTkxODcxMzkyLjE2MjgyMzE5OTQ.*_ga_1S78EFL1W5*MTYyODQwOTY5OC40LjAuMTYyODQwOTY5OC42MA..&_ga=2.13935924.260475146.1628369466-991871392.1628231994).  The project will give you an error while opening, citing compilation errors
-3. Open the project in safe mode, then add the [Unity Chan Model Unity Asset Package] (https://assetstore.unity.com/packages/3d/characters/unity-chan-model-18705)
+3. Download the art folder  and put it under Vanguard (the folder) [art folder] (https://drive.google.com/drive/folders/1YRscRKcoFtMpUpPx9jEP30qOfofz4mBY?usp=sharing)
 4. Then add the [Mirror Unity Asset Package](https://assetstore.unity.com/packages/tools/network/mirror-129321).  The asset package is free, but they have not published a UPM package so it still must be installed manually (DevOps contributions for automation welcome!)
 5. Once the import for Mirror has finished, you can exit safe mode and open the project
 6. Click ParrelSync->Clones Manager in the toolbar at the top of the window
