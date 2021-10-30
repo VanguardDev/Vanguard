@@ -28,10 +28,11 @@ namespace Vanguard
                 healthTextWorld.text = "";
                 CmdSetName(name);
                 GunModel.SetParent(GetComponentInChildren<Weapon>().transform);
-                foreach (SkinnedMeshRenderer meshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>()) meshRenderer.enabled = false;
-                foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
-                foreach (MeshRenderer meshRenderer in GunModel.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = true;
-                GetComponentInChildren<Animator>().enabled = false;
+                //foreach (SkinnedMeshRenderer meshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>()) meshRenderer.enabled = false;
+                //foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
+                //foreach (MeshRenderer meshRenderer in GunModel.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = true;
+                
+                //GetComponentInChildren<Animator>().enabled = false;
                 
             }
             else
