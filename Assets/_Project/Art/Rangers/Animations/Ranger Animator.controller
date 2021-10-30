@@ -282,13 +282,13 @@ AnimatorState:
   m_WriteDefaultValues: 1
   m_Mirror: 0
   m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
+  m_MirrorParameterActive: 1
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: -203655887218126122, guid: 973b4520196833449961b62dadaecbe3, type: 3}
   m_Tag: 
   m_SpeedParameter: 
-  m_MirrorParameter: 
+  m_MirrorParameter: WallrunningRight
   m_CycleOffsetParameter: 
   m_TimeParameter: 
 --- !u!1101 &-2172976421493144466
@@ -444,7 +444,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ethan Animator
+  m_Name: Ranger Animator
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Speed
@@ -1033,13 +1033,13 @@ AnimatorState:
   m_WriteDefaultValues: 1
   m_Mirror: 0
   m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
+  m_MirrorParameterActive: 1
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: -203655887218126122, guid: 13834a24f88b3cb4aabdf5af85895c5c, type: 3}
   m_Tag: 
   m_SpeedParameter: 
-  m_MirrorParameter: 
+  m_MirrorParameter: WallrunningRight
   m_CycleOffsetParameter: 
   m_TimeParameter: 
 --- !u!1101 &8530176561311258154
@@ -1087,9 +1087,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.3670695
   m_TransitionOffset: 0
-  m_ExitTime: 0.64285725
+  m_ExitTime: 0.6428573
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

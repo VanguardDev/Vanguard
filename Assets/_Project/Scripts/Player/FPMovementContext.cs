@@ -35,7 +35,6 @@ namespace Vanguard
         // public float wallrunMinVelocity = 3.53333f;
 
         private FPMovementState state;
-        private Animator animator;
         [HideInInspector]
         public FPMovementState State {
             get { return state; }
@@ -65,9 +64,10 @@ namespace Vanguard
         public bool IsCrouching { get; private set; }
         [HideInInspector]
         public bool IsJumping;
-
+        [HideInInspector]
+        public AnimationManager animationManager;
         public void Start() {
-            animator = GetComponentInChildren<Animator>();
+            animationManager = GetComponent<AnimationManager>();
             var initialState = new FPMovementState.FPIdleState();
             initialState.Context = this;
             initialState.Enter();
@@ -148,12 +148,12 @@ namespace Vanguard
             if (Physics.Raycast(transform.position, transform.right, out wallHit, Collider.radius + 0.9f))
             {
                 retval = true;
-                animator.SetBool("WallrunningRight", true);
+                animationManager.animator.SetBool("WallrunningRight", true);
             }
             else if(Physics.Raycast(transform.position, -transform.right, out wallHit, Collider.radius + 0.9f))
             {
                 retval = true;
-                animator.SetBool("WallrunningRight", false);
+                animationManager.animator.SetBool("WallrunningRight", false);
             }
                 
                           
@@ -161,50 +161,7 @@ namespace Vanguard
                 Debug.Log(wallHit.normal.y);
             return retval && wallrunEnabled && Mathf.Abs(wallHit.normal.y) < 0.1f;// && Mathf.Abs(Vector3.Dot(Vector3.Cross(wallHit.normal, Vector3.up), transform.forward)) > 0.3f;
         }
-        public void CmdChangeState(string newState)
-        {
-            Debug.Log("new state is " + newState);
-            if (newState == "idle")
-            {
-                animator.SetFloat("Speed", 0);
-                animator.SetBool("Crouching", false);
-                animator.SetBool("Sliding", false);
-                animator.SetBool("Wallrunning", false);
-                animator.SetBool("Falling", false);
-            }
-            else if (newState == "walking")
-            {
-                animator.SetFloat("Speed", 1);
-                animator.SetBool("Crouching", false);
-                animator.SetBool("Sliding", false);
-                animator.SetBool("Wallrunning", false);
-                animator.SetBool("Falling", false);
-            }
-            else if (newState == "sliding")
-            {
-                animator.SetFloat("Speed", 1);
-                animator.SetBool("Crouching", true);
-                animator.SetBool("Sliding", true);
-                animator.SetBool("Wallrunning", false);
-                animator.SetBool("Falling", false);
-            }
-            else if (newState == "wallrunning")
-            {
-                animator.SetFloat("Speed", 0);
-                animator.SetBool("Crouching", false);
-                animator.SetBool("Sliding", false);
-                animator.SetBool("Wallrunning", true);
-                animator.SetBool("Falling", false);
-            }
-            else if (newState == "falling")
-            {
-                animator.SetFloat("Speed", 0);
-                animator.SetBool("Crouching", false);
-                animator.SetBool("Sliding", false);
-                animator.SetBool("Wallrunning", false);
-                animator.SetBool("Falling", true);
-            }
-        }
+        
         void OnGUI()
         {
             if (Application.isEditor)
