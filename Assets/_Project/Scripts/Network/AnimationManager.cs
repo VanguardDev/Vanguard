@@ -2,53 +2,61 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-
-public class AnimationManager : NetworkBehaviour
-{
-    
-    public Animator animator;
-    public void ChangeState(string newState)
+namespace Vanguard {
+    public class AnimationManager : NetworkBehaviour
     {
-        Debug.Log("new state is " + newState);
-        if (newState == "idle")
+
+        public Animator animator;
+        public void ChangeState(string newState)
         {
-            animator.SetFloat("Speed", 0);
-            animator.SetBool("Crouching", false);
-            animator.SetBool("Sliding", false);
-            animator.SetBool("Wallrunning", false);
-            animator.SetBool("Falling", false);
+            Debug.Log("new state is " + newState);
+            if (newState == "idle")
+            {
+                animator.SetFloat("Speed", 0);
+                animator.SetBool("Crouching", false);
+                animator.SetBool("Sliding", false);
+                animator.SetBool("Wallrunning", false);
+                animator.SetBool("Falling", false);
+            }
+            else if (newState == "walking")
+            {
+                animator.SetFloat("Speed", 1);
+                animator.SetBool("Crouching", false);
+                animator.SetBool("Sliding", false);
+                animator.SetBool("Wallrunning", false);
+                animator.SetBool("Falling", false);
+            }
+            else if (newState == "sliding")
+            {
+                animator.SetFloat("Speed", 1);
+                animator.SetBool("Crouching", true);
+                animator.SetBool("Sliding", true);
+                animator.SetBool("Wallrunning", false);
+                animator.SetBool("Falling", false);
+            }
+            else if (newState == "wallrunning")
+            {
+                animator.SetFloat("Speed", 0);
+                animator.SetBool("Crouching", false);
+                animator.SetBool("Sliding", false);
+                animator.SetBool("Wallrunning", true);
+                animator.SetBool("Falling", false);
+            }
+            else if (newState == "falling")
+            {
+                animator.SetFloat("Speed", 0);
+                animator.SetBool("Crouching", false);
+                animator.SetBool("Sliding", false);
+                animator.SetBool("Wallrunning", false);
+                animator.SetBool("Falling", true);
+            }
         }
-        else if (newState == "walking")
+        float X,lerpSpeed=10f;
+        public void Update()
         {
-            animator.SetFloat("Speed", 1);
-            animator.SetBool("Crouching", false);
-            animator.SetBool("Sliding", false);
-            animator.SetBool("Wallrunning", false);
-            animator.SetBool("Falling", false);
-        }
-        else if (newState == "sliding")
-        {
-            animator.SetFloat("Speed", 1);
-            animator.SetBool("Crouching", true);
-            animator.SetBool("Sliding", true);
-            animator.SetBool("Wallrunning", false);
-            animator.SetBool("Falling", false);
-        }
-        else if (newState == "wallrunning")
-        {
-            animator.SetFloat("Speed", 0);
-            animator.SetBool("Crouching", false);
-            animator.SetBool("Sliding", false);
-            animator.SetBool("Wallrunning", true);
-            animator.SetBool("Falling", false);
-        }
-        else if (newState == "falling")
-        {
-            animator.SetFloat("Speed", 0);
-            animator.SetBool("Crouching", false);
-            animator.SetBool("Sliding", false);
-            animator.SetBool("Wallrunning", false);
-            animator.SetBool("Falling", true);
+            X = Mathf.Lerp(X, InputManager.WalkVector.x, lerpSpeed*Time.deltaTime);
+            animator.SetFloat("X", X);
+           
         }
     }
 }
