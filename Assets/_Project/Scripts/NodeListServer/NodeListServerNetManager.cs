@@ -188,7 +188,7 @@ namespace NodeListServer
         /// </summary>
         /// <param name="conn">Connection from client.</param>
         /// <param name="errorCode">Error code.</param>
-        public override void OnServerError(NetworkConnection conn, int errorCode) { }
+        public override void OnServerError(NetworkConnection conn, Exception exception ) { }
 
         #endregion
 
@@ -219,7 +219,7 @@ namespace NodeListServer
         /// </summary>
         /// <param name="conn">Connection to a server.</param>
         /// <param name="errorCode">Error code.</param>
-        public override void OnClientError(NetworkConnection conn, int errorCode) { }
+        public override void OnClientError(Exception exception) { }
 
         /// <summary>
         /// Called on clients when a servers tells the client it is no longer ready.
