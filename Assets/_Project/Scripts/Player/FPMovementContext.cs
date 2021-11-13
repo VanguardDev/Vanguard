@@ -22,15 +22,15 @@ namespace Vanguard
         public int jumpCount = 0;
 
         [Header("Wallrun Settings")]
-        public float wallrunBoost = 1.4f;
-        public float wallrunBoostThreshold = 12f;
+        public float wallrunBoost = 1.2f;
+        public float wallrunBoostThreshold = 8f;
         public float wallrunAwayBoost = 1.1f;
-        public float wallrunAwayBoostThreshold = 13f;
+        public float wallrunAwayBoostThreshold = 18f;
         public bool wallrunEnabled = true;
 
         [Header("Slide Settings")]
-        public float slideBoost = 1.2f;
-        public float slideBoostThreshold = 17;
+        public float slideBoost = 1.05f;
+        public float slideBoostThreshold = 10;
         // [HideInInspector]
         // public float wallrunMinVelocity = 3.53333f;
 

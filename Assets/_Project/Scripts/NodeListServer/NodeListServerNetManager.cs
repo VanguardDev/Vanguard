@@ -188,7 +188,7 @@ namespace NodeListServer
         /// </summary>
         /// <param name="conn">Connection from client.</param>
         /// <param name="errorCode">Error code.</param>
-        public override void OnServerError(NetworkConnection conn, int errorCode) { }
+        // public override void OnServerError(NetworkConnection conn, int errorCode) { }
 
         #endregion
 

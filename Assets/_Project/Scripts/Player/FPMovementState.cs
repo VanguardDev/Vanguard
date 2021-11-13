@@ -94,6 +94,12 @@ namespace Vanguard
         {
             Vector3 initialLateralVelocity;
             Vector3 prevInputDirection;
+
+            Vector3 walkVector;
+            float friction = 0;
+            float acceleration = 20f;
+            float maxVel = 60f;
+            float clampVel = 20;
             public FPFallState(FPMovementState prevState = null)
             {
                 if (prevState != null)
@@ -101,6 +107,9 @@ namespace Vanguard
                     context = prevState.Context;
                     initialLateralVelocity = Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1));
                     context.CmdChangeState("falling");
+                    if (Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude < clampVel) {
+                        clampVel = Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude;
+                    }
                 }
             }
 
@@ -108,8 +117,10 @@ namespace Vanguard
             {
                 Vector3 lateralVelocity = Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1));
                 Vector3 inputDirection = (context.transform.TransformDirection(
-                    new Vector3(InputManager.WalkVector.x, 0, InputManager.WalkVector.y).normalized
-                ) + (lateralVelocity.magnitude > 0.05f ? lateralVelocity : Vector3.zero).normalized * 0.3f).normalized * lateralVelocity.magnitude;
+                    new Vector3(InputManager.WalkVector.x, 0, InputManager.WalkVector.y))
+                ).normalized * lateralVelocity.magnitude;
+                if (inputDirection.magnitude == 0)
+                    inputDirection = context.Rigidbody.velocity;
                 context.Rigidbody.velocity = new Vector3(
                     inputDirection.x,
                     context.Rigidbody.velocity.y,
@@ -120,13 +131,30 @@ namespace Vanguard
 
             public override void PhysicsUpdate()
             {
-                context.Rigidbody.AddForce(-Vector3.up * context.Rigidbody.mass * 20);
-                Vector3 inputVector = context.transform.TransformDirection(new Vector3(InputManager.WalkVector.x, 0, InputManager.WalkVector.y)).normalized;
-                Vector3 vc = inputVector * 0.6f;
+                var prevVel = Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1));
+                float s = prevVel.magnitude;
+                if (s != 0) // To avoid divide by zero errors
+                {
+                    float drop = s * friction * Time.fixedDeltaTime;
+                    prevVel *= Mathf.Max(s - drop, 0) / s; // Scale the velocity based on friction.
+                }
 
-                Vector3 newVel = Vector3.ClampMagnitude(Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1)) + vc, Mathf.Max(initialLateralVelocity.magnitude, 1.4f));
+
+                Vector3 input = context.transform.TransformDirection(new Vector3(InputManager.WalkVector.x, 0, InputManager.WalkVector.y)).normalized;
+                float projVel = Vector3.Dot(prevVel, input);
+                float accel = acceleration * Time.fixedDeltaTime;
+
+                if(projVel + accel > maxVel)
+                    accel = maxVel - projVel;
+
+                var newVel = Vector3.ClampMagnitude(prevVel + input * accel, clampVel);
+                prevVel = newVel;
                 newVel.y = context.Rigidbody.velocity.y;
                 context.Rigidbody.velocity = newVel;
+                context.Rigidbody.AddForce(-Vector3.up * context.Rigidbody.mass * 20);
+                Debug.DrawLine(context.transform.position, context.transform.position + prevVel, Color.red);
+                Debug.DrawLine(context.transform.position, context.transform.position + input, Color.white);
+                Debug.DrawLine(context.transform.position + prevVel, context.transform.position + input, Color.green);
             }
 
             public override void StateChangeCheck()
@@ -162,13 +190,14 @@ namespace Vanguard
             Vector3 initialVelocity;
             float initialLateralSpeed;
             bool jumping = false;
+            float wallrunTime = 0;
             public FPWallrunState(FPMovementState prevState = null)
             {
                 if (prevState != null)
                 {
                     context = prevState.Context;
                     initialVelocity = context.Rigidbody.velocity;
-                    initialLateralSpeed = Mathf.Max(Vector3.Scale(initialVelocity, new Vector3(1, 0, 1)).magnitude, 8.3f);
+                    initialLateralSpeed = Mathf.Max(Vector3.Scale(initialVelocity, new Vector3(1, 0, 1)).magnitude, 6.5f);
 
                     if (initialLateralSpeed < context.wallrunBoostThreshold)
                         initialLateralSpeed *= context.wallrunBoost;
@@ -193,11 +222,12 @@ namespace Vanguard
                     //Debug.Log(Vector3.Dot(wallDir, context.transform.forward));
                     context.Look.targetDutch = -15 * Vector3.Dot(wallDir, context.transform.forward);
                 }
+                wallrunTime += Time.fixedDeltaTime;
             }
 
             public override void Jump()
             {
-                context.Rigidbody.velocity = (context.transform.forward + context.wallHit.normal).normalized * initialLateralSpeed * (Vector3.Scale(initialVelocity, new Vector3(1, 0, 1)).magnitude > context.wallrunAwayBoostThreshold ? 1 : context.wallrunAwayBoost);// * Vector3.Scale(initialVelocity, new Vector3(1, 0, 1)).magnitude;
+                context.Rigidbody.velocity = (context.transform.forward + context.wallHit.normal).normalized * initialLateralSpeed * (Vector3.Scale(initialVelocity, new Vector3(1, 0, 1)).magnitude > context.wallrunAwayBoostThreshold ? 1 : Mathf.Clamp(.06f*(-(wallrunTime-1)/wallrunTime), 1.04f, 2f));// * Vector3.Scale(initialVelocity, new Vector3(1, 0, 1)).magnitude;
                 jumping = true;
                 base.Jump();
                 context.BreakFromWall(0.2f);
@@ -238,7 +268,11 @@ namespace Vanguard
         /// </summary>
         public class FPWalkState : FPMovementState
         {
-            Vector3 walkVector;
+            Vector3 input;
+            Vector3 prevVel = new Vector3(0, 0, 0);
+            float friction = 5;
+            float acceleration = 50f;
+            float maxVel = 6f;
             public FPWalkState(FPMovementState prevState = null)
             {
                 if (prevState != null)
@@ -246,25 +280,52 @@ namespace Vanguard
                     context = prevState.Context;
                     context.jumpCount = 0;
                     context.CmdChangeState("walking");
+                    prevVel = Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1));
                 }
             }
 
             public override void PhysicsUpdate()
             {
-                walkVector = context.transform.TransformDirection(
-                    Vector3.Cross(new Vector3(InputManager.WalkVector.y, 0, -InputManager.WalkVector.x), context.groundHit.normal)
-                ) * context.walkSpeed;
-                walkVector.y = context.Rigidbody.velocity.y;
-                context.Rigidbody.velocity = Vector3.Lerp(context.Rigidbody.velocity, walkVector, Time.deltaTime * 10f);
+                prevVel = Vector3.Scale(prevVel, new Vector3(1, 0, 1));
+                float s = prevVel.magnitude;
+                if (s != 0) // To avoid divide by zero errors
+                {
+                    float drop = s * friction * Time.fixedDeltaTime;
+                    prevVel *= Mathf.Max(s - drop, 0) / s; // Scale the velocity based on friction.
+                }
+
+
+                input = context.transform.TransformDirection(new Vector3(InputManager.WalkVector.x, 0, InputManager.WalkVector.y)).normalized;
+                float projVel = Vector3.Dot(prevVel, input);
+                float accel = acceleration * Time.fixedDeltaTime;
+
+                if(projVel + accel > maxVel)
+                    accel = maxVel - projVel;
+
+                var newVel = prevVel + input * accel;
+                prevVel = newVel;
+                newVel.y = context.Rigidbody.velocity.y;
+                context.Rigidbody.velocity = newVel;
+                Debug.DrawLine(context.transform.position, context.transform.position + prevVel, Color.red);
+                Debug.DrawLine(context.transform.position, context.transform.position + input, Color.white);
+                Debug.DrawLine(context.transform.position + prevVel, context.transform.position + input, Color.green);
+                // Debug.DrawLine(transform.position, transform.position + prevVel, Color.red);
+                // Debug.DrawLine(transform.position, transform.position + new Vector3(input.x, 0, input.y), Color.white);
+                // Debug.DrawLine(transform.position + prevVel, transform.position + new Vector3(input.x, 0, input.y), Color.green);
+                // walkVector = context.transform.TransformDirection(
+                //     Vector3.Cross(new Vector3(InputManager.WalkVector.y, 0, -InputManager.WalkVector.x), context.groundHit.normal)
+                // ) * context.walkSpeed;
+                // walkVector.y = context.Rigidbody.velocity.y;
+                // context.Rigidbody.velocity = Vector3.Lerp(context.Rigidbody.velocity, walkVector, Time.deltaTime * 10f);
             }
 
             public override void StateChangeCheck()
             {
                 if (context.GroundCheck())
                 {
-                    if (walkVector.magnitude < 0.02f)
-                        context.State = new FPIdleState(this);
-                    else if (context.IsCrouching)
+                    // if (input.magnitude < 0.02f)
+                    //     context.State = new FPIdleState(this);
+                    if (context.IsCrouching)
                         context.State = new FPSlideState(this);
                 }
                 else
@@ -292,21 +353,22 @@ namespace Vanguard
                 }
                 Debug.Log("Slide");
 
-                context.Rigidbody.velocity = Vector3.Cross(new Vector3(context.Rigidbody.velocity.z, 0, -context.Rigidbody.velocity.x).normalized, context.groundHit.normal) *
-                    Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude;
+                context.Rigidbody.velocity = Vector3.Cross(new Vector3(context.Rigidbody.velocity.z, 0, -context.Rigidbody.velocity.x), context.groundHit.normal);
                 if (context.Rigidbody.velocity.magnitude < context.slideBoostThreshold)
                     context.Rigidbody.velocity *= context.slideBoost;
             }
 
             public override void PhysicsUpdate()
             {
-                context.Look.targetHeight = 0.4f;
+                Debug.Log(context.groundHit.normal.y);
+                context.Look.targetHeight = 0f;
+                context.Rigidbody.AddForce(-Vector3.up * context.Rigidbody.mass * 20);
                 slideTime += Time.fixedDeltaTime;
             }
 
             public override void Exit()
             {
-                context.Look.targetHeight = 1f;
+                context.Look.targetHeight = .4f;
             }
 
             public override void StateChangeCheck()

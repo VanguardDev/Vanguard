@@ -19,7 +19,7 @@ public class FirstPersonLook : NetworkBehaviour
     [SerializeField]
     public Camera cam;
     public float targetDutch;
-    public float targetHeight = 1;
+    public float targetHeight = .4f;
 
     void Start()
     {
@@ -61,7 +61,7 @@ public class FirstPersonLook : NetworkBehaviour
         }
         cam.transform.localPosition = Vector3.Lerp(
             cam.transform.localPosition,
-            new Vector3(0.0f, targetHeight, 0.0f),
+            new Vector3(0.0f, targetHeight, 0.4f),
             Time.deltaTime * 30
         );
     }
