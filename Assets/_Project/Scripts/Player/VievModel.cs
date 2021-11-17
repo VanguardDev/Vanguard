@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//a class to set the vievmodel
 namespace Vanguard
 {
     public class VievModel : MonoBehaviour

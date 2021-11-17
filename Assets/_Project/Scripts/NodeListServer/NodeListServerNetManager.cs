@@ -188,7 +188,7 @@ namespace NodeListServer
         /// </summary>
         /// <param name="conn">Connection from client.</param>
         /// <param name="errorCode">Error code.</param>
-        public override void OnServerError(NetworkConnection conn, Exception exception ) { }
+        public override void OnServerError(NetworkConnection conn, Exception exception ) { }//had to update this cause they changed the parameters with the newest mirror update
 
         #endregion
 
@@ -219,7 +219,7 @@ namespace NodeListServer
         /// </summary>
         /// <param name="conn">Connection to a server.</param>
         /// <param name="errorCode">Error code.</param>
-        public override void OnClientError(Exception exception) { }
+        public override void OnClientError(Exception exception) { }//had to update this cause they changed the parameters with the newest mirror update
 
         /// <summary>
         /// Called on clients when a servers tells the client it is no longer ready.

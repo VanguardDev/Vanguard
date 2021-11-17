@@ -145,6 +145,7 @@ namespace Vanguard
 
         public bool WallCheck() {
             bool retval=false ;
+            //checks if the wall is on the right or left to use for animations
             if (Physics.Raycast(transform.position, transform.right, out wallHit, Collider.radius + 0.9f))
             {
                 retval = true;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+//manages animations wow
 namespace Vanguard {
     public class AnimationManager : NetworkBehaviour
     {
@@ -9,6 +10,7 @@ namespace Vanguard {
         public Animator animator;
         public void ChangeState(string newState)
         {
+            //changes the animator variables based on the movement state
             Debug.Log("new state is " + newState);
             if (newState == "idle")
             {
@@ -54,6 +56,7 @@ namespace Vanguard {
         float X,lerpSpeed=10f;
         public void Update()
         {
+            //lerps the X variable so strafing doesnt look instant
             X = Mathf.Lerp(X, InputManager.WalkVector.x, lerpSpeed*Time.deltaTime);
             animator.SetFloat("X", X);
            

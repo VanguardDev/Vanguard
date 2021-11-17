@@ -13,7 +13,7 @@ namespace Vanguard
         MatchManager mm;
         [SyncVar(hook = "nameChanged")] public string name;
 
-        public Transform GunModel;
+        public Transform GunModel; 
         public void Start()
         {
             mm = FindObjectOfType<MatchManager>();
@@ -27,11 +27,12 @@ namespace Vanguard
                 nameText.text = "";
                 healthTextWorld.text = "";
                 CmdSetName(name);
-                GunModel.SetParent(GetComponentInChildren<Weapon>().transform);
-                GetComponentInChildren<VievModel>().SetVievmodel(GunModel);
-                foreach (SkinnedMeshRenderer meshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>()) meshRenderer.enabled = false;
+                GunModel.SetParent(GetComponentInChildren<Weapon>().transform);//changes the gunmodels parent for first person perspective
+                GetComponentInChildren<VievModel>().SetVievmodel(GunModel);//sets the vievmodel for the first person perspective
+               
+                foreach (SkinnedMeshRenderer meshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>()) meshRenderer.enabled = false;//disables the character model for first person
                 foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
-                foreach (MeshRenderer meshRenderer in GunModel.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = true;
+                foreach (MeshRenderer meshRenderer in GunModel.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = true;//reenables guns model
 
             }
             else
@@ -52,7 +53,7 @@ namespace Vanguard
         }
         public void setTeamColor(int oldteam, int newteam)
         {
-            if (newteam == 1) GetComponentInChildren<SkinnedMeshRenderer>().material.color = Color.blue;
+            if (newteam == 1) GetComponentInChildren<SkinnedMeshRenderer>().material.color = Color.blue;//sets the color to the team color (kinda useless rn)
             else GetComponentInChildren<SkinnedMeshRenderer>().material.color = Color.red;
         }
         //need to make networktransform not client authorized so this line function doesnt need to exsist
