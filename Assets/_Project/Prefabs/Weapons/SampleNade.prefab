@@ -118,6 +118,8 @@ MonoBehaviour:
   particleSystem: {fileID: 5021451513264823200, guid: a5d41a8640c0cd640a0122b09045bf1d, type: 3}
   rb: {fileID: 3638636568613421156}
   nadeVelocity: 10
+  range: 20
+  damage: 50
 --- !u!54 &3638636568613421156
 Rigidbody:
   m_ObjectHideFlags: 0

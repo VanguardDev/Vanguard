@@ -40,7 +40,8 @@ namespace Vanguard
                 {
                     RaycastHit rayHit;
                     Physics.Raycast(transform.position, col.transform.position - transform.position, out rayHit, range);
-                    if (rayHit.collider == col) col.GetComponent<Health>().getShot(damage * (Vector3.Distance(transform.position, col.transform.position) / range));
+                    Debug.Log("Grenade damage: " + damage * (range - Vector3.Distance(transform.position, col.transform.position)) / range);
+                    if (rayHit.collider == col) col.GetComponent<Health>().getShot(damage * (range - Vector3.Distance(transform.position, col.transform.position)) / range);
                 }
             }
             NetworkServer.Spawn(newGrenadeExplosion);
