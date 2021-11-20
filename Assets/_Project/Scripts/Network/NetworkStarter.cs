@@ -8,7 +8,11 @@ public class NetworkStarter : MonoBehaviour
     NodeListServer.NodeListServerNetManager nm;
     public void Start()
     {
-
+        if (!ConnectionInfo.isOpenedFromMenu)
+        {
+            FindObjectOfType<NetworkManagerHUD>().enabled = true;
+            return;
+        }
         string externalIP = new WebClient().DownloadString("http://icanhazip.com").Trim('\n'); // could be the cause of process leak ?
         if (Application.isBatchMode) return;
         nm = GetComponent<NodeListServer.NodeListServerNetManager>();

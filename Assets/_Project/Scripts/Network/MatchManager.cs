@@ -46,7 +46,8 @@ namespace Vanguard
         [ClientRpc]
         public void RpcDisablePlayer(Health player)
         {
-            player.GetComponent<MeshRenderer>().enabled = false;
+            foreach (SkinnedMeshRenderer meshRenderer in player.GetComponentsInChildren<SkinnedMeshRenderer>()) meshRenderer.enabled = false;//disables the model when a player dies
+            foreach (MeshRenderer meshRenderer in player.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
             player.GetComponent<CapsuleCollider>().enabled = false;
             if (player.isLocalPlayer)
             {
@@ -58,7 +59,11 @@ namespace Vanguard
         [ClientRpc]
         public void RpcEnablePlayer(Health player)
         {
-            player.GetComponent<MeshRenderer>().enabled = true;
+            if (!player.isLocalPlayer)
+            {
+                foreach (SkinnedMeshRenderer meshRenderer in player.GetComponentsInChildren<SkinnedMeshRenderer>()) meshRenderer.enabled = true;//enables the model when a player dies
+                foreach (MeshRenderer meshRenderer in player.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = true;
+            }
             player.GetComponent<CapsuleCollider>().enabled = true;
             player.nameText.text = player.name;
             if (player.isLocalPlayer)

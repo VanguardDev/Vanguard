@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
 namespace Vanguard
 {
     using Vanguard.Extensions;
 
-    public class FPMovementContext : MonoBehaviour
+    public class FPMovementContext : NetworkBehaviour
     {
         [Header("Walk Settings")]
         public float walkSpeed = 8f;
@@ -63,8 +64,10 @@ namespace Vanguard
         public bool IsCrouching { get; private set; }
         [HideInInspector]
         public bool IsJumping;
-
+        [HideInInspector]
+        public AnimationManager animationManager;
         public void Start() {
+            animationManager = GetComponent<AnimationManager>();
             var initialState = new FPMovementState.FPIdleState();
             initialState.Context = this;
             initialState.Enter();
@@ -141,13 +144,25 @@ namespace Vanguard
 
 
         public bool WallCheck() {
-            bool retval = Physics.Raycast(transform.position, transform.right, out wallHit, Collider.radius + 0.9f) ||
-                          Physics.Raycast(transform.position, -transform.right, out wallHit, Collider.radius + 0.9f);
+            bool retval=false ;
+            //checks if the wall is on the right or left to use for animations
+            if (Physics.Raycast(transform.position, transform.right, out wallHit, Collider.radius + 0.9f))
+            {
+                retval = true;
+                animationManager.animator.SetBool("WallrunningRight", true);
+            }
+            else if(Physics.Raycast(transform.position, -transform.right, out wallHit, Collider.radius + 0.9f))
+            {
+                retval = true;
+                animationManager.animator.SetBool("WallrunningRight", false);
+            }
+                
+                          
             if (retval)
                 Debug.Log(wallHit.normal.y);
             return retval && wallrunEnabled && Mathf.Abs(wallHit.normal.y) < 0.1f;// && Mathf.Abs(Vector3.Dot(Vector3.Cross(wallHit.normal, Vector3.up), transform.forward)) > 0.3f;
         }
-
+        
         void OnGUI()
         {
             if (Application.isEditor)

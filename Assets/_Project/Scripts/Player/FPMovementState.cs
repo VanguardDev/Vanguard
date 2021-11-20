@@ -53,7 +53,11 @@ namespace Vanguard
             public override void Enter()
             {
                 if (context != null)
+                {
                     context.jumpCount = 0;
+                    context.animationManager.ChangeState("idle");//sets the animation state to idle
+                }
+                
             }
 
             public override void PhysicsUpdate()
@@ -96,6 +100,7 @@ namespace Vanguard
                 {
                     context = prevState.Context;
                     initialLateralVelocity = Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1));
+                    context.animationManager.ChangeState("falling");//sets the animation state to falling
                 }
             }
 
@@ -168,6 +173,7 @@ namespace Vanguard
                     if (initialLateralSpeed < context.wallrunBoostThreshold)
                         initialLateralSpeed *= context.wallrunBoost;
                     context.jumpCount = 0;
+                    context.animationManager.ChangeState("wallrunning"); //sets the animation state to wallrunning
                 }
             }
 
@@ -239,6 +245,7 @@ namespace Vanguard
                 {
                     context = prevState.Context;
                     context.jumpCount = 0;
+                    context.animationManager.ChangeState("walking");//sets the animation state to walking
                 }
             }
 
@@ -280,6 +287,7 @@ namespace Vanguard
                 if (prevState != null)
                 {
                     context = prevState.Context;
+                    context.animationManager.ChangeState("sliding");//sets the animation state to sliding
                     context.jumpCount = 0;
                 }
                 Debug.Log("Slide");
