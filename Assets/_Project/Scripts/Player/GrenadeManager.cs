@@ -25,7 +25,7 @@ namespace Vanguard
         {
             if (Input.GetKeyUp(KeyCode.G))
             {
-                CmdThrowCommand(gameObject.transform.position + gameObject.transform.forward * 2, gameObject.transform.rotation, playerRigdbody.velocity);
+                CmdThrowCommand(gameObject.transform.position + gameObject.transform.forward * 2, Camera.main.transform.rotation, playerRigdbody.velocity);
             }
         }
 
