@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
+//TODO: Maybe implement a grenade ready animation (animation or something gis played when grenade key is held down)
+
+
 // Equivalent to PlayerGunManager but for grenades. no weapon object is needed
 
 namespace Vanguard
@@ -18,15 +21,17 @@ namespace Vanguard
             {
                 enabled = false;
             }
+            else
+            {
+                InputManager.OnGrenadeStopped += GrenadeTriggerUp;
+            }
         }
 
-        // Update is called once per frame
-        void Update()
+
+        private void GrenadeTriggerUp()
         {
-            if (Input.GetKeyUp(KeyCode.G))
-            {
-                CmdThrowCommand(gameObject.transform.position + gameObject.transform.forward * 2, Camera.main.transform.rotation, playerRigdbody.velocity);
-            }
+            CmdThrowCommand(gameObject.transform.position + gameObject.transform.forward * 2, Camera.main.transform.rotation, playerRigdbody.velocity);
+
         }
 
         [Command]
