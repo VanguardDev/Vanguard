@@ -22,6 +22,9 @@ namespace Vanguard
         public static Action OnShootStopped;
         public static Action OnReloadStarted;
 
+        public static Action OnGrenadeStarted;
+        public static Action OnGrenadeStopped;
+
         public static Action OnChat;
 
         public static Vector2 LookVector { get; private set; }
@@ -106,6 +109,14 @@ namespace Vanguard
             if (isLocalPlayer)
             {
                 OnReloadStarted?.Invoke();
+            }
+        }
+
+        public void OnGrenadeInput(InputAction.CallbackContext context)
+        {
+            if (isLocalPlayer)
+            {
+                InvokeCancelableAction(context, OnGrenadeStarted, OnGrenadeStopped);
             }
         }
 
