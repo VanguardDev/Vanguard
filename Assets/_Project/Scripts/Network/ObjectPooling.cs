@@ -58,9 +58,9 @@ namespace Vanguard
         /// <param name="position"></param>
         /// <param name="rotation"></param>
         /// <returns></returns>
-        public GameObject GetFromPool(Vector3 position, Quaternion rotation)
+        public GameObject GetFromPool(Vector3 position, Quaternion rotation,int damage,float speed)
         {
-            if (isServer) RpcGetFromPool(position, rotation);
+            if (isServer) RpcGetFromPool(position, rotation, damage, speed);
             GameObject next = pool.Count > 0
                 ? pool.Dequeue() // take from pool
                 : CreateNew(); // create new because pool is empty
@@ -69,7 +69,8 @@ namespace Vanguard
 
             // set position/rotation and set active
 
-
+            next.GetComponent<Projectile>().damage = damage;
+            next.GetComponent<Projectile>().speed = speed;
             next.transform.position = position;
             next.transform.rotation = rotation;
 
@@ -79,9 +80,9 @@ namespace Vanguard
             return next;
         }
         [ClientRpc]
-        void RpcGetFromPool(Vector3 position, Quaternion rotation)
+        void RpcGetFromPool(Vector3 position, Quaternion rotation, int damage, float speed)
         {
-            if (!isServer) GetFromPool(position, rotation);
+            if (!isServer) GetFromPool(position, rotation,  damage,  speed);
         }
 
         /// <summary>

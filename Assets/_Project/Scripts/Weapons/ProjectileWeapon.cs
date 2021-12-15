@@ -20,7 +20,7 @@ namespace Vanguard
         protected override void Shoot()
         {
             base.Shoot();
-            gunManager.CmdShootCommand(transform.position, transform.rotation, damage);
+            gunManager.CmdShootCommand(ShootingPoint.position, ShootingPoint.rotation, damage);
         }
     }
 }
