@@ -62,6 +62,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Change Gun",
+                    "type": "Button",
+                    "id": "6b402067-bb33-46b9-a5bb-6b6e5e6c9e86",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Open Chat",
                     "type": "Button",
                     "id": "e6197fde-23ba-4cf2-bc55-d549bab55a08",
@@ -70,9 +78,17 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Grenade",
+                    "name": "Pick Up Gun",
                     "type": "Button",
-                    "id": "b0045b51-0512-463b-8ac8-78289666cea4",
+                    "id": "3e7dc77d-b5f6-4894-991b-c8997d84c411",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Throw Grenade",
+                    "type": "Button",
+                    "id": "3d31fb99-a90f-4ebc-bacc-686575abc7c0",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -213,12 +229,56 @@
                 },
                 {
                     "name": "",
-                    "id": "19cc5cbd-521b-4601-93c4-df084329e106",
+                    "id": "620ba9d2-17f0-46f5-a8a2-75ac6741abb9",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "Scale(factor=0)",
+                    "groups": "KeyboardMouse",
+                    "action": "Change Gun",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "05f1ce35-04ea-424b-882c-9efba1d58a7f",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "Scale",
+                    "groups": "KeyboardMouse",
+                    "action": "Change Gun",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "45cad8f7-971e-44a3-8ba5-d153bf25597d",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "Scale(factor=2)",
+                    "groups": "KeyboardMouse",
+                    "action": "Change Gun",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2fe7a327-94ca-42af-a0b0-eaf2e4e08417",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pick Up Gun",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "259b0ff6-f213-46ae-9026-a90d4456d1a5",
                     "path": "<Keyboard>/g",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Grenade",
+                    "action": "Throw Grenade",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

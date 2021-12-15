@@ -22,13 +22,14 @@ namespace Vanguard
         public static Action OnShootStopped;
         public static Action OnReloadStarted;
 
-        public static Action OnGrenadeStarted;
-        public static Action OnGrenadeStopped;
-
         public static Action OnChat;
-
+        public static Action OnChangeWeapon;
+        public static Action OnPickup;
+        public static Action OnGrenadeStopped;
         public static Vector2 LookVector { get; private set; }
         public static Vector2 WalkVector { get; private set; }
+
+        public static int wantedGunIndex;
 
         private PlayerInput playerInput;
 
@@ -87,7 +88,23 @@ namespace Vanguard
                 InvokeCancelableAction(context, OnJumpStarted, OnJumpStopped);
             }
         }
-
+        public void OnGrenadeInput(InputAction.CallbackContext context)
+        {
+            if (isLocalPlayer)
+            {
+                if (context.ReadValue<float>() == 0) OnGrenadeStopped?.Invoke();
+            }
+        }
+        public void OnChangeWeaponInput(InputAction.CallbackContext context)
+        {
+            Debug.Log(wantedGunIndex);
+            if (isLocalPlayer && context.performed)
+            {
+                wantedGunIndex = (int )context.ReadValue<float>();
+                
+                OnChangeWeapon?.Invoke();
+            }
+        }
         public void OnCrouchInput(InputAction.CallbackContext context)
         {
             if (isLocalPlayer)
@@ -112,19 +129,18 @@ namespace Vanguard
             }
         }
 
-        public void OnGrenadeInput(InputAction.CallbackContext context)
-        {
-            if (isLocalPlayer)
-            {
-                InvokeCancelableAction(context, OnGrenadeStarted, OnGrenadeStopped);
-            }
-        }
-
         public void OnChatInput(InputAction.CallbackContext context)
         {
             if (context.performed)
             {
                 OnChat?.Invoke();
+            }
+        }
+        public void OnPickUpInput(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                OnPickup?.Invoke();
             }
         }
 

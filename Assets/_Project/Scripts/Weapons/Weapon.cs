@@ -6,7 +6,10 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 public class Weapon : MonoBehaviour
 {
+
+    public float ProjectileSpeed; // kinda useles for hitscan weapons but it helps with less getcomponent functions
     public int damage,ammo;
+    public GameObject model;
     public int ammoCapacity;
     public bool canShoot = true, isFullAuto;
     public bool reloading;
@@ -15,6 +18,7 @@ public class Weapon : MonoBehaviour
     private bool isTriggerDown;
     private float fireRate;
     private float timeSinceLastShot = float.MaxValue;
+    
 
     private bool WantsToShoot { get => isTriggerDown; }
     private bool IsReadyToShoot
@@ -30,6 +34,7 @@ public class Weapon : MonoBehaviour
     #region Unity Overrides
     protected virtual void Start()
     {
+        if(ammoCountText)
         ammoCountText.text = ammoCapacity.ToString();
         fireRate = 60f / roundsPerMinute;
     }
@@ -62,7 +67,7 @@ public class Weapon : MonoBehaviour
     protected virtual void Shoot()
     {
         timeSinceLastShot = 0f;
-        ConsumeAmmo();
+        ConsumeAmmo(1);//it might use different amount of ammo based on gun or mod idk
         // Play visual FX, sounds, etc.
     }
 
@@ -71,16 +76,19 @@ public class Weapon : MonoBehaviour
         if (reloading) yield break;
         reloading = true;
         yield return new WaitForSeconds(reloadTime);
-        ammo = ammoCapacity;
+        if (reloading)
+        {
+            ammo = ammoCapacity;
 
-        // TODO: decouple this with an event
-        ammoCountText.text = ammo.ToString();
+            // TODO: decouple this with an event
+            ammoCountText.text = ammo.ToString();
 
-        reloading = false;
+            reloading = false;
+        }
     }
 
-    private void ConsumeAmmo() {
-        ammo -= 1;
+    public void ConsumeAmmo(int amount) {
+        ammo -= amount;
         ammoCountText.text = ammo.ToString();
         if (ammo <= 0)
         {

@@ -13,16 +13,18 @@ namespace Vanguard
     public class GrenadeManager : NetworkBehaviour
     {
         public GameObject grenadePrefab;
-        public Rigidbody playerRigdbody;
+         Rigidbody playerRigdbody;
         // Start is called before the first frame update
         void Start()
         {
             if (!isLocalPlayer)
             {
+                
                 enabled = false;
             }
             else
             {
+                playerRigdbody = GetComponent<Rigidbody>();
                 InputManager.OnGrenadeStopped += GrenadeTriggerUp;
             }
         }
