@@ -1,5 +1,5 @@
 using UnityEngine;
-using Mirror;
+using FishNet.Object;
 namespace Vanguard
 {
     public class PlayerGunManager : NetworkBehaviour
@@ -9,12 +9,35 @@ namespace Vanguard
         private Transform shootingPoint;
         private ObjectPooling objectPooling;
 
-        void Start()
-        {
+        // void Start()
+        // {
+        //     // Todo set this is editor, `FindObjectOfType` can be very expensive
+        //     objectPooling = FindObjectOfType<ObjectPooling>();
+        //     weapon = GetComponentInChildren<Weapon>();
+        //     if (!IsOwner)
+        //     {
+        //         weapon.enabled = false;
+        //         enabled = false;
+        //     }
+        //     else
+        //     {
+        //         InputManager.OnShootStarted += TriggerDown;
+        //         InputManager.OnShootStopped += TriggerUp;
+        //         InputManager.OnReloadStarted += Reload;
+        //     }
+
+        //     if (weapon.GetComponent<ProjectileWeapon>())
+        //     {
+        //         projectilePrefab = weapon.GetComponent<ProjectileWeapon>().projectilePrefab;
+        //         shootingPoint = weapon.GetComponent<ProjectileWeapon>().ShootingPoint;
+        //     }
+        // }
+
+        public override void OnStartClient(){
             // Todo set this is editor, `FindObjectOfType` can be very expensive
             objectPooling = FindObjectOfType<ObjectPooling>();
             weapon = GetComponentInChildren<Weapon>();
-            if (!isLocalPlayer)
+            if (!IsOwner)
             {
                 weapon.enabled = false;
                 enabled = false;
@@ -31,6 +54,7 @@ namespace Vanguard
                 projectilePrefab = weapon.GetComponent<ProjectileWeapon>().projectilePrefab;
                 shootingPoint = weapon.GetComponent<ProjectileWeapon>().ShootingPoint;
             }
+            base.OnStartClient();
         }
 
         private void TriggerDown()
@@ -48,7 +72,7 @@ namespace Vanguard
             weapon.ReloadInputUpdate();
         }
 
-        [Command]
+        [ServerRpc]
         public void CmdShootCommand(Vector3 Position, Quaternion Rotation, int Damage)
         {
             GameObject projectileObject = objectPooling.GetFromPool(Position, Rotation);

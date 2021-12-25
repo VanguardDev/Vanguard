@@ -1,5 +1,6 @@
 using System;
-using Mirror;
+using FishNet.Connection;
+using FishNet.Object;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -32,10 +33,23 @@ namespace Vanguard
 
         private PlayerInput playerInput;
 
-        public override void OnStartLocalPlayer()
-        {
-            base.OnStartLocalPlayer();
+        // public override void OnStartClient()
+        // {
+        //     base.OnStartClient();
+        //     playerInput = GetComponent<PlayerInput>();
+        //     playerInput.enabled = true;
 
+        //     if (_instance != null)
+        //     {
+        //         Debug.LogError("Tried to initialize singleton InputManager, but it already exists!");
+        //         Destroy(this);
+        //         return;
+        //     }
+
+        //     _instance = this;
+        // }
+
+        public override void OnOwnershipClient(NetworkConnection prevOwner){
             playerInput = GetComponent<PlayerInput>();
             playerInput.enabled = true;
 
@@ -47,6 +61,7 @@ namespace Vanguard
             }
 
             _instance = this;
+            base.OnOwnershipClient(prevOwner);
         }
 
         public static void SwitchActionMap(string ActionMap)
@@ -66,7 +81,7 @@ namespace Vanguard
 
         public void OnLookInput(InputAction.CallbackContext context)
         {
-            if (isLocalPlayer)
+            if (IsOwner)
             {
                 LookVector = context.ReadValue<Vector2>();
             }
@@ -74,7 +89,7 @@ namespace Vanguard
 
         public void OnWalkInput(InputAction.CallbackContext context)
         {
-            if (isLocalPlayer)
+            if (IsOwner)
             {
                 WalkVector = context.ReadValue<Vector2>();
             }
@@ -82,7 +97,7 @@ namespace Vanguard
 
         public void OnJumpInput(InputAction.CallbackContext context)
         {
-            if (isLocalPlayer)
+            if (IsOwner)
             {
                 InvokeCancelableAction(context, OnJumpStarted, OnJumpStopped);
             }
@@ -90,7 +105,7 @@ namespace Vanguard
 
         public void OnCrouchInput(InputAction.CallbackContext context)
         {
-            if (isLocalPlayer)
+            if (IsOwner)
             {
                 InvokeCancelableAction(context, OnCrouchStarted, OnCrouchStopped);
             }
@@ -98,7 +113,7 @@ namespace Vanguard
 
         public void OnShootInput(InputAction.CallbackContext context)
         {
-            if (isLocalPlayer)
+            if (IsOwner)
             {
                 InvokeCancelableAction(context, OnShootStarted, OnShootStopped);
             }
@@ -106,7 +121,7 @@ namespace Vanguard
 
         public void OnReloadInput(InputAction.CallbackContext context)
         {
-            if (isLocalPlayer)
+            if (IsOwner)
             {
                 OnReloadStarted?.Invoke();
             }
@@ -114,7 +129,7 @@ namespace Vanguard
 
         public void OnGrenadeInput(InputAction.CallbackContext context)
         {
-            if (isLocalPlayer)
+            if (IsOwner)
             {
                 InvokeCancelableAction(context, OnGrenadeStarted, OnGrenadeStopped);
             }

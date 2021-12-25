@@ -8,7 +8,6 @@ using UnityEngine;
 	Documentation: https://mirror-networking.com/docs/Components/NetworkManager.html
 	API Reference: https://mirror-networking.com/docs/api/Mirror.NetworkManager.html
 */
-
 namespace NodeListServer
 {
     public class NodeListServerNetManager : NetworkManager

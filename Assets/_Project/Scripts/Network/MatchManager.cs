@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
+using FishNet.Object.Synchronizing;
+using FishNet.Object;
+using FishNet.Managing.Client;
 using UnityEngine.UI;
 
 namespace Vanguard
@@ -9,31 +11,30 @@ namespace Vanguard
     public class MatchManager : NetworkBehaviour
     {
         int redPlayerCount, bluePlayerCount;
+        List<Health> redTeamHealth = new List<Health>(), blueTeamHealth = new List<Health>();
         public Transform redSpawn, blueSpawn;
-        [SyncVar(hook = "updateTeamScore")] int blueScore, redScore;//this is public cause debugging nothing else
+        [SyncVar (OnChange = "updateTeamScore")] int blueScore, redScore;//this is public cause debugging nothing else
         public int matchMaxScore;
         public float respawnTimer;
         [HideInInspector] public Text redScoreText, blueScoreText, winScreenText;
         bool restarting;
-
-
-        public void NewPlayerConnected(GameObject player)
+        
+        public void NewPlayerConnected(Health health)
         {
-            if (!isServer) return;
-            Debug.Log("Player Connected");
             if (redPlayerCount > bluePlayerCount)
             {
-
-                player.gameObject.GetComponent<Health>().team = 1;
-                player.gameObject.GetComponent<Health>().setTeamColor(-1, 1);
-                player.GetComponent<Health>().RpcchangePlayerspos(blueSpawn.position);
+                blueTeamHealth.Add(health);
+                health.team = 1;
+                health.setTeamColor(-1, 1, true);
+                health.RpcchangePlayerspos(blueSpawn.position);
                 bluePlayerCount++;
             }
             else
             {
-                player.gameObject.GetComponent<Health>().team = 0;
-                player.gameObject.GetComponent<Health>().setTeamColor(-1, 0);
-                player.GetComponent<Health>().RpcchangePlayerspos(redSpawn.position);
+                redTeamHealth.Add(health);
+                health.team = 0;
+                health.setTeamColor(-1, 0, true);
+                health.RpcchangePlayerspos(redSpawn.position);
                 redPlayerCount++;
             }
         }
@@ -43,30 +44,30 @@ namespace Vanguard
             RpcDisablePlayer(player);
             StartCoroutine("DieTimer", player);
         }
-        [ClientRpc]
+        [ObserversRpc]
         public void RpcDisablePlayer(Health player)
         {
             foreach (SkinnedMeshRenderer meshRenderer in player.GetComponentsInChildren<SkinnedMeshRenderer>()) meshRenderer.enabled = false;//disables the model when a player dies
             foreach (MeshRenderer meshRenderer in player.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
             player.GetComponent<CapsuleCollider>().enabled = false;
-            if (player.isLocalPlayer)
+            if (player.IsOwner)
             {
                 player.GetComponent<PlayerGunManager>().enabled = false;
                 player.GetComponent<Rigidbody>().isKinematic = true;
                 InputManager.DisableControls();
             }
         }
-        [ClientRpc]
+        [ObserversRpc]
         public void RpcEnablePlayer(Health player)
         {
-            if (!player.isLocalPlayer)
+            if (!player.IsOwner)
             {
                 foreach (SkinnedMeshRenderer meshRenderer in player.GetComponentsInChildren<SkinnedMeshRenderer>()) meshRenderer.enabled = true;//enables the model when a player dies
                 foreach (MeshRenderer meshRenderer in player.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = true;
             }
             player.GetComponent<CapsuleCollider>().enabled = true;
             player.nameText.text = player.name;
-            if (player.isLocalPlayer)
+            if (player.IsOwner)
             {
                 player.nameText.text = "";
                 player.GetComponent<PlayerGunManager>().enabled = true;
@@ -82,12 +83,14 @@ namespace Vanguard
                 player.health = 100;
                 player.RpcchangePlayerspos(blueSpawn.position);
                 redScore++;
+                Debug.Log("RedScore");
             }
             else
             {
                 player.health = 100;
                 player.RpcchangePlayerspos(redSpawn.position);
                 blueScore++;
+                Debug.Log("BlueScore");
             }
             if ((redScore >= matchMaxScore || blueScore >= matchMaxScore) && !restarting)
             {
@@ -106,17 +109,28 @@ namespace Vanguard
             RpcRestartMatch();
             restarting = false;
         }
-        [ClientRpc]
+        [ObserversRpc]
         public void RpcRestartMatch()
         {
+            
             InputManager.EnableControls();
-            NetworkClient.localPlayer.GetComponent<Health>().health = 100;
-            if (NetworkClient.localPlayer.GetComponent<Health>().team == 1) NetworkClient.localPlayer.transform.position = blueSpawn.position;
-            else NetworkClient.localPlayer.transform.position = redSpawn.position;
-            winScreenText.enabled = false;
 
+            foreach (Health bluePlayer in blueTeamHealth){
+                bluePlayer.health = 100;
+                bluePlayer.gameObject.transform.position = blueSpawn.position;
+            }
+
+            foreach (Health redPlayer in redTeamHealth){
+                redPlayer.health = 100;
+                redPlayer.gameObject.transform.position = redSpawn.position;
+            }
+
+            redScore = 0;
+            blueScore = 0;
+
+            winScreenText.enabled = false;
         }
-        [ClientRpc]
+        [ObserversRpc]
         public void RpcEndMatch()
         {
             InputManager.DisableControls();
@@ -126,7 +140,7 @@ namespace Vanguard
             else winScreenText.text = "Blue Won";
 
         }
-        public void updateTeamScore(int oldScore, int newScore)//the paramaters are useless for this function but have to add them
+        public void updateTeamScore(int oldScore, int newScore, bool asServer)//the paramaters are useless for this function but have to add them
         {
             redScoreText.text = redScore.ToString();
             blueScoreText.text = blueScore.ToString();

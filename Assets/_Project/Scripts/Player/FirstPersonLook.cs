@@ -1,4 +1,5 @@
-﻿using Mirror;
+﻿using FishNet.Object;
+using FishNet;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Vanguard;
@@ -21,9 +22,21 @@ public class FirstPersonLook : NetworkBehaviour
     public float targetDutch;
     public float targetHeight = 1;
 
-    void Start()
+    // void Start()
+    // {
+    //     if (!base.IsOwner)
+    //     {
+    //         cam.enabled = false;
+    //     }
+    //     else
+    //     {
+    //         Cursor.lockState = CursorLockMode.Locked;
+    //     }
+    // }
+
+    public override void OnStartClient()
     {
-        if (!isLocalPlayer)
+        if (!base.IsOwner)
         {
             cam.enabled = false;
         }
@@ -31,12 +44,13 @@ public class FirstPersonLook : NetworkBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
+        base.OnStartClient();
     }
 
     void Update()
     {
         
-        if (!isLocalPlayer)
+        if (!base.IsOwner)
         {
             return;
         }

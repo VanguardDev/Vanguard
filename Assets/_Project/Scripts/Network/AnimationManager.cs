@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
+using FishNet.Object;
 //manages animations wow
 namespace Vanguard {
     public class AnimationManager : NetworkBehaviour

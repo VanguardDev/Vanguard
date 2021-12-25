@@ -2,23 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Mirror;
+using FishNet.Object;
+using FishNet.Object.Synchronizing;
+using FishNet.Serializing;
 namespace Vanguard
 {
     public class Health : NetworkBehaviour
     {
-        [SyncVar(hook = "updateHealth")] public float health;
+        [SyncVar(OnChange = "updateHealth")] public float health;
         public Text healthText, redScoreText, blueScoreText, winScreenText, nameText, healthTextWorld;
-        [SyncVar(hook = "setTeamColor")] public int team = -1; // this isnt hidden in inspector for debug purposes
+        [SyncVar(OnChange = "setTeamColor")] public int team = -1; // this isnt hidden in inspector for debug purposes
         MatchManager mm;
-        [SyncVar(hook = "nameChanged")] public string name;
+        [SyncVar(OnChange = "nameChanged")] public string name;
 
-        public Transform GunModel; 
-        public void Start()
-        {
+        public Transform GunModel;
+
+        private void Start(){
             mm = FindObjectOfType<MatchManager>();
-            if (isServer) mm.NewPlayerConnected(gameObject);
-            if (isLocalPlayer)
+            mm.NewPlayerConnected(this);
+        }
+
+        public override void OnStartClient(){
+            mm = FindObjectOfType<MatchManager>();
+            // mm.NewPlayerConnected(this);
+            if (IsOwner)
             {
                 mm.blueScoreText = blueScoreText;
                 mm.redScoreText = redScoreText;
@@ -40,39 +47,41 @@ namespace Vanguard
                 healthText.GetComponentInParent<Canvas>().gameObject.SetActive(false);
                 healthText = healthTextWorld;
             }
+            base.OnStartClient();
         }
+
         [Server]
         public void getShot(float damage)
         {
             health -= damage;
             if (health <= 0) mm.playerDie(this);
         }
-        public void updateHealth(float oldhealth, float newhealth)
+        public void updateHealth(float oldhealth, float newhealth, bool asServer)
         {
             healthText.text = newhealth.ToString();
         }
-        public void setTeamColor(int oldteam, int newteam)
+        public void setTeamColor(int oldteam, int newteam, bool asServer)
         {
             if (newteam == 1) GetComponentInChildren<SkinnedMeshRenderer>().material.color = Color.blue;//sets the color to the team color (kinda useless rn)
             else GetComponentInChildren<SkinnedMeshRenderer>().material.color = Color.red;
         }
         //need to make networktransform not client authorized so this line function doesnt need to exsist
-        [ClientRpc]
+        [ObserversRpc]
         public void RpcchangePlayerspos(Vector3 newPosition)
         {
             transform.position = newPosition;
         }
         public void OnDestroy()
         {
-            if (!isServer) return;
+            if (!IsServer) return;
             mm.Disconnect(team);
         }
-        [Command]
+        [ServerRpc]
         public void CmdSetName(string setName)
         {
             name = setName;
         }
-        void nameChanged(string oldName, string newName)
+        void nameChanged(string oldName, string newName, bool asServer)
         {
             name = newName;
             nameText.text = name;

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
+using FishNet.Object;
 
 namespace Vanguard
 {
@@ -9,7 +9,7 @@ namespace Vanguard
     {
         public void OnTriggerEnter(Collider other)
         {
-            if (isServer) other.GetComponent<Health>().getShot(100);
+            if (base.IsServer) other.GetComponent<Health>().getShot(100);
         }
     }
 }

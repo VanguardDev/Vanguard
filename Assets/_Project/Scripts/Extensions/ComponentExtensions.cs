@@ -1,4 +1,4 @@
-using Mirror;
+using FishNet.Object;
 using UnityEngine;
 
 namespace Vanguard.Extensions
@@ -7,7 +7,7 @@ namespace Vanguard.Extensions
     {
         public static bool IsLocalPlayer(this Component gameObject)
         {
-            return gameObject.GetComponentInParent<NetworkIdentity>().isLocalPlayer;
+            return gameObject.GetComponentInParent<NetworkObject>().IsOwner;
         }
     }
 }
