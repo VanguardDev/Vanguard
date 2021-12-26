@@ -8471,6 +8471,7 @@ GameObject:
   - component: {fileID: -3056897453288499285}
   - component: {fileID: -7242417593011867789}
   - component: {fileID: -9007701027782926878}
+  - component: {fileID: 1266803623648393045}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -8920,11 +8921,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cac635f24954048aad3a6ff9110beb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 0}
+  _animator: {fileID: 5961502210735603282}
   _smoothFloats: 1
   _synchronizeInterval: 0.1
   _clientAuthoritative: 1
   _sendToOwner: 0
+--- !u!114 &1266803623648393045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7723995027383627381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkObserver: {fileID: 0}
+  _prefabId: -1
+  _scenePathHash: 0
+  _sceneId: 0
+  _sceneNetworkObjects: []
+  SceneTransformProperties:
+    Position: {x: -6.61, y: 1.37, z: 18.88}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    LocalScale: {x: 1, y: 1, z: 1}
+  _isNetworked: 1
 --- !u!1 &7973584731485713676
 GameObject:
   m_ObjectHideFlags: 0

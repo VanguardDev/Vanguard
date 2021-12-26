@@ -25,6 +25,7 @@ namespace Vanguard
         public override void OnStartClient(){
             mm = FindObjectOfType<MatchManager>();
             // mm.NewPlayerConnected(this);
+            Debug.Log(IsOwner);
             if (IsOwner)
             {
                 mm.blueScoreText = blueScoreText;
@@ -83,8 +84,11 @@ namespace Vanguard
         }
         void nameChanged(string oldName, string newName, bool asServer)
         {
-            name = newName;
-            nameText.text = name;
+            if (!IsOwner)
+            {
+                name = newName;
+                nameText.text = name;
+            }
         }
     }
 }
