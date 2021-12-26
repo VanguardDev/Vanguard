@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
+using FishNet.Object;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 namespace Vanguard
@@ -13,9 +13,9 @@ namespace Vanguard
         bool onChat = false;
         [SerializeField] RectMask2D mask;
 
-        public void Start()
+        public override void OnStartClient()
         {
-            if (!isLocalPlayer)
+            if (!base.IsOwner)
             {
                 chatText.gameObject.SetActive(false);
             }
@@ -24,10 +24,10 @@ namespace Vanguard
                 InputManager.OnChat += OnChatInput;
                 Name = GetComponent<Health>().name;
             }
-
+            base.OnStartClient();
             // Set the remote player's chatText to the local chatText, that way incoming chats
             // will be added to the local player's feed
-            chatText = NetworkClient.localPlayer.GetComponent<Chat>().chatText;
+            // chatText = NetworkClient.localPlayer.GetComponent<Chat>().chatText;
         }
 
         public void OnChatInput()
@@ -51,13 +51,13 @@ namespace Vanguard
             }
         }
 
-        [ClientRpc]
+        [ObserversRpc]
         public void RpcReceiveMessage(string incomingMessage)
         {
                 chatText.text += incomingMessage;
         }
 
-        [Command]
+        [ServerRpc]
         public void CmdSendMessage(string outgoingMessage)
         {
             RpcReceiveMessage(outgoingMessage);

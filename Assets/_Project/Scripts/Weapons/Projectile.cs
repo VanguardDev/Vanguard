@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Mirror;
+using FishNet.Object;
 namespace Vanguard
 {
     public class Projectile : NetworkBehaviour
@@ -40,7 +40,6 @@ namespace Vanguard
             if (Physics.Raycast(ray, out rayHit, raycastRange))
             {
                 if (rayHit.collider.gameObject == playerWhoShoot) return;
-                Debug.Log(isserver);
                 if (rayHit.collider.GetComponent<Health>() && isserver)
                 {
                     Debug.Log("hit " + rayHit.collider.gameObject.name);

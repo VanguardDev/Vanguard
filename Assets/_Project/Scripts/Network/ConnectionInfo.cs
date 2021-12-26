@@ -1,16 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class ConnectionInfo : MonoBehaviour
 {
+    public enum Mode{
+        Client,
+        Host,
+        DedicatedServer
+    }
     public static string ip = "projectvanguard.uk.to", name = "Name Not Set.";
-    public static int Mode=0;
+    public static string connectionIp;
+    public static Mode mode;
     public static bool isOpenedFromMenu;
-    public void setClient()
+    public void setClient(string sceneName)
     {
-        Mode = 0;
+        mode = Mode.Client;
         isOpenedFromMenu = true;
+        GetComponent<SceneController>().LoadScene(sceneName);
     }
     public void setIp(string ipNew)
     {
@@ -20,16 +27,19 @@ public class ConnectionInfo : MonoBehaviour
     {
         name = nameNew;
     }
+    public void setConnectionIP(string text){
+        connectionIp = text;
+    }
     public void setHost(string sceneName)
     {
-        Mode= 1;
+        mode = Mode.Host;
         isOpenedFromMenu = true;
         GetComponent<SceneController>().LoadScene(sceneName);
     }
     public void setDedicatedServer(string sceneName)
     {
         isOpenedFromMenu = true;
-        Mode = 2;
+        mode = Mode.DedicatedServer;
         GetComponent<SceneController>().LoadScene(sceneName);
     }
 }

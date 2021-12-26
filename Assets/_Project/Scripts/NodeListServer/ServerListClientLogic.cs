@@ -1,5 +1,4 @@
 ﻿// This file is part of the NodeListServer Example package.
-using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -200,7 +199,7 @@ namespace NodeListServer
 
                     // Debug: Prints CLICKY to see if the button actually was clicked or 
                     ConnectionInfo.ip = modifiedAddress;
-                    ConnectionInfo.Mode = 0;
+                    ConnectionInfo.mode = ConnectionInfo.Mode.Client;
                     SceneManager.LoadScene("TestmapScaled");
                    
                    

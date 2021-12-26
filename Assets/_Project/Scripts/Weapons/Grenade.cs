@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
+using FishNet.Object;
 namespace Vanguard
 {
     //Equivalent to Projectile
@@ -19,12 +19,6 @@ namespace Vanguard
         {
             rb.AddRelativeForce(Vector3.forward * nadeVelocity, ForceMode.VelocityChange);
         }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
         public override void OnStartServer()
         {
             Invoke(nameof(DestroySelf), nadeLife);
@@ -32,7 +26,6 @@ namespace Vanguard
         [Server]
         void DestroySelf()
         {
-            NetworkServer.Destroy(gameObject);
             GameObject newGrenadeExplosion = Instantiate(particleSystem, gameObject.transform.position, new Quaternion(0, 1, 0, 0));
             foreach (Collider col in Physics.OverlapSphere(transform.position, range))
             {
@@ -44,7 +37,8 @@ namespace Vanguard
                     if (rayHit.collider == col) col.GetComponent<Health>().getShot(damage * (range - Vector3.Distance(transform.position, col.transform.position)) / range);
                 }
             }
-            NetworkServer.Spawn(newGrenadeExplosion);
+            Spawn(newGrenadeExplosion);
+            Despawn();
         }
 
 

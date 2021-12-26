@@ -1,22 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
-
 namespace Vanguard.UI
 {
     public class WorldUIElement : MonoBehaviour
     {
+        [SerializeField]
         GameObject camera;
 
-        void Awake()
-        {
-            if (VanguardUtilities.IsDedicatedServer)
-            {
-                enabled = false;
-            }
+        // void Awake()
+        // {
+        //     if (VanguardUtilities.IsDedicatedServer)
+        //     {
+        //         enabled = false;
+        //     }
 
-        }
+        // }
         public void Start()
         {
             camera = Camera.main.gameObject;

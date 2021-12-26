@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
 namespace NodeListServer
@@ -29,7 +28,7 @@ namespace NodeListServer
         private void Awake()
         {
             if (Application.isBatchMode) ConnectionInfo.name = Console.ReadLine();
-            if (ConnectionInfo.Mode == 0) enabled = false;
+            if (ConnectionInfo.mode == ConnectionInfo.Mode.Client) enabled = false;
             // If singleton was somehow loaded twice...
             if (Instance != null && Instance != this)
             {

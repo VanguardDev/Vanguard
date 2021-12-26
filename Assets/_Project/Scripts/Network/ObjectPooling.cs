@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Mirror;
+using FishNet.Object;
 using UnityEngine;
 //JamesFrowen.MirrorExamples
 namespace Vanguard
@@ -16,11 +16,16 @@ namespace Vanguard
         [SerializeField] int currentCount;
 
 
-        void Start()
+        // void Start()
+        // {
+        //     InitializePool();
+        // }
+
+        public override void OnStartClient()
         {
             InitializePool();
+            base.OnStartClient();
         }
-
 
         private void InitializePool()
         {
@@ -60,7 +65,7 @@ namespace Vanguard
         /// <returns></returns>
         public GameObject GetFromPool(Vector3 position, Quaternion rotation)
         {
-            if (isServer) RpcGetFromPool(position, rotation);
+            if (IsServer) RpcGetFromPool(position, rotation);
             GameObject next = pool.Count > 0
                 ? pool.Dequeue() // take from pool
                 : CreateNew(); // create new because pool is empty
@@ -74,14 +79,14 @@ namespace Vanguard
             next.transform.rotation = rotation;
 
             next.SetActive(true);
-            next.GetComponent<Projectile>().isserver = isServer;
+            next.GetComponent<Projectile>().isserver = IsServer;
             next.GetComponent<Projectile>().StartBullet();
             return next;
         }
-        [ClientRpc]
+        [ObserversRpc]
         void RpcGetFromPool(Vector3 position, Quaternion rotation)
         {
-            if (!isServer) GetFromPool(position, rotation);
+            if (!IsServer) GetFromPool(position, rotation);
         }
 
         /// <summary>

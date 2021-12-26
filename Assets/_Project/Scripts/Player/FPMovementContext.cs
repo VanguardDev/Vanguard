@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Mirror;
+using FishNet.Object;
 
 namespace Vanguard
 {
@@ -66,7 +66,9 @@ namespace Vanguard
         public bool IsJumping;
         [HideInInspector]
         public AnimationManager animationManager;
-        public void Start() {
+
+        public override void OnStartClient()
+        {
             animationManager = GetComponent<AnimationManager>();
             var initialState = new FPMovementState.FPIdleState();
             initialState.Context = this;
@@ -84,6 +86,7 @@ namespace Vanguard
                 InputManager.OnCrouchStarted += StartCrouch;
                 InputManager.OnCrouchStopped += CancelCrouch;
             }
+            base.OnStartClient();
         }
 
         public void Update() {

@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
 public class Weapon : MonoBehaviour
 {
     public int damage,ammo;

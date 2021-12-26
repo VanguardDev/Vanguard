@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
+using FishNet.Object;
 
 //TODO: Maybe implement a grenade ready animation (animation or something gis played when grenade key is held down)
 
@@ -14,10 +14,9 @@ namespace Vanguard
     {
         public GameObject grenadePrefab;
         public Rigidbody playerRigdbody;
-        // Start is called before the first frame update
-        void Start()
-        {
-            if (!isLocalPlayer)
+
+        public override void OnStartClient(){
+            if (!IsOwner)
             {
                 enabled = false;
             }
@@ -25,6 +24,7 @@ namespace Vanguard
             {
                 InputManager.OnGrenadeStopped += GrenadeTriggerUp;
             }
+            base.OnStartClient();
         }
 
 
@@ -34,12 +34,12 @@ namespace Vanguard
 
         }
 
-        [Command]
+        [ObserversRpc]
         public void CmdThrowCommand(Vector3 Position, Quaternion Rotation, Vector3 playerVelocity)
         {
             GameObject grenadeObject = Instantiate(grenadePrefab, Position, Rotation);
             grenadeObject.GetComponent<Rigidbody>().AddForce(playerVelocity, ForceMode.VelocityChange);
-            NetworkServer.Spawn(grenadeObject);
+            Spawn(grenadeObject);
         }
     }
 }

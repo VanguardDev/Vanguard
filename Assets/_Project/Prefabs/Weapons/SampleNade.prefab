@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 5852578440144159359}
   - component: {fileID: 5559996849371897209}
   - component: {fileID: 3638636568613421156}
-  - component: {fileID: 470031946160205701}
-  - component: {fileID: 5520978400039083918}
+  - component: {fileID: 5042303462429715852}
+  - component: {fileID: 1990362138189793419}
   m_Layer: 0
   m_Name: SampleNade
   m_TagString: Untagged
@@ -56,7 +56,6 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -112,8 +111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e34cc9f4ad1f79498fb6440aa4b2115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   nadeLife: 5
   particleSystem: {fileID: 5021451513264823200, guid: a5d41a8640c0cd640a0122b09045bf1d, type: 3}
   rb: {fileID: 3638636568613421156}
@@ -136,7 +133,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &470031946160205701
+--- !u!114 &5042303462429715852
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,15 +142,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 2905929833826866977}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneId: 0
-  serverOnly: 0
-  visible: 0
-  m_AssetId: fbfe151e2a44fef42a90adf5e1724380
-  hasSpawned: 0
---- !u!114 &5520978400039083918
+  NetworkObserver: {fileID: 0}
+  _prefabId: 2
+  _scenePathHash: 0
+  _sceneId: 0
+  _sceneNetworkObjects: []
+  SceneTransformProperties:
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
+    LocalScale: {x: 0, y: 0, z: 0}
+  _isNetworked: 1
+--- !u!114 &1990362138189793419
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,12 +164,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2905929833826866977}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f032128052c95a46afb0ddd97d994cc, type: 3}
+  m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  target: {fileID: 3638636568613421156}
-  lerpVelocityAmount: 0.5
-  lerpPositionAmount: 0.5
-  clientAuthority: 0
+  _compressSmall: 1
+  _enableTeleport: 0
+  _teleportThreshold: 0
+  _clientAuthoritative: 1
+  _sendToOwner: 1
