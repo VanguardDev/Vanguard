@@ -11,11 +11,6 @@ public class NetworkStarter : MonoBehaviour
 
     public void Start()
     {
-        if (!ConnectionInfo.isOpenedFromMenu)
-        {
-            // FindObjectOfType<NetworkManagerHUD>().enabled = true;
-            return;
-        }
 
         if(_networkManager == null) return;
 

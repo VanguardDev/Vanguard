@@ -11,7 +11,6 @@ namespace Vanguard {
         public void ChangeState(string newState)
         {
             //changes the animator variables based on the movement state
-            Debug.Log("new state is " + newState);
             if (newState == "idle")
             {
                 animator.SetFloat("Speed", 0);

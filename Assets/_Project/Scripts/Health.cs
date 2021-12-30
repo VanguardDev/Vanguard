@@ -24,7 +24,7 @@ namespace Vanguard
 
         public override void OnStartClient(){
             mm = FindObjectOfType<MatchManager>();
-            // mm.NewPlayerConnected(this);
+            //mm.NewPlayerConnected(this);
             Debug.Log(IsOwner);
             if (IsOwner)
             {
@@ -35,12 +35,11 @@ namespace Vanguard
                 nameText.text = "";
                 healthTextWorld.text = "";
                 CmdSetName(name);
-                GunModel.SetParent(GetComponentInChildren<Weapon>().transform);//changes the gunmodels parent for first person perspective
-                GetComponentInChildren<VievModel>().SetVievmodel(GunModel);//sets the vievmodel for the first person perspective
+                GetComponent<PlayerGunManager>().setGunAsFirstPerson();
                
                 foreach (SkinnedMeshRenderer meshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>()) meshRenderer.enabled = false;//disables the character model for first person
                 foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = false;
-                foreach (MeshRenderer meshRenderer in GunModel.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = true;//reenables guns model
+                foreach (MeshRenderer meshRenderer in GetComponent<PlayerGunManager>().weapons[GetComponent<PlayerGunManager>().currentWeaponIndex].GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = true;//reenables guns model
 
             }
             else

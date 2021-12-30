@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Weapon : MonoBehaviour
 {
+    public float projectileSpeed;
+    public GameObject model;
     public int damage,ammo;
     public int ammoCapacity;
     public bool canShoot = true, isFullAuto;
@@ -27,7 +29,7 @@ public class Weapon : MonoBehaviour
     #region Unity Overrides
     protected virtual void Start()
     {
-        ammoCountText.text = ammoCapacity.ToString();
+        if(ammoCountText)ammoCountText.text = ammoCapacity.ToString();
         fireRate = 60f / roundsPerMinute;
     }
 
@@ -59,7 +61,7 @@ public class Weapon : MonoBehaviour
     protected virtual void Shoot()
     {
         timeSinceLastShot = 0f;
-        ConsumeAmmo();
+        ConsumeAmmo(1);
         // Play visual FX, sounds, etc.
     }
 
@@ -76,8 +78,8 @@ public class Weapon : MonoBehaviour
         reloading = false;
     }
 
-    private void ConsumeAmmo() {
-        ammo -= 1;
+    public void ConsumeAmmo(int amount) {
+        ammo -= amount;
         ammoCountText.text = ammo.ToString();
         if (ammo <= 0)
         {
