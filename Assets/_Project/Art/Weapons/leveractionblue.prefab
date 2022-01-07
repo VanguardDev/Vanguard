@@ -712,7 +712,7 @@ MonoBehaviour:
   tpspos: {x: -0.061, y: 0.175, z: -0.042}
   tpsscale: {x: 0.01, y: 0.01, z: 0.01}
   tpsrot: {x: 90, y: 90, z: 0}
-  GroundScale: {x: 0.1, y: 0.1, z: 0.1}
+  GroundScale: {x: 0.05, y: 0.05, z: 0.05}
 --- !u!1 &8384904864026318826
 GameObject:
   m_ObjectHideFlags: 0

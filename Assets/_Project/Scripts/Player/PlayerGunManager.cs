@@ -35,8 +35,8 @@ namespace Vanguard
 
             Weapon weaponToPickUp = weapon.GetComponent<Weapon>();//convert it to weapon class to use for stats
             copyWeaponAttiributes(weapons[currentWeaponIndex], weaponOnGround.GetComponent<Weapon>());//set the stats for the weapon on the ground i couldve just spawn an object with this set but fishnet doesnt seem to work
-            GameObject GroundWeaponModel= Instantiate(weaponOnGround.GetComponent<Weapon>().model,weaponOnGround.transform);
-            GroundWeaponModel.GetComponent<Model>().setModel(2);
+            
+           
             copyWeaponAttiributes(weaponToPickUp, weapons[currentWeaponIndex]);//set the stats of the new weapon
             Destroy(weapons[currentWeaponIndex].GetComponentInChildren<Model>().gameObject);//destroy the old model
             GameObject weaponModel = Instantiate(weaponToPickUp.model, weapons[currentWeaponIndex].transform);//spawn the new model
@@ -44,7 +44,9 @@ namespace Vanguard
             else weaponModel.GetComponent<Model>().setModel(1);
             weapons[currentWeaponIndex].ConsumeAmmo(0);//consume 0 ammo to update the ammo text
             weapon.gameObject.SetActive(false);
-            
+            weaponOnGround.GetComponentInChildren<Model>().setModel(2);
+            weaponOnGround.GetComponentInChildren<Model>().transform.position = weapon.transform.position;
+            weaponOnGround.GetComponentInChildren<Model>().transform.rotation = weapon.transform.rotation;
         }
         Ray ray;
         RaycastHit rhit;
