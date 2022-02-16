@@ -26,13 +26,16 @@ namespace Vanguard
         public static Action OnGrenadeStarted;
         public static Action OnGrenadeStopped;
 
+        public static Action OnChangeWeapon;
+        public static Action OnPickup;
+
         public static Action OnChat;
 
         public static Vector2 LookVector { get; private set; }
         public static Vector2 WalkVector { get; private set; }
 
         private PlayerInput playerInput;
-
+        public static int wantedGunIndex;
         // public override void OnStartClient()
         // {
         //     base.OnStartClient();
@@ -140,6 +143,21 @@ namespace Vanguard
             if (context.performed)
             {
                 OnChat?.Invoke();
+            }
+        }
+        public void OnWeaponSwitchInput(InputAction.CallbackContext context)
+        {
+            if(context.performed)
+            {
+                wantedGunIndex = (int)context.ReadValue<float>();
+                OnChangeWeapon?.Invoke();
+            }
+        }
+        public void OnPickUpInput(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                OnPickup.Invoke();
             }
         }
 

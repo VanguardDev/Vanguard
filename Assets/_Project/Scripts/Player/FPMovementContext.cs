@@ -160,18 +160,16 @@ namespace Vanguard
                 animationManager.animator.SetBool("WallrunningRight", false);
             }
                 
-                          
-            if (retval)
-                Debug.Log(wallHit.normal.y);
+                      
             return retval && wallrunEnabled && Mathf.Abs(wallHit.normal.y) < 0.1f;// && Mathf.Abs(Vector3.Dot(Vector3.Cross(wallHit.normal, Vector3.up), transform.forward)) > 0.3f;
         }
         
-        void OnGUI()
+       /* void OnGUI()
         {
             if (Application.isEditor)
             {
                 GUI.Label(new Rect(10, 200, 100, 20), Vector3.Scale(Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude.ToString());
             }
-        }
+        }*/
     }
 }

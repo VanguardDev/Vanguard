@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 namespace Vanguard
 {
     public class ProjectileWeapon : Weapon
@@ -19,7 +18,7 @@ namespace Vanguard
         protected override void Shoot()
         {
             base.Shoot();
-            gunManager.CmdShootCommand(transform.position, transform.rotation, damage);
+            gunManager.CmdShootCommand(ShootingPoint.position, ShootingPoint.rotation, damage);
         }
     }
 }

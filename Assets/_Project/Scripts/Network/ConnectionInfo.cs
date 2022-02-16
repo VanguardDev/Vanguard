@@ -9,8 +9,8 @@ public class ConnectionInfo : MonoBehaviour
         Host,
         DedicatedServer
     }
-    public static string ip = "projectvanguard.uk.to", name = "Name Not Set.";
-    public static string connectionIp;
+    public static string ip = "localhost", name = "Name Not Set.";
+    public static string connectionIp="localhost";
     public static Mode mode;
     public static bool isOpenedFromMenu;
     public void setClient(string sceneName)
