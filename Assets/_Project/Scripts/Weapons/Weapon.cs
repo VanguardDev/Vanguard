@@ -67,7 +67,7 @@ public class Weapon : MonoBehaviour
 
     private IEnumerator Reload()
     {
-        if (reloading) yield break;
+        if (reloading || ammo == ammoCapacity) yield break;
         reloading = true;
         yield return new WaitForSeconds(reloadTime);
         ammo = ammoCapacity;
