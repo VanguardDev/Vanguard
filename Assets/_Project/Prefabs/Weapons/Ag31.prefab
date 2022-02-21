@@ -36,6 +36,10 @@ PrefabInstance:
       propertyPath: ammoCapacity
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 2878873549448861083, guid: d6e70ad86068b744cbc7bc15e73ed94e, type: 3}
+      propertyPath: ammoConsumption
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2997952202547825912, guid: d6e70ad86068b744cbc7bc15e73ed94e, type: 3}
       propertyPath: m_Name
       value: Ag31

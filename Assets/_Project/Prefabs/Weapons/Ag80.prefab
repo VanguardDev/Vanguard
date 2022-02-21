@@ -28,6 +28,10 @@ PrefabInstance:
       propertyPath: model
       value: 
       objectReference: {fileID: 1206867686990870554, guid: d1672afa2b130e749874a1617abd245c, type: 3}
+    - target: {fileID: 2878873549448861083, guid: d6e70ad86068b744cbc7bc15e73ed94e, type: 3}
+      propertyPath: ammoConsumption
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2997952202547825912, guid: d6e70ad86068b744cbc7bc15e73ed94e, type: 3}
       propertyPath: m_Name
       value: Ag80

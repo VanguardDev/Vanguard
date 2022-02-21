@@ -49,6 +49,7 @@ MonoBehaviour:
   model: {fileID: 1685590167657564531, guid: 739d0f112a3c0bf47b8c4267ddc6786a, type: 3}
   damage: 20
   ammo: 30
+  ammoConsumption: 1
   ammoCapacity: 30
   canShoot: 1
   isFullAuto: 1
@@ -93,3 +94,4 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 0}
     LocalScale: {x: 0, y: 0, z: 0}
   _isNetworked: 1
+  ChildNetworkObjects: []

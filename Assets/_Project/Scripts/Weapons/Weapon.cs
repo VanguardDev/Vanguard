@@ -6,6 +6,7 @@ public class Weapon : MonoBehaviour
     public float projectileSpeed;
     public GameObject model;
     public int damage,ammo;
+    public int ammoConsumption;
     public int ammoCapacity;
     public bool canShoot = true, isFullAuto;
     public bool reloading;
@@ -61,7 +62,7 @@ public class Weapon : MonoBehaviour
     protected virtual void Shoot()
     {
         timeSinceLastShot = 0f;
-        ConsumeAmmo(1);
+        ConsumeAmmo(ammoConsumption);
         // Play visual FX, sounds, etc.
     }
 
