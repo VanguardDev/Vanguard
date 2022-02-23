@@ -1,8 +1,12 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
+
 public class Weapon : MonoBehaviour
 {
+    public UnityEvent<int> OnAmmoChanged;
+
     public float projectileSpeed;
     public GameObject model;
     public int damage,ammo;
@@ -32,6 +36,8 @@ public class Weapon : MonoBehaviour
     {
         if(ammoCountText)ammoCountText.text = ammoCapacity.ToString();
         fireRate = 60f / roundsPerMinute;
+
+        OnAmmoChanged.AddListener(UpdateAmmoText);
     }
 
     protected virtual void Update()
@@ -44,6 +50,11 @@ public class Weapon : MonoBehaviour
         }
     }
     #endregion
+
+    private void UpdateAmmoText(int newCount)
+    {
+        ammoCountText.text = newCount.ToString();
+    }
 
     public virtual void TriggerDown()
     {
@@ -63,6 +74,7 @@ public class Weapon : MonoBehaviour
     {
         timeSinceLastShot = 0f;
         ConsumeAmmo(ammoConsumption);
+        OnAmmoChanged.Invoke(ammo);
         // Play visual FX, sounds, etc.
     }
 
@@ -73,8 +85,7 @@ public class Weapon : MonoBehaviour
         yield return new WaitForSeconds(reloadTime);
         ammo = ammoCapacity;
 
-        // TODO: decouple this with an event
-        ammoCountText.text = ammo.ToString();
+        OnAmmoChanged.Invoke(ammo);
 
         reloading = false;
     }
