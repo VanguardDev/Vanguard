@@ -14,7 +14,7 @@ namespace Vanguard
         [SyncVar(OnChange = "setTeamColor")] public int team = -1; // this isnt hidden in inspector for debug purposes
         MatchManager mm;
         [SyncVar(OnChange = "nameChanged")] public string name;
-
+        [SyncVar]public int  Kills=0, Deaths=0;
         public Transform GunModel;
 
         private void Start(){

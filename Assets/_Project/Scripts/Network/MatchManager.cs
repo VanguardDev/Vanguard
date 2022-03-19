@@ -18,7 +18,7 @@ namespace Vanguard
         public float respawnTimer;
         [HideInInspector] public Text redScoreText, blueScoreText, winScreenText;
         bool restarting;
-        
+        Health[] Pla
         public void NewPlayerConnected(Health health)
         {
             if (redPlayerCount > bluePlayerCount)
