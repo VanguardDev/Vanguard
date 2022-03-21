@@ -12,6 +12,7 @@ namespace Vanguard
         [HideInInspector] public GameObject playerWhoShoot;
         Vector3 lastPos;
         ObjectPooling objectPooling;
+        public int owner;
         // set velocity for server and client. this way we don't have to sync the
         // position, because both the server and the client simulate it.
         void Start()
@@ -43,7 +44,7 @@ namespace Vanguard
                 if (rayHit.collider.GetComponent<Health>() && isserver)
                 {
                     Debug.Log("hit " + rayHit.collider.gameObject.name);
-                    rayHit.collider.GetComponent<Health>().getShot(damage);
+                    rayHit.collider.GetComponent<Health>().getShot(damage,owner);
                 }
                 DestroySelf();
             }

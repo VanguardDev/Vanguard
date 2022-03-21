@@ -90,7 +90,6 @@ namespace Vanguard
                 weapons[index].ConsumeAmmo(0);//consume 0 ammo to update ammo text
             }
             foreach (MeshRenderer meshRenderer in weapons[index].GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = true;//enables the gun model
-            Debug.Log("is owner = " + IsOwner.ToString());
             if(!IsOwner)weapons[index].GetComponentInChildren<Model>().setModel(1);
             currentWeaponIndex = index;//set the index 
 
@@ -156,7 +155,6 @@ namespace Vanguard
 
         private void TriggerDown()
         {
-            Debug.Log("trigger down");
             weapons[currentWeaponIndex].TriggerDown();
         }
 
@@ -171,11 +169,12 @@ namespace Vanguard
         }
 
         [ServerRpc]
-        public void CmdShootCommand(Vector3 Position, Quaternion Rotation, int Damage)
+        public void CmdShootCommand(Vector3 Position, Quaternion Rotation, int Damage,int Shooter)
         {
             GameObject projectileObject = objectPooling.GetFromPool(Position, Rotation, weapons[currentWeaponIndex].damage, weapons[currentWeaponIndex].projectileSpeed);
             projectileObject.GetComponent<Projectile>().playerWhoShoot = gameObject;
             projectileObject.GetComponent<Projectile>().damage = Damage;
+            projectileObject.GetComponent<Projectile>().owner= Shooter;
         }
     }
 }

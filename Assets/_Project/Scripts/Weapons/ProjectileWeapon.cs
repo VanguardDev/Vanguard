@@ -8,17 +8,20 @@ namespace Vanguard
         public GameObject projectilePrefab;
         public Transform ShootingPoint;
         private PlayerGunManager gunManager;
+        public Health player;
 
         protected override void Start()
         {
+            
             base.Start();
             gunManager = GetComponentInParent<PlayerGunManager>();
+            player = GetComponentInParent<Health>();
         }
 
         protected override void Shoot()
         {
             base.Shoot();
-            gunManager.CmdShootCommand(ShootingPoint.position, ShootingPoint.rotation, damage);
+            gunManager.CmdShootCommand(ShootingPoint.position, ShootingPoint.rotation, damage,player.id);
         }
     }
 }

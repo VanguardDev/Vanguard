@@ -290,7 +290,6 @@ namespace Vanguard
                     context.animationManager.ChangeState("sliding");//sets the animation state to sliding
                     context.jumpCount = 0;
                 }
-                Debug.Log("Slide");
 
                 context.Rigidbody.velocity = Vector3.Cross(new Vector3(context.Rigidbody.velocity.z, 0, -context.Rigidbody.velocity.x).normalized, context.groundHit.normal) *
                     Vector3.Scale(context.Rigidbody.velocity, new Vector3(1, 0, 1)).magnitude;

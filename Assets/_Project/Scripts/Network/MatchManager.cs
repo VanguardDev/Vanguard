@@ -18,29 +18,68 @@ namespace Vanguard
         public float respawnTimer;
         [HideInInspector] public Text redScoreText, blueScoreText, winScreenText;
         bool restarting;
-        Health[] Pla
+        [SyncObject]  readonly public SyncDictionary<int,Health> Players = new SyncDictionary<int, Health>();
+        
+        public void ListUpdate_On_Change(SyncDictionaryOperation op,int id,  Health player, bool asServer)
+        {
+            foreach ( Health p in  Players.Values )
+            {
+                if (p.IsOwner)
+                {
+                    p.GetComponentInChildren<ScoreBoardManager>().setScoreBoard();//set the scoreboard
+                    break;
+                }
+            }    
+        }
+        public void Awake()
+        {
+            Players.OnChange += ListUpdate_On_Change;
+        }
         public void NewPlayerConnected(Health health)
         {
-            if (redPlayerCount > bluePlayerCount)
-            {
-                blueTeamHealth.Add(health);
-                health.team = 1;
-                health.setTeamColor(-1, 1, true);
-                health.RpcchangePlayerspos(blueSpawn.position);
-                bluePlayerCount++;
-            }
-            else
-            {
-                redTeamHealth.Add(health);
-                health.team = 0;
-                health.setTeamColor(-1, 0, true);
-                health.RpcchangePlayerspos(redSpawn.position);
-                redPlayerCount++;
-            }
+                if (redPlayerCount > bluePlayerCount)
+                {
+                    blueTeamHealth.Add(health);
+                    health.team = 1;
+                    health.setTeamColor(-1, 1, true);
+                    health.RpcchangePlayerspos(blueSpawn.position);
+                    bluePlayerCount++;
+
+                    for (int i = 5; i < 10; i++)
+                    {
+                        if (!Players.ContainsKey(i) )
+                        {
+                            health.id = i;
+                        Players.Add(i, health);
+                        
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    redTeamHealth.Add(health);
+                    health.team = 0;
+                    health.setTeamColor(-1, 0, true);
+                    health.RpcchangePlayerspos(redSpawn.position);
+                    redPlayerCount++;
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (!Players.ContainsKey(i))
+                    {
+                            health.id = i;
+                        Players.Add(i, health);
+                        break;
+                        }
+                    }
+                }
+            
         }
-        public void playerDie(Health player)
+        public void playerDie(Health player,int shooter)
         {
             player.GetComponent<CapsuleCollider>().enabled = false;
+            player.Deaths++;
+            if(shooter!= -1)Players[shooter].Kills++;
             RpcDisablePlayer(player);
             StartCoroutine("DieTimer", player);
         }
@@ -66,7 +105,7 @@ namespace Vanguard
                 foreach (MeshRenderer meshRenderer in player.GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = true;
             }
             player.GetComponent<CapsuleCollider>().enabled = true;
-            player.nameText.text = player.name;
+            player.nameText.text = player.Name;
             if (player.IsOwner)
             {
                 player.nameText.text = "";
@@ -142,13 +181,14 @@ namespace Vanguard
         }
         public void updateTeamScore(int oldScore, int newScore, bool asServer)//the paramaters are useless for this function but have to add them
         {
-            redScoreText.text = redScore.ToString();
-            blueScoreText.text = blueScore.ToString();
+            if(redScoreText!=null)redScoreText.text = redScore.ToString();
+            if (blueScoreText != null) blueScoreText.text = blueScore.ToString();
         }
-        public void Disconnect(int team)
+        public void Disconnect(Health Player)
         {
-            if (team == 0) redPlayerCount--;
+            if (Player.team == 0) redPlayerCount--;
             else bluePlayerCount--;
+            Players.Remove(Player.id);
         }
     }
 }
