@@ -30,7 +30,8 @@ namespace Vanguard
         public static Action OnPickup;
 
         public static Action OnChat;
-
+        public static Action OnScoreBoardDown;
+        public static Action OnScoreBoardUp;
         public static Vector2 LookVector { get; private set; }
         public static Vector2 WalkVector { get; private set; }
 
@@ -159,6 +160,14 @@ namespace Vanguard
             {
                 OnPickup.Invoke();
             }
+        }
+        public void OnScoreBoardInput(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                OnScoreBoardDown.Invoke();
+            }
+            else if (context.canceled)OnScoreBoardUp.Invoke();
         }
 
         /// <summary>

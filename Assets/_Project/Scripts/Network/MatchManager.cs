@@ -35,14 +35,16 @@ namespace Vanguard
         {
             Players.OnChange += ListUpdate_On_Change;
         }
-        public void NewPlayerConnected(Health health)
+        public void NewPlayerConnected(Health health,string Name)
         {
+            health.Name = Name;
                 if (redPlayerCount > bluePlayerCount)
                 {
-                    blueTeamHealth.Add(health);
+                    
                     health.team = 1;
                     health.setTeamColor(-1, 1, true);
-                    health.RpcchangePlayerspos(blueSpawn.position);
+                blueTeamHealth.Add(health);
+                health.RpcchangePlayerspos(blueSpawn.position);
                     bluePlayerCount++;
 
                     for (int i = 5; i < 10; i++)
@@ -58,12 +60,13 @@ namespace Vanguard
                 }
                 else
                 {
-                    redTeamHealth.Add(health);
+                    
                     health.team = 0;
                     health.setTeamColor(-1, 0, true);
                     health.RpcchangePlayerspos(redSpawn.position);
                     redPlayerCount++;
-                    for (int i = 0; i < 5; i++)
+                redTeamHealth.Add(health);
+                for (int i = 0; i < 5; i++)
                     {
                         if (!Players.ContainsKey(i))
                     {

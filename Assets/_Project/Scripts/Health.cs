@@ -87,8 +87,7 @@ namespace Vanguard
         [ServerRpc]
         public void CmdSetName(string setName)
         {
-            name = setName;
-            mm.NewPlayerConnected(this);
+            mm.NewPlayerConnected(this,setName);
         }
         void nameChanged(string oldName, string newName, bool asServer)
         {

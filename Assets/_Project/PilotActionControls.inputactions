@@ -92,6 +92,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ScoreBoard",
+                    "type": "Button",
+                    "id": "3b1521b9-8e65-4044-8cac-e9dc298b333f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -279,6 +287,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pick Up Weapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9b8aeb6e-c19a-45c5-9e7c-d61d0558926b",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScoreBoard",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
