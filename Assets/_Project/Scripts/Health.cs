@@ -21,10 +21,8 @@ namespace Vanguard
 
         public void SetScoreBoard(int old,int newe,bool isserver)
         {
-            if(IsOwner)
-            {
-                GetComponentInChildren<ScoreBoardManager>().setScoreBoard(id);
-            }
+            mm.updateScoreBoard();
+            
         }
 
         private void Start(){

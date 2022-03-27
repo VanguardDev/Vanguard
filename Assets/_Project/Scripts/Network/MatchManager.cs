@@ -22,14 +22,18 @@ namespace Vanguard
         
         public void ListUpdate_On_Change(SyncDictionaryOperation op,int id,  Health player, bool asServer)
         {
-            foreach ( Health p in  Players.Values )
+            updateScoreBoard();
+        }
+        public void updateScoreBoard()
+        {
+            foreach (Health p in Players.Values)
             {
                 if (p.IsOwner)
                 {
-                    p.GetComponentInChildren<ScoreBoardManager>().setScoreBoard(id);//set the scoreboard
+                    p.GetComponentInChildren<ScoreBoardManager>().setScoreBoard();//set the scoreboard
                     break;
                 }
-            }    
+            }
         }
         public void Awake()
         {
