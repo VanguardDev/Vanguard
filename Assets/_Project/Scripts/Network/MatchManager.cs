@@ -26,7 +26,7 @@ namespace Vanguard
             {
                 if (p.IsOwner)
                 {
-                    p.GetComponentInChildren<ScoreBoardManager>().setScoreBoard();//set the scoreboard
+                    p.GetComponentInChildren<ScoreBoardManager>().setScoreBoard(id);//set the scoreboard
                     break;
                 }
             }    

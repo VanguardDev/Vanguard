@@ -23,7 +23,7 @@ namespace Vanguard
         {
             if(IsOwner)
             {
-                GetComponentInChildren<ScoreBoardManager>().setScoreBoard();
+                GetComponentInChildren<ScoreBoardManager>().setScoreBoard(id);
             }
         }
 
