@@ -5,7 +5,6 @@ public class Weapon : MonoBehaviour
 {
     public float projectileSpeed;
     public GameObject model;
-    public int prefabIndex;
     public int damage,ammo;
     public int ammoCapacity;
     public bool canShoot = true, isFullAuto;
