@@ -11,6 +11,7 @@ namespace Vanguard
     public class PlayerGunManager : NetworkBehaviour
     {
         public GameObject gunPrefab;
+        public GameObject[] SpawnPrefabs;
         public Weapon[] weapons = new Weapon[3];
 
          [SyncVar(OnChange = "ClientSetWeapon")] public int currentWeaponIndex = 0;
@@ -22,6 +23,7 @@ namespace Vanguard
             to.ammo = from.ammo;
             to.ammoCapacity = from.ammoCapacity;
             to.damage = from.damage;
+            to.prefabIndex = from.prefabIndex;
             to.isFullAuto = from.isFullAuto;
             to.reloadTime = from.reloadTime;
             to.roundsPerMinute = from.roundsPerMinute;
@@ -34,8 +36,8 @@ namespace Vanguard
         {
 
             Weapon weaponToPickUp = weapon.GetComponent<Weapon>();//convert it to weapon class to use for stats
-            copyWeaponAttiributes(weapons[currentWeaponIndex], weaponOnGround.GetComponent<Weapon>());//set the stats for the weapon on the ground i couldve just spawn an object with this set but fishnet doesnt seem to work
-            
+            copyWeaponAttiributes(weapons[currentWeaponIndex], weaponOnGround.GetComponent<Weapon>());//this is dumb and wont work it shouldnt be in a rpc call it will only be done locally which is stupid
+           //ok this part as a whole is really stupid but i think its to do with fishnet not working as mirror used to 
            
             copyWeaponAttiributes(weaponToPickUp, weapons[currentWeaponIndex]);//set the stats of the new weapon
             Destroy(weapons[currentWeaponIndex].GetComponentInChildren<Model>().gameObject);//destroy the old model
@@ -60,14 +62,12 @@ namespace Vanguard
                 if (rhit.collider.tag == "gun")
                 {
                     
-                    GameObject spawnedGun = Instantiate(gunPrefab, rhit.transform.position, rhit.transform.rotation);
+                    GameObject spawnedGun = Instantiate(SpawnPrefabs[ weapons[currentWeaponIndex].prefabIndex], rhit.transform.position, rhit.transform.rotation);
                     copyWeaponAttiributes(weapons[currentWeaponIndex], spawnedGun.GetComponent<Weapon>());
-                    GameObject weaponModel = Instantiate(spawnedGun.GetComponent<Weapon>().model, spawnedGun.transform);//spawn the new model
-                    weaponModel.GetComponent<Model>().setModel(2);
+                    spawnedGun.GetComponentInChildren<Model>().setModel(2);
                     spawnedGun.GetComponent<BoxCollider>().enabled = true;
-                    
                     InstanceFinder.ServerManager.Spawn(spawnedGun);
-                    RpcPickUpWeapon(rhit.collider.gameObject,spawnedGun);// pick up the gun
+                   RpcPickUpWeapon(rhit.collider.gameObject,spawnedGun);// pick up the gun
                     rhit.collider.gameObject.SetActive(false);
                     Destroy(rhit.collider.gameObject, 15);//destroy it after 15 seconds(more than timeout time so it doesnt matter anyways)
 
@@ -90,7 +90,6 @@ namespace Vanguard
                 weapons[index].ConsumeAmmo(0);//consume 0 ammo to update ammo text
             }
             foreach (MeshRenderer meshRenderer in weapons[index].GetComponentsInChildren<MeshRenderer>()) meshRenderer.enabled = true;//enables the gun model
-            Debug.Log("is owner = " + IsOwner.ToString());
             if(!IsOwner)weapons[index].GetComponentInChildren<Model>().setModel(1);
             currentWeaponIndex = index;//set the index 
 
@@ -156,7 +155,6 @@ namespace Vanguard
 
         private void TriggerDown()
         {
-            Debug.Log("trigger down");
             weapons[currentWeaponIndex].TriggerDown();
         }
 
@@ -171,11 +169,12 @@ namespace Vanguard
         }
 
         [ServerRpc]
-        public void CmdShootCommand(Vector3 Position, Quaternion Rotation, int Damage)
+        public void CmdShootCommand(Vector3 Position, Quaternion Rotation, int Damage,int Shooter)
         {
             GameObject projectileObject = objectPooling.GetFromPool(Position, Rotation, weapons[currentWeaponIndex].damage, weapons[currentWeaponIndex].projectileSpeed);
             projectileObject.GetComponent<Projectile>().playerWhoShoot = gameObject;
             projectileObject.GetComponent<Projectile>().damage = Damage;
+            projectileObject.GetComponent<Projectile>().owner= Shooter;
         }
     }
 }

@@ -9,7 +9,7 @@ public class ConnectionInfo : MonoBehaviour
         Host,
         DedicatedServer
     }
-    public static string ip = "localhost", name = "Name Not Set.";
+    public static string ip = "localhost", Name = "Name Not Set.";
     public static string connectionIp="localhost";
     public static Mode mode;
     public static bool isOpenedFromMenu;
@@ -25,7 +25,7 @@ public class ConnectionInfo : MonoBehaviour
     }
     public void setName(string nameNew)
     {
-        name = nameNew;
+        Name = nameNew;
     }
     public void setConnectionIP(string text){
         connectionIp = text;

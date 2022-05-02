@@ -9,7 +9,7 @@ namespace Vanguard
     {
         public void OnTriggerEnter(Collider other)
         {
-            if (base.IsServer) other.GetComponent<Health>().getShot(100);
+            if (base.IsServer) other.GetComponent<Health>().getShot(100,-1);
         }
     }
 }
